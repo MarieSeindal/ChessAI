@@ -2,6 +2,8 @@ import java.lang.reflect.Array;
 
 public class Board {
 
+
+
     char[][] board;
 
     public Board(char[][] board){
@@ -12,8 +14,14 @@ public class Board {
 
     }
 
-    public void setBoard(){
+    // - - - - - Getters and setters - - - - - //
 
+    public char[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(char[][] board) {
+        this.board = board;
     }
 
 }

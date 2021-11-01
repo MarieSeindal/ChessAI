@@ -15,4 +15,41 @@ public class Move {
 
     }
 
+    // - - - - - Getters and setters - - - - - //
+
+    public int getNewField() {
+        return newField;
+    }
+    public void setNewField(int newField) {
+        this.newField = newField;
+    }
+
+    public int getOldField() {
+        return oldField;
+    }
+    public void setOldField(int oldField) {
+        this.oldField = oldField;
+    }
+
+    public boolean isSpecialMove() {
+        return specialMove;
+    }
+    public void setSpecialMove(boolean specialMove) {
+        this.specialMove = specialMove;
+    }
+
+    public char getPiece() {
+        return piece;
+    }
+    public void setPiece(char piece) {
+        this.piece = piece;
+    }
+
+    public char getContent() {
+        return content;
+    }
+    public void setContent(char content) {
+        this.content = content;
+    }
+
 }
