@@ -14,7 +14,7 @@ public class AI {
         // If leaf node, return static value of the board
         if (depth == maxDepth){
             System.out.println("Leaf return in depth " + depth);
-            return (0); //todo.  evaluateLeaf()
+            return (evaluateLeaf()); //todo. expand evaluateLeaf()
         }
 
         // node in depth 0,2 ... straight numbers is max, as the algorithm runs the AI's turn.
@@ -31,8 +31,7 @@ public class AI {
                 bestValue = max(bestValue , value);
                 alpha = max(alpha , bestValue);
 
-                if(beta <= alpha)
-                    break;
+                if(beta <= alpha) break;
             }
             return bestValue;
         }
@@ -49,16 +48,45 @@ public class AI {
                 bestValue = min(bestValue , value);
                 beta = min(beta , bestValue);
 
-                if (beta <= alpha)
-                    break;
-
+                if (beta <= alpha) break;
             }
             return bestValue;
         }
-
         return 0;
     }
 
+// - - - - - Evaluate - - - - - //todo exapnd these
+    public static int evaluateLeaf(){ // so far based on slide 11 in pptx week 6.
+        int sum = 0;
+
+        sum += evaluatePawn();
+        sum += evaluateRook();
+        sum += evaluateBishop();
+        sum += evaluateKnight();
+        sum += evaluateQueen();
+        sum += evaluateKing();
+
+        return sum;
+    }
+    private static int evaluatePawn(){
+        return 0;
+    }
+    private static int evaluateRook(){
+        return 0;
+    }
+    private static int evaluateBishop(){
+        return 0;
+    }
+    private static int evaluateKnight(){
+        return 0;
+    }
+    private static int evaluateQueen(){
+        return 0;
+    }
+    private static int evaluateKing(){
+        return 0;
+    }
+//- - - - - - - - - - - - - - - - - - - - //
 
     public static int max(int a, int b){
         if (a>b) return a;
