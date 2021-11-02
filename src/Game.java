@@ -1,4 +1,8 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
+import java.util.List;
 
 public class Game {
 
@@ -23,6 +27,25 @@ public class Game {
 
     public void play(){
         //Play
+    }
+
+    // TODO: this function need to be tested
+    public boolean threefoldRepetition ()
+    {
+        List<String> checkBoards = new ArrayList<>();
+        //Board[] checkedBoards;
+        int counter = 0;
+
+        for (Board usedBoard : usedBoards) {
+            String boardString = usedBoard.getString();
+            if (checkBoards.contains(boardString))
+                counter++;
+            else
+                checkBoards.add(boardString);
+        }
+
+        // return true if the counter is 3 or bigger, else it returns false
+        return counter >= 3;
     }
 
     public boolean isMoveLegal(){
