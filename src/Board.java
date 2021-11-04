@@ -51,9 +51,9 @@ public class Board {
     // TODO: this function need to be tested
     public String getString(){
         StringBuilder output = new StringBuilder();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
 
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 output.append(board[i][j]);
             }
         }
