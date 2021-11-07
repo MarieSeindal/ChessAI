@@ -27,7 +27,6 @@ public class TUI implements I_TUI {
             for (int i = 0; i < s.length(); i++) {
 
                 if(whiteField){
-                    //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
                     System.out.print( WHITE_BACKGROUND + BLACK + " " + s.charAt(i) + " " + RESET);
                     whiteField = false;
 
@@ -41,14 +40,12 @@ public class TUI implements I_TUI {
                     System.out.print( BLACK_BACKGROUND + WHITE + " " + s.charAt(i) + " " + RESET);
                     whiteField = true;
 
-                    if (i == s.length()-1){ //If end of line, new line
+                    if (i == s.length()-1){
                         System.out.println("");
                     }
                 }
             }
-            if (whiteField)
-                whiteField = false;
-            else whiteField = true;
+            whiteField = !whiteField; //flip the color choice. The end of one line has the same color as the start of the next.
 
         }
 
@@ -83,7 +80,7 @@ public class TUI implements I_TUI {
 
         String[] out = new String[10];
 
-        out[0] = "------------------------"; // Print these another place, so this method only handles the board
+        out[0] = "------------------------";
         out[9] = "------------------------";
 
         /* Convert FEN string to rows with "/" as the delimiter */
@@ -100,10 +97,9 @@ public class TUI implements I_TUI {
                 if (code == 0) {
                     int num = Integer.parseInt("" + aChar);
                     for (int k = 0; k < num; k++) {
-                        temp += " "; //temp += "___|";
+                        temp += " ";
                     }
                 } else {
-                    //temp += "_" + aChar + "_|";
                     temp += aChar;
                 }
                 out[i + 1] = temp;
