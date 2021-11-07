@@ -13,9 +13,38 @@ public class TUI implements I_TUI {
     public void updateBoard(String fen) {
 
         String[] out = fenFormatter(fen);
+        boolean whiteField = false;
 
         for (String s : out) {
-            System.out.println(s);
+
+            if (s.length() == 0)
+                continue;
+
+            for (int i = 0; i < s.length(); i++) {
+
+                if(whiteField){
+                    System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
+                    whiteField = false;
+
+                    if (i == s.length()-1){ //If end of line, new line
+                        System.out.println("");
+                    }
+                    continue;
+                }
+                if(!whiteField){
+
+                    System.out.print("\u001B[40m" + "\033[0;37m " + s.charAt(i) + " \033[0m");
+                    whiteField = true;
+
+                    if (i == s.length()-1){ //If end of line, new line
+                        System.out.println("");
+                    }
+                }
+            }
+            if (whiteField)
+                whiteField = false;
+            else whiteField = true;
+
         }
 
     }
@@ -47,8 +76,8 @@ public class TUI implements I_TUI {
 
         String[] out = new String[10];
 
-        out[0] = "_________________________________";
-        out[9] = "_________________________________";
+        out[0] = "";
+        out[9] = "";
 
         /* Convert FEN string to rows with "/" as the delimiter */
         String[] str = fen.split("/");
@@ -56,7 +85,7 @@ public class TUI implements I_TUI {
         /* Split each item into its own and get the piece */
         for (int i = 0; i < str.length; i++) {
             String[] chars = str[i].split("");
-            String temp = "|";
+            String temp = "";
             for (String aChar : chars) {
                 int code = getPiece(aChar);
 
@@ -64,10 +93,11 @@ public class TUI implements I_TUI {
                 if (code == 0) {
                     int num = Integer.parseInt("" + aChar);
                     for (int k = 0; k < num; k++) {
-                        temp += "___|";
+                        temp += " "; //temp += "___|";
                     }
                 } else {
-                    temp += "_" + aChar + "_|";
+                    //temp += "_" + aChar + "_|";
+                    temp += aChar;
                 }
                 out[i + 1] = temp;
             }
