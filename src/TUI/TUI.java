@@ -19,6 +19,10 @@ public class TUI implements I_TUI {
 
             if (s.length() == 0)
                 continue;
+            else if (s.charAt(0) == '-'){
+                System.out.println(s);
+                continue;
+            }
 
             for (int i = 0; i < s.length(); i++) {
 
@@ -79,8 +83,8 @@ public class TUI implements I_TUI {
 
         String[] out = new String[10];
 
-        out[0] = ""; // Print these another place, so this method only handles the board
-        out[9] = "";
+        out[0] = "------------------------"; // Print these another place, so this method only handles the board
+        out[9] = "------------------------";
 
         /* Convert FEN string to rows with "/" as the delimiter */
         String[] str = fen.split("/");
