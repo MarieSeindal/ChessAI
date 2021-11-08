@@ -7,13 +7,57 @@ import java.util.List;
 public class Game {
 
     Board board; //The game board
-    Board[] usedBoards; //List of use boards, Do not have more than 3 duplicates
+    ArrayList<Board> usedBoards = new ArrayList<Board>(); //List of use boards, Do not have more than 3 duplicates
     Player p1;
     Player p2;
     boolean turn; // true for white?
     int turnsSinceKill = 0;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn){
+
+        // temp, will be deleted after testing
+        char[][] tBoard = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        char[][] tBoard2 = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        char[][] tBoard3 = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        char[][] tBoard4 = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        usedBoards.add(new Board(tBoard));
+        usedBoards.add(new Board(tBoard2));
+        usedBoards.add(new Board(tBoard3));
+        usedBoards.add(new Board(tBoard4));
+
+        // end of temp
 
         this.board = startingBoard;
         this.p1 = p1;
@@ -37,10 +81,14 @@ public class Game {
         int counter = 0;
 
         for (Board usedBoard : usedBoards) {
+            // make a string version of the board
             String boardString = usedBoard.getString();
+            // check if their is a board like this one in the list
             if (checkBoards.contains(boardString))
+                // if yes, add to the counter
                 counter++;
             else
+                // if no, add it to the list
                 checkBoards.add(boardString);
         }
 
@@ -61,12 +109,12 @@ public class Game {
         this.board = board;
     }
 
-    public Board[] getUsedBoards() {
-        return usedBoards;
-    }
-    public void setUsedBoards(Board[] usedBoards) {
-        this.usedBoards = usedBoards;
-    }
+//    public Board[] getUsedBoards() {
+//        return usedBoards;
+//    }
+//    public void setUsedBoards(Board[] usedBoards) {
+//        this.usedBoards = usedBoards;
+//    }
 
     public Player getP1() {
         return p1;

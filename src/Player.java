@@ -2,10 +2,10 @@ public class Player {
 
     boolean white;
     boolean doneCastling = false; //Dansk: doneRokade
-    String playerType;
+    boolean isAi;
 
-    public Player(boolean colorWhite, String playerType){
-        this.playerType = playerType;
+    public Player(boolean colorWhite, boolean isAi){
+        this.isAi = isAi;
         this.white = colorWhite;
 
     }
@@ -24,11 +24,11 @@ public class Player {
         this.doneCastling = doneCastling;
     }
 
-    public String getPlayerType() {
-        return playerType;
-    }
-    public void setPlayerType(String playerType) {
-        this.playerType = playerType;
-    }
+//    public String getPlayerType() {
+//        return playerType;
+//    }
+//    public void setPlayerType(String playerType) {
+//        this.playerType = playerType;
+//    }
 
 }

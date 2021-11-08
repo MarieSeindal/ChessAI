@@ -7,6 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+
+
         //System.out.println("Hello world");
 
 
@@ -17,8 +19,18 @@ public class Main {
 //        // temp testing of my code
 //        Board tempBoard = new Board();
 //        System.out.println(tempBoard.getString());
+        testBoardCompare();
+        //testUI();
+    }
 
-        testUI();
+    public static void testBoardCompare(){
+        Player p1 =  new Player(true, false);
+        Player p2 = new Player(false, false);
+
+        Game testGame = new Game(new Board(), p1, p2, false);
+
+        boolean output = testGame.threefoldRepetition();
+        System.out.println("output is : " + output);
     }
 
     // Marie first commit
