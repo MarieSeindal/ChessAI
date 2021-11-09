@@ -10,7 +10,7 @@ public class Game {
     ArrayList<Board> usedBoards = new ArrayList<Board>(); //List of use boards, Do not have more than 3 duplicates
     Player p1;
     Player p2;
-    boolean turn; // true for white?
+    boolean turn; // 'true' when it is p1's turn, 'false' when it is p2's turn
     int turnsSinceKill = 0;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn){
@@ -22,6 +22,12 @@ public class Game {
 
     public void initializeGame(){
         // Setup settings for the game before starting the game
+
+        // check which player is white, they will have the first turn
+        if(p1.white)
+            this.turn = true;
+        if(p2.white)
+            this.turn = false;
     }
 
     public void play(){
