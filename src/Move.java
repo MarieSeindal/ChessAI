@@ -17,9 +17,11 @@ public class Move {
 
     // check if the value from "pieceGeneralMoveset", can be used
     // or if there is anything in it's way
+    // TODO: write this function
     public void pathChecker(){}
 
-    public void convertIndexTo2D(){
+    // TODO: write this function
+    public void convertIndexTo2D(int location){
         // 0,1,2,3,4,5,6,7
         // 8,9,10,11,12,13,14,15
         // 16,17,18,19,20,21,22,23
@@ -34,7 +36,12 @@ public class Move {
     // the piece can not go off of the board
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
+    // TODO: write this function
     public void pieceGeneralMoveset(char piece, int location){
+
+        // this will be the 2D array, that which ever piece we have, will need
+        convertIndexTo2D(1);
+
         switch (piece){
             case 'p':
                 System.out.println("");
