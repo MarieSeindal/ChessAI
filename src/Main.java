@@ -7,18 +7,48 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //System.out.println("Hello world");
+        // testBoardCompare();
+        // testUI();
 
+    }
 
-        // temp testing of my code
-        //Board tempBoard = new Board();
-        //System.out.println(tempBoard.getString());
+    public static void testBoardCompare(){
+        Player p1 =  new Player(true, false);
+        Player p2 = new Player(false, false);
 
-//        // temp testing of my code
-//        Board tempBoard = new Board();
-//        System.out.println(tempBoard.getString());
+        Game testGame = new Game(new Board(), p1, p2, false);
 
-        testUI();
+        // temp, will be deleted after testing
+        char[][] tBoard = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        char[][] tBoard2 = {{'r','n','b','q','k','b','n','r'},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'p','p','p','p','p','p','p','p'},
+                {' ',' ',' ',' ',' ',' ',' ',' '},
+                {'P','P','P','P','P','P','P','P'},
+                {'R','N','B','Q','K','B','N','R'}};
+
+        testGame.usedBoards.add(new Board(tBoard));
+        testGame.usedBoards.add(new Board(tBoard2));
+        testGame.usedBoards.add(new Board(tBoard));
+        testGame.usedBoards.add(new Board(tBoard2));
+        testGame.usedBoards.add(new Board(tBoard2));
+
+        // this function converts all the board into a string value,
+        // then each one of them gets compared to the full list,
+        // if the count is 3, then it will return true
+        // if no count is 3, then when it is done, it returns false
+        boolean output = testGame.threefoldRepetition();
+        System.out.println("output is : " + output);
     }
 
     // Marie first commit
