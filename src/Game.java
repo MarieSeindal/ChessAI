@@ -14,51 +14,6 @@ public class Game {
     int turnsSinceKill = 0;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn){
-
-        // temp, will be deleted after testing
-        char[][] tBoard = {{'r','n','b','q','k','b','n','r'},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'P','P','P','P','P','P','P','P'},
-                {'R','N','B','Q','K','B','N','R'}};
-
-        char[][] tBoard2 = {{'r','n','b','q','k','b','n','r'},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'P','P','P','P','P','P','P','P'},
-                {'R','N','B','Q','K','B','N','R'}};
-
-        char[][] tBoard3 = {{'r','n','b','q','k','b','n','r'},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'P','P','P','P','P','P','P','P'},
-                {'R','N','B','Q','K','B','N','R'}};
-
-        char[][] tBoard4 = {{'r','n','b','q','k','b','n','r'},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'p','p','p','p','p','p','p','p'},
-                {' ',' ',' ',' ',' ',' ',' ',' '},
-                {'P','P','P','P','P','P','P','P'},
-                {'R','N','B','Q','K','B','N','R'}};
-
-        usedBoards.add(new Board(tBoard));
-        usedBoards.add(new Board(tBoard2));
-        usedBoards.add(new Board(tBoard3));
-        usedBoards.add(new Board(tBoard4));
-
-        // end of temp
-
         this.board = startingBoard;
         this.p1 = p1;
         this.p2 = p2;
@@ -73,27 +28,26 @@ public class Game {
         //Play
     }
 
-    // TODO: this function need to be tested
+    // TODO: this function really could be optimized
     public boolean threefoldRepetition ()
     {
-        List<String> checkBoards = new ArrayList<>();
-        //Board[] checkedBoards;
-        int counter = 0;
+        // https://www.geeksforgeeks.org/java-util-collections-frequency-java/
 
-        for (Board usedBoard : usedBoards) {
-            // make a string version of the board
-            String boardString = usedBoard.getString();
-            // check if their is a board like this one in the list
-            if (checkBoards.contains(boardString))
-                // if yes, add to the counter
-                counter++;
-            else
-                // if no, add it to the list
-                checkBoards.add(boardString);
+        List<String> checkBoards = new ArrayList<>();
+
+        // convert all of the Boards into strings
+        for (Board b: usedBoards) {
+            checkBoards.add(b.getString());
         }
 
-        // return true if the counter is 3 or bigger, else it returns false
-        return counter >= 3;
+        for (String boardString : checkBoards) {
+
+            if (Collections.frequency(checkBoards, boardString) == 3)
+                return true;
+        }
+
+        // done with looking at each value
+        return false;
     }
 
     public boolean isMoveLegal(){
