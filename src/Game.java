@@ -7,14 +7,13 @@ import java.util.List;
 public class Game {
 
     Board board; //The game board
-    Board[] usedBoards; //List of use boards, Do not have more than 3 duplicates
+    ArrayList<Board> usedBoards = new ArrayList<Board>(); //List of use boards, Do not have more than 3 duplicates
     Player p1;
     Player p2;
-    boolean turn; // true for white?
+    boolean turn; // 'true' when it is p1's turn, 'false' when it is p2's turn
     int turnsSinceKill = 0;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn){
-
         this.board = startingBoard;
         this.p1 = p1;
         this.p2 = p2;
@@ -23,29 +22,38 @@ public class Game {
 
     public void initializeGame(){
         // Setup settings for the game before starting the game
+
+        // check which player is white, they will have the first turn
+        if(p1.white)
+            this.turn = true;
+        if(p2.white)
+            this.turn = false;
     }
 
     public void play(){
         //Play
     }
 
-    // TODO: this function need to be tested
+    // TODO: this function really could be optimized
     public boolean threefoldRepetition ()
     {
-        List<String> checkBoards = new ArrayList<>();
-        //Board[] checkedBoards;
-        int counter = 0;
+        // https://www.geeksforgeeks.org/java-util-collections-frequency-java/
 
-        for (Board usedBoard : usedBoards) {
-            String boardString = usedBoard.getString();
-            if (checkBoards.contains(boardString))
-                counter++;
-            else
-                checkBoards.add(boardString);
+        List<String> checkBoards = new ArrayList<>();
+
+        // convert all of the Boards into strings
+        for (Board b: usedBoards) {
+            checkBoards.add(b.getString());
         }
 
-        // return true if the counter is 3 or bigger, else it returns false
-        return counter >= 3;
+        for (String boardString : checkBoards) {
+
+            if (Collections.frequency(checkBoards, boardString) == 3)
+                return true;
+        }
+
+        // done with looking at each value
+        return false;
     }
 
     public boolean isMoveLegal(){
@@ -61,12 +69,12 @@ public class Game {
         this.board = board;
     }
 
-    public Board[] getUsedBoards() {
-        return usedBoards;
-    }
-    public void setUsedBoards(Board[] usedBoards) {
-        this.usedBoards = usedBoards;
-    }
+//    public Board[] getUsedBoards() {
+//        return usedBoards;
+//    }
+//    public void setUsedBoards(Board[] usedBoards) {
+//        this.usedBoards = usedBoards;
+//    }
 
     public Player getP1() {
         return p1;
