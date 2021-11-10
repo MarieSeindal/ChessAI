@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Move {
 
     int newField;
@@ -84,6 +86,9 @@ public class Move {
         // this will be the 2D array, that which ever piece we have, will need
         convertIndexTo2D(1);
 
+        ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
+
+
         switch (piece){
             case 'p':
                 System.out.println("");
@@ -93,11 +98,12 @@ public class Move {
                 break;
             case 'k':
             case 'K':
+                kingMoves(location, listOfMoves);
                 System.out.println("");
                 break;
             case 'q':
             case 'Q':
-                queenMoves(location);
+                queenMoves(location, listOfMoves);
                 System.out.println("");
                 break;
             case 'r':
@@ -115,10 +121,87 @@ public class Move {
         }
     }
 
-    public void queenMoves(int location){
+    public void queenMoves(int location, ArrayList<int[]> listToFill){
+        int[] boardLocation = convertIndexTo2D(location);
+
+        for(int i = boardLocation[0]; i >= 0; i-- ){ //check straight up from field
+            // add fields to some list
+        }
+        for(int i = boardLocation[0]; i <= 7; i++ ){ //check straight down from field
+            // add fields to some list
+        }
+        int x = boardLocation[1];
+        int y = boardLocation[0];
+
+        //while (edge not hit) // one diagonal
+            // check for edge condition
+            // increment x and y
+            // add field to list
 
 
+    }
 
+    public void kingMoves(int location, ArrayList<int[]> listToFill){
+        int[] bl = convertIndexTo2D(location); //bl = boardLocation
+
+        if (bl[0] >= 1 && bl[0] <= 6 && bl[1] >= 1 && bl[1] <= 6){ //Not edge condition
+            listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
+            listToFill.add(new int[]{bl[0]-1, bl[1]-1});    //up left
+            listToFill.add(new int[]{bl[0], bl[1]-1});      //left
+            listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+            listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
+            listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+            listToFill.add(new int[]{bl[0], bl[1]+1});      //right
+            listToFill.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+            listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
+
+        }
+        else if(bl[0] == 0) { // King is at the top
+            if (bl[1] == 0){ // Top left corner
+                // add the remaining 3 fields
+                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
+                listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
+            }
+            else if (bl[1] == 7){ //Top right corner
+                // add the remaining 3 fields
+                listToFill.add(new int[]{bl[0], bl[1]-1});      //left
+                listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
+            }
+            else {
+                // ad the bottom 5 fields
+                listToFill.add(new int[]{bl[0], bl[1]-1});      //left
+                listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
+                listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
+            }
+        } // top
+
+        else if(bl[0] == 7) { // King is at bottom //todo
+            if (bl[1] == 0){ // Bottom left corner
+                // add the remaining 3 fields
+                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
+                listToFill.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+                listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
+
+            }
+            else if (bl[1] == 7){ //Bottom right corner
+                // add the remaining 3 fields
+
+            }
+            else {
+                // add the top 5 fields
+
+            }
+        }
+        else if(bl[1] == 0) { // King is to the left //Corners condition are handled. todo
+
+        }
+        else if(bl[1] == 7) { // King is to the right //Corners condition are handled. todo
+
+        }
     }
 
 
