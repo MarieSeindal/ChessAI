@@ -106,7 +106,73 @@ public class Move {
                 break;
             case 'k':
             case 'K':
-                kingMoves(location, listOfMoves);
+                int[] bl = convertIndexTo2D(location); //bl = boardLocation
+
+                if (bl[0] >= 1 && bl[0] <= 6 && bl[1] >= 1 && bl[1] <= 6){ //Not edge condition
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
+                    listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                    listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+
+                }
+                else if(bl[0] == 0) { // King is at the top
+                    if (bl[1] == 0){ // Top left corner
+                        // add the remaining 3 fields
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                    }
+                    else if (bl[1] == 7){ //Top right corner
+                        // add the remaining 3 fields
+                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                    }
+                    else {
+                        // ad the bottom 5 fields
+                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                        listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                    }
+                } // top
+
+                else if(bl[0] == 7) { // King is at bottom //todo
+                    if (bl[1] == 0){ // Bottom left corner
+                        // add the remaining 3 fields
+                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+
+                    }
+                    else if (bl[1] == 7){ //Bottom right corner
+                        // add the remaining 3 fields
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
+                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+
+                    }
+                    else {
+                        // add the top 5 fields
+                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                        listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
+                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+
+                    }
+                }
+                else if(bl[1] == 0) { // King is to the left //Corners condition are handled. todo
+
+                }
+                else if(bl[1] == 7) { // King is to the right //Corners condition are handled. todo
+
+                }
                 System.out.println("");
                 break;
             case 'q':
@@ -221,69 +287,6 @@ public class Move {
             // add field to list
 
 
-    }
-
-    public void kingMoves(int location, ArrayList<int[]> listToFill){
-        int[] bl = convertIndexTo2D(location); //bl = boardLocation
-
-        if (bl[0] >= 1 && bl[0] <= 6 && bl[1] >= 1 && bl[1] <= 6){ //Not edge condition
-            listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
-            listToFill.add(new int[]{bl[0]-1, bl[1]-1});    //up left
-            listToFill.add(new int[]{bl[0], bl[1]-1});      //left
-            listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-            listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
-            listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-            listToFill.add(new int[]{bl[0], bl[1]+1});      //right
-            listToFill.add(new int[]{bl[0]-1, bl[1]+1});    //right up
-            listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
-
-        }
-        else if(bl[0] == 0) { // King is at the top
-            if (bl[1] == 0){ // Top left corner
-                // add the remaining 3 fields
-                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
-                listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
-            }
-            else if (bl[1] == 7){ //Top right corner
-                // add the remaining 3 fields
-                listToFill.add(new int[]{bl[0], bl[1]-1});      //left
-                listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
-            }
-            else {
-                // ad the bottom 5 fields
-                listToFill.add(new int[]{bl[0], bl[1]-1});      //left
-                listToFill.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                listToFill.add(new int[]{bl[0]+1, bl[1]});      //down
-                listToFill.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
-            }
-        } // top
-
-        else if(bl[0] == 7) { // King is at bottom //todo
-            if (bl[1] == 0){ // Bottom left corner
-                // add the remaining 3 fields
-                listToFill.add(new int[]{bl[0], bl[1]+1});      //right
-                listToFill.add(new int[]{bl[0]-1, bl[1]+1});    //right up
-                listToFill.add(new int[]{bl[0]-1, bl[1]});      //up
-
-            }
-            else if (bl[1] == 7){ //Bottom right corner
-                // add the remaining 3 fields
-
-            }
-            else {
-                // add the top 5 fields
-
-            }
-        }
-        else if(bl[1] == 0) { // King is to the left //Corners condition are handled. todo
-
-        }
-        else if(bl[1] == 7) { // King is to the right //Corners condition are handled. todo
-
-        }
     }
 
 
