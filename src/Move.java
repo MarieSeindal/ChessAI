@@ -90,10 +90,14 @@ public class Move {
 
         switch (piece){
             case 'p':
-                System.out.println("");
+                // black is in the top, so 1 down
+                if(location2d[0] + 1 <= 7)
+                    listOfMoves.add(new int[]{location2d[0] +1, location2d[1]});
                 break;
             case 'P':
-                System.out.println("");
+                // white is in the bottom, so 1 up
+                if(location2d[0] - 1 >= 0)
+                    listOfMoves.add(new int[]{location2d[0] -1, location2d[1]});
                 break;
             case 'k':
             case 'K':
