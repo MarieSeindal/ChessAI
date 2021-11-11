@@ -22,7 +22,6 @@ public class Move {
     // TODO: write this function
     public void pathChecker(){}
 
-    // TODO: write this function
     public int[] convertIndexTo2D(int location){
         int[] array = new int[2];
 
@@ -80,7 +79,6 @@ public class Move {
     // the piece can not go off of the board
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
-    // TODO: write this function
     public ArrayList pieceGeneralMoveset(char piece, int location){
 
         // this will be the 2D array, that which ever piece we have, will need
@@ -106,87 +104,124 @@ public class Move {
                 break;
             case 'k':
             case 'K':
-                int[] bl = convertIndexTo2D(location); //bl = boardLocation
 
-                if (bl[0] >= 1 && bl[0] <= 6 && bl[1] >= 1 && bl[1] <= 6){ //Not edge condition
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
-                    listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                    listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+                if (location2d[0] >= 1 && location2d[0] <= 6 && location2d[1] >= 1 && location2d[1] <= 6){ //Not edge condition
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-1});    //up left
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-1});    //left down
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+1});    //down right
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+1});    //right up
 
                 }
-                else if(bl[0] == 0) { // King is at the top
-                    if (bl[1] == 0){ // Top left corner
+                else if(location2d[0] == 0) { // King is at the top
+                    if (location2d[1] == 0){ // Top left corner
                         // add the remaining 3 fields
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+1});    //down right
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
                     }
-                    else if (bl[1] == 7){ //Top right corner
+                    else if (location2d[1] == 7){ //Top right corner
                         // add the remaining 3 fields
-                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-1});    //left down
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
                     }
                     else {
                         // ad the bottom 5 fields
-                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
-                        listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-1});    //left down
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
+                        listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+1});    //down right
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
                     }
-                } // top
+                }
 
-                else if(bl[0] == 7) { // King is at bottom //todo
-                    if (bl[1] == 0){ // Bottom left corner
+                else if(location2d[0] == 7) { // King is at bottom
+                    if (location2d[1] == 0){ // Bottom left corner
                         // add the remaining 3 fields
-                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+1});    //right up
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
 
                     }
-                    else if (bl[1] == 7){ //Bottom right corner
+                    else if (location2d[1] == 7){ //Bottom right corner
                         // add the remaining 3 fields
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
-                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-1});    //up left
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
 
                     }
                     else {
                         // add the top 5 fields
-                        listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
-                        listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
-                        listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+1});    //right up
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
+                        listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-1});    //up left
+                        listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
 
                     }
                 }
-                else if(bl[1] == 0) { // King is to the left //Corners condition are handled.
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
-                    listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                else if(location2d[1] == 0) { // King is to the left //Corners condition are handled.
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+1});    //down right
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]+1});      //right
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+1});    //right up
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
                 }
-                else if(bl[1] == 7) { // King is to the right //Corners condition are handled.
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
-                    listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
-                    listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
-                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                else if(location2d[1] == 7) { // King is to the right //Corners condition are handled.
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]});      //up
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-1});    //up left
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]-1});      //left
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-1});    //left down
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]});      //down
                 }
-                System.out.println("");
+                System.out.println("King moves calculated");
                 break;
             case 'q':
             case 'Q':
-                queenMoves(location, listOfMoves);
-                System.out.println("");
+
+            // Straight
+                int counter = 0; //Is used to control that we move a field away from the piece.
+                for(int i = location2d[0]; i >= 0; i-- ){ //check straight up from field
+                    counter++;
+                    listOfMoves.add(new int[]{location2d[0]-counter, location2d[1]});
+                }
+                counter = 0;
+                for(int i = location2d[0]; i <= 7; i++ ){ //check straight down from field
+                    counter++;
+                    listOfMoves.add(new int[]{location2d[0]+counter, location2d[1]});
+                }
+                counter = 0;
+                for(int i = location2d[1]; i >= 0; i-- ){ //check left from field
+                    counter++;
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]-counter});
+                }
+                counter = 0;
+                for(int i = location2d[1]; i <= 7; i++ ){ //check right from field
+                    counter++;
+                    listOfMoves.add(new int[]{location2d[0], location2d[1]+counter});
+                }
+
+            // Diagonal
+                for (int i = 0; i < 8; i++) { //You can go a maximum of 7 fields in one direction.
+                    //count top left squares
+                    if ((location2d[0] - i) >= 0 && (location2d[1] - i) >= 0)
+                        listOfMoves.add(new int[]{location2d[0] - i, location2d[1] - i});
+                    //count bottom left
+                    if ((location2d[0] + i) <= 7 && (location2d[1] - i) >= 0)
+                        listOfMoves.add(new int[]{location2d[0] + i, location2d[1] - i});
+                    //count top right
+                    if ((location2d[0] - i) >= 0 && (location2d[1] + i) <= 7)
+                        listOfMoves.add(new int[]{location2d[0] - i, location2d[1] + i});
+                    //count bottom right
+                    if ((location2d[0] + i) <= 7 && (location2d[1] + i) <= 7)
+                        listOfMoves.add(new int[]{location2d[0] + i, location2d[1] + i});
+                }
+
+                System.out.println("Queen moves calculated");
                 break;
             case 'r':
             case 'R':
@@ -220,7 +255,6 @@ public class Move {
 
                 break;
             case 'b':
-
             case 'B':
                 // -,1,-,-,-,-,-,1
                 // -,-,2,-,-,-,2,-
@@ -233,7 +267,7 @@ public class Move {
                 for (int i = 0; i < 8; i++) {
                     //count top left squares
                     //one up and one left
-                    if ((location2d[0] - 1) >= 0 && (location2d[1] - 1) >= 0)
+                    if ((location2d[0] - 1) >= 0 && (location2d[1] - 1) >= 0) //todo +- 1 skal erstattes med i, for at tilføje mere end 1 felt fra start?
                         listOfMoves.add(new int[]{location2d[0] - 1, location2d[1] - 1});
                     //count bottom left
                     //one down one left
@@ -304,25 +338,6 @@ public class Move {
         return listOfMoves;
     }
 
-    public void queenMoves(int location, ArrayList<int[]> listToFill){
-        int[] boardLocation = convertIndexTo2D(location);
-
-        for(int i = boardLocation[0]; i >= 0; i-- ){ //check straight up from field
-            // add fields to some list
-        }
-        for(int i = boardLocation[0]; i <= 7; i++ ){ //check straight down from field
-            // add fields to some list
-        }
-        int x = boardLocation[1];
-        int y = boardLocation[0];
-
-        //while (edge not hit) // one diagonal
-            // check for edge condition
-            // increment x and y
-            // add field to list
-
-
-    }
 
 
     // - - - - - Getters and setters - - - - - //
