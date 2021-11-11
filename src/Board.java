@@ -2,7 +2,9 @@ import java.lang.reflect.Array;
 
 public class Board {
 
-
+    Player p1;
+    Player p2;
+    Move hasLastMove = null;
 
     char[][] board;
 

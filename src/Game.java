@@ -10,53 +10,44 @@ public class Game {
     ArrayList<Board> usedBoards = new ArrayList<Board>(); //List of use boards, Do not have more than 3 duplicates
     Player p1;
     Player p2;
-    boolean turn; // 'true' when it is p1's turn, 'false' when it is p2's turn
+    boolean turn; // true for white?
     int turnsSinceKill = 0;
 
-    public Game(Board startingBoard, Player p1, Player p2, boolean turn){
+    public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
+
         this.board = startingBoard;
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
     }
 
-    public void initializeGame(){
+    public void initializeGame() {
         // Setup settings for the game before starting the game
-
-        // check which player is white, they will have the first turn
-        if(p1.white)
-            this.turn = true;
-        if(p2.white)
-            this.turn = false;
     }
 
-    public void play(){
+    public void play() {
         //Play
     }
 
-    // TODO: this function really could be optimized
-    public boolean threefoldRepetition ()
-    {
-        // https://www.geeksforgeeks.org/java-util-collections-frequency-java/
-
+    // TODO: this function need to be tested
+    public boolean threefoldRepetition() {
         List<String> checkBoards = new ArrayList<>();
+        //Board[] checkedBoards;
+        int counter = 0;
 
-        // convert all of the Boards into strings
-        for (Board b: usedBoards) {
-            checkBoards.add(b.getString());
+        for (Board usedBoard : usedBoards) {
+            String boardString = usedBoard.getString();
+            if (checkBoards.contains(boardString))
+                counter++;
+            else
+                checkBoards.add(boardString);
         }
 
-        for (String boardString : checkBoards) {
-
-            if (Collections.frequency(checkBoards, boardString) == 3)
-                return true;
-        }
-
-        // done with looking at each value
-        return false;
+        // return true if the counter is 3 or bigger, else it returns false
+        return counter >= 3;
     }
 
-    public boolean isMoveLegal(){
+    public boolean isMoveLegal() {
         return false;
     }
 
@@ -65,6 +56,7 @@ public class Game {
     public Board getBoard() {
         return board;
     }
+
     public void setBoard(Board board) {
         this.board = board;
     }
@@ -79,6 +71,7 @@ public class Game {
     public Player getP1() {
         return p1;
     }
+
     public void setP1(Player p1) {
         this.p1 = p1;
     }
@@ -86,6 +79,7 @@ public class Game {
     public Player getP2() {
         return p2;
     }
+
     public void setP2(Player p2) {
         this.p2 = p2;
     }
@@ -93,6 +87,7 @@ public class Game {
     public boolean isTurn() {
         return turn;
     }
+
     public void setTurn(boolean turn) {
         this.turn = turn;
     }
@@ -100,6 +95,7 @@ public class Game {
     public int getTurnsSinceKill() {
         return turnsSinceKill;
     }
+
     public void setTurnsSinceKill(int turnsSinceKill) {
         this.turnsSinceKill = turnsSinceKill;
     }

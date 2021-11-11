@@ -1,10 +1,10 @@
-public class Player {
+public class AIPlayer {
 
     boolean white;
     boolean doneCastling = false; //Dansk: doneRokade
     boolean isAi;
 
-    public Player(boolean colorWhite, boolean isAi) {
+    public AIPlayer(boolean colorWhite, boolean isAi){
         this.isAi = isAi;
         this.white = colorWhite;
 
@@ -13,7 +13,6 @@ public class Player {
     public boolean isWhite() {
         return white;
     }
-
     public void setWhite(boolean white) {
         this.white = white;
     }
@@ -21,7 +20,6 @@ public class Player {
     public boolean isDoneCastling() {
         return doneCastling;
     }
-
     public void setDoneCastling(boolean doneCastling) {
         this.doneCastling = doneCastling;
     }
