@@ -27,7 +27,7 @@ public class Move {
         int[] array = new int[2];
 
         //Get the x-coordinate
-    if (0 <= location && location <= 7)                       array[1] = 0;
+        if (0 <= location && location <= 7)                   array[1] = 0;
         else if (8 <= location && location <= 15)             array[1] = 1;
         else if (16 <= location && location <= 23)            array[1] = 2;
         else if (24 <= location && location <= 31)            array[1] = 3;
@@ -84,9 +84,10 @@ public class Move {
     public void pieceGeneralMoveset(char piece, int location){
 
         // this will be the 2D array, that which ever piece we have, will need
-        convertIndexTo2D(1);
+        int[] location2d  = convertIndexTo2D(1);
 
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
+
 
 
         switch (piece){
@@ -108,7 +109,34 @@ public class Move {
                 break;
             case 'r':
             case 'R':
-                System.out.println("");
+                // System.out.println("");
+                // there will always be 7 moves one way and 7 moves the other
+                // -,-,-,-,1,-,-,-
+                // -,-,-,-,2,-,-,-
+                // -,-,-,-,3,-,-,-
+                // 1,2,3,4,R,5,6,7
+                // -,-,-,-,4,-,-,-
+                // -,-,-,-,5,-,-,-
+                // -,-,-,-,6,-,-,-
+                // -,-,-,-,7,-,-,-
+
+                // (y,x)
+                // (0,0)
+                //       (7,7)
+
+                // horizontal
+                for (int i = 0; i < 8; i++) {
+                    int[] _move = new int[]{location2d[0], i};
+                    if(_move != location2d)
+                        listOfMoves.add(_move);
+                }
+                // vertical
+                for (int i = 0; i < 8; i++) {
+                    int[] _move = new int[]{i, location2d[1]};
+                    if(_move != location2d)
+                        listOfMoves.add(_move);
+                }
+
                 break;
             case 'b':
             case 'B':
