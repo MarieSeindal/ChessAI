@@ -81,14 +81,12 @@ public class Move {
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
     // TODO: write this function
-    public void pieceGeneralMoveset(char piece, int location){
+    public ArrayList pieceGeneralMoveset(char piece, int location){
 
         // this will be the 2D array, that which ever piece we have, will need
         int[] location2d  = convertIndexTo2D(1);
 
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
-
-
 
         switch (piece){
             case 'p':
@@ -144,9 +142,56 @@ public class Move {
                 break;
             case 'n':
             case 'N':
-                System.out.println("");
+                // there could be 8 moves that it can take (use * do check if it can be done)
+                // (y,x)
+                // (0,0)
+                //       (7,7)
+
+                // -,-,-,-,-,-,-,-
+                // -,-,*,8,*,1,*,-
+                // -,-,7,-,-,-,2,-
+                // -,-,*,-,N,-,*,-
+                // -,-,6,-,-,-,3,-
+                // -,-,*,5,*,4,*,-
+                // -,-,-,-,-,-,-,-
+                // -,-,-,-,-,-,-,-
+
+                // ------- right side --------
+
+                // (y,x) 1 up and 2 right
+                if( (location2d[0]-1) >= 0 && (location2d[1]+2) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+2});
+                // (y,x)  2 up and 1 right
+                if((location2d[0]-2) >= 0 && (location2d[1]+1) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]-2, location2d[1]+1});
+
+                // (y,x) 1 down and 2 right
+                if( (location2d[0]+1) <= 7 && (location2d[1]+2) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+2});
+                // (y,x)  2 down and 1 right
+                if((location2d[0]+2) <= 7 && (location2d[1]+1) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]+2, location2d[1]+1});
+
+                // ------- left side --------
+
+                // (y,x) 1 up and 2 left
+                if( (location2d[0]-1) >= 0 && (location2d[1]-2) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-2});
+                // (y,x)  2 up and 1 left
+                if((location2d[0]-2) >= 0 && (location2d[1]-1) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]-2, location2d[1]-1});
+
+                // (y,x) 1 down and 2 left
+                if( (location2d[0]+1) <= 7 && (location2d[1]-2) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-2});
+                // (y,x)  2 down and 1 left
+                if((location2d[0]+2) <= 7 && (location2d[1]-1) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]+2, location2d[1]-1});
+
                 break;
         }
+
+        return listOfMoves;
     }
 
     public void queenMoves(int location, ArrayList<int[]> listToFill){
