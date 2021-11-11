@@ -1,20 +1,101 @@
 import Interfaces.I_TUI;
 import TUI.TUI;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
+    private static I_TUI tui;
+    private static Game game;
+    private static Scanner sc;
+
     public static void main(String[] args) {
 
-        //System.out.println("Hello world");
+        tui = new TUI();
+        sc = new Scanner(System.in);
+        int gameModeSelection = tui.showStartMenu(sc);
 
-//        // temp testing of my code
-//        Board tempBoard = new Board();
-//        System.out.println(tempBoard.getString());
+        Player p1 = null;
+        Player p2 = null;
 
-        testUI();
+        switch (gameModeSelection) {
+            case 1 -> { // Human vs AI
+                p1 = new Player(true, false);
+                p2 = new Player(false, true);
+            }
+            case 2 -> { // AI vs AI
+                p1 = new Player(true, true);
+                p2 = new Player(false, true);
+            }
+            case 3 -> { // Human vs Human
+                p1 = new Player(true, false);
+                p2 = new Player(false, false);
+            }
+            default -> System.out.println("Error in game mode selection: " + gameModeSelection);
+        }
 
+        game = new Game(new Board(), p1, p2, true);
+
+        // Start the game
+        while (true) {
+
+            if (game.turn) {
+
+                while (true) {
+                    tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+                    System.out.println("Please enter the coordinate for the"
+                            + " piece you want to move: ");
+
+                    System.out.print("Start position ({X},|.{Y}): ");
+                    double startPos = tui.getMovePosition(sc);
+                    System.out.print("End position ({X},|.{Y}): ");
+                    double endPos = tui.getMovePosition(sc);
+                }
+
+            }
+
+            sc.close();
+        }
+    }
+
+    public static void testBoardCompare() {
+        Player p1 = new Player(true, false);
+        Player p2 = new Player(false, false);
+
+        Game testGame = new Game(new Board(), p1, p2, false);
+
+        // temp, will be deleted after testing
+        char[][] tBoard = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+                {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+
+        char[][] tBoard2 = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+                {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+
+        testGame.usedBoards.add(new Board(tBoard));
+        testGame.usedBoards.add(new Board(tBoard2));
+        testGame.usedBoards.add(new Board(tBoard));
+        testGame.usedBoards.add(new Board(tBoard2));
+        testGame.usedBoards.add(new Board(tBoard2));
+
+        // this function converts all the board into a string value,
+        // then each one of them gets compared to the full list,
+        // if the count is 3, then it will return true
+        // if no count is 3, then when it is done, it returns false
+        boolean output = testGame.threefoldRepetition();
+        System.out.println("output is : " + output);
     }
 
     // Marie first commit
@@ -34,14 +115,13 @@ public class Main {
          * Handle user input;
          */
 
-        Scanner sc = new Scanner(System.in);
         int gameSelectionInt;
 
         do {
-            tui.showStartMenu();
+            tui.showStartMenu(sc);
 
             while (!sc.hasNextInt()) {
-                tui.showStartMenu();
+                tui.showStartMenu(sc);
                 System.out.println("Please enter a number!");
                 sc.next();
             }
