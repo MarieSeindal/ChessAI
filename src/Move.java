@@ -167,11 +167,19 @@ public class Move {
 
                     }
                 }
-                else if(bl[1] == 0) { // King is to the left //Corners condition are handled. todo
-
+                else if(bl[1] == 0) { // King is to the left //Corners condition are handled.
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]+1});    //down right
+                    listOfMoves.add(new int[]{bl[0], bl[1]+1});      //right
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]+1});    //right up
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
                 }
-                else if(bl[1] == 7) { // King is to the right //Corners condition are handled. todo
-
+                else if(bl[1] == 7) { // King is to the right //Corners condition are handled.
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]});      //up
+                    listOfMoves.add(new int[]{bl[0]-1, bl[1]-1});    //up left
+                    listOfMoves.add(new int[]{bl[0], bl[1]-1});      //left
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]-1});    //left down
+                    listOfMoves.add(new int[]{bl[0]+1, bl[1]});      //down
                 }
                 System.out.println("");
                 break;
