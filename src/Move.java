@@ -146,8 +146,35 @@ public class Move {
 
                 break;
             case 'b':
+
             case 'B':
-                System.out.println("");
+                // -,1,-,-,-,-,-,1
+                // -,-,2,-,-,-,2,-
+                // -,-,-,3,-,3,-,-
+                // -,-,-,-,B,-,-,-
+                // -,-,-,4,-,4,-,-
+                // -,-,5,-,-,-,5,-
+                // -,6,-,-,-,-,-,6
+                // 7,-,-,-,-,-,-,-
+                for (int i = 0; i < 8; i++) {
+                    //count top left squares
+                    //one up and one left
+                    if ((location2d[0] - 1) >= 0 && (location2d[1] - 1) >= 0)
+                        listOfMoves.add(new int[]{location2d[0] - 1, location2d[1] - 1});
+                    //count bottom left
+                    //one down one left
+                    if ((location2d[0] + 1) <= 7 && (location2d[1] - 1) >= 0)
+                        listOfMoves.add(new int[]{location2d[0] + 1, location2d[1] - 1});
+                    //count top right
+                    //one up one right
+                    if ((location2d[0] - 1) >= 0 && (location2d[1] + 1) <= 7)
+                        listOfMoves.add(new int[]{location2d[0] - 1, location2d[1] + 1});
+                    //count bottom right
+                    //one down and one right
+                    if ((location2d[0] + 1) <= 7 && (location2d[1] + 1) <= 7)
+                        listOfMoves.add(new int[]{location2d[0] + 1, location2d[1] + 1});
+                }
+                System.out.println("Bishop moves calculated");
                 break;
             case 'n':
             case 'N':
