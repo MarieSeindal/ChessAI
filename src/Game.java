@@ -12,6 +12,7 @@ public class Game {
     Player p2;
     boolean turn; // true for white?
     int turnsSinceKill = 0;
+    Player player;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
 
@@ -86,6 +87,14 @@ public class Game {
 
     public boolean isTurn() {
         return turn;
+    }
+
+    public Player getPlayerTurn(boolean turn) {
+
+        if (turn) {
+            return p1;
+        }
+        return p2;
     }
 
     public void setTurn(boolean turn) {

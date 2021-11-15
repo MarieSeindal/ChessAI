@@ -2,10 +2,6 @@ import java.lang.reflect.Array;
 
 public class Board {
 
-    Player p1;
-    Player p2;
-    Move hasLastMove = null;
-
     char[][] board;
 
     public Board(char[][] board){
@@ -24,8 +20,30 @@ public class Board {
                 {'R','N','B','Q','K','B','N','R'}};
     }
 
+    public void performMove(Move move) {
+
+        board[move.oldField[0]][move.oldField[1]] = ' ';
+        board[move.newField[0]][move.newField[1]] = move.piece;
+
+    }
+
     public void resetBoard(){
 
+    }
+
+    public char checkStartPosition(boolean isWhite, int x, int y) {
+        char piece = board[x][y];
+        if (isWhite && Character.isUpperCase(piece)) {
+            return piece;
+        } else if (!isWhite && Character.isLowerCase(piece)) {
+            return piece;
+        }
+        return ' ';
+    }
+
+    public char getPiece(int x, int y) {
+
+        return board[x][y];
     }
 
     // - - - - - Getters and setters - - - - - //

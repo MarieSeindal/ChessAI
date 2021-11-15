@@ -1,12 +1,12 @@
 public class Move {
 
-    int newField;
-    int oldField;
+    int[] newField;
+    int[] oldField;
     boolean specialMove;
     char piece; //The piece you move
     char content; //What lies on the destination field
 
-    public Move(int newField, int oldField, boolean specialMove, char piece, char content){ //What lies on the destination field)
+    public Move(int[] newField, int[] oldField, boolean specialMove, char piece, char content){ //What lies on the destination field)
         this.newField = newField;
         this.oldField = oldField;
         this.specialMove = specialMove;
@@ -21,7 +21,33 @@ public class Move {
     public void pathChecker(){}
 
     // TODO: write this function
-    public void convertIndexTo2D(int location){
+    public int[] convertIndexTo2D(int location){
+
+        int x = location / 8;
+        int y = location % 8;
+
+        return new int[]{x,y};
+
+        // 0,1,2,3,4,5,6,7
+        // 8,9,10,11,12,13,14,15
+        // 16,17,18,19,20,21,22,23
+        // 24,25,26,27,28,29,30,31
+        // 32,33,34,35,36,37,38,39
+        // 40,41,42,43,44,45,46,47
+        // 48,49,50,51,52,53,54,55
+        // 56,57,58,59,60,61,62,63
+    }
+
+    // TODO: write this function
+    public int convert2DToIndex(int[] location){
+
+        int x = location[0];
+        int y = location[1];
+
+        int num = x*8+y;
+
+        return num;
+
         // 0,1,2,3,4,5,6,7
         // 8,9,10,11,12,13,14,15
         // 16,17,18,19,20,21,22,23
@@ -75,17 +101,17 @@ public class Move {
 
     // - - - - - Getters and setters - - - - - //
 
-    public int getNewField() {
+    public int[] getNewField() {
         return newField;
     }
-    public void setNewField(int newField) {
+    public void setNewField(int[] newField) {
         this.newField = newField;
     }
 
-    public int getOldField() {
+    public int[] getOldField() {
         return oldField;
     }
-    public void setOldField(int oldField) {
+    public void setOldField(int[] oldField) {
         this.oldField = oldField;
     }
 

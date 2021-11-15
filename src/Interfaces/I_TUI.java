@@ -7,12 +7,18 @@ public interface I_TUI {
 
     void resetBoard();
 
-    void updateBoard(String fen);
+    void initBoard(String fen);
+
+    void printBoard(char[][] board);
 
     int showStartMenu(Scanner sc);
 
+    String showResumeMenu(Scanner sc);
+
     void showEndFinished();
 
-    double getMovePosition(Scanner sc);
+    int[] getMovePosition(Scanner sc);
+
+    void clearConsole();
 
 }
