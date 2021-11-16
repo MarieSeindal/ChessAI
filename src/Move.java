@@ -206,7 +206,7 @@ public class Move {
                 }
 
             // Diagonal
-                for (int i = 0; i < 8; i++) { //You can go a maximum of 7 fields in one direction.
+                for (int i = 1; i < 8; i++) { //You can go a maximum of 7 fields in one direction.
                     //count top left squares
                     if ((location2d[0] - i) >= 0 && (location2d[1] - i) >= 0)
                         listOfMoves.add(new int[]{location2d[0] - i, location2d[1] - i});
@@ -264,22 +264,22 @@ public class Move {
                 // -,-,5,-,-,-,5,-
                 // -,6,-,-,-,-,-,6
                 // 7,-,-,-,-,-,-,-
-                for (int i = 0; i < 8; i++) {
+                for (int i = 1; i < 8; i++) {
                     //count top left squares
                     //one up and one left
-                    if ((location2d[0] - 1) >= 0 && (location2d[1] - 1) >= 0) //todo +- 1 skal erstattes med i, for at tilføje mere end 1 felt fra start?
+                    if ((location2d[0] - i) >= 0 && (location2d[1] - i) >= 0) //todo +- 1 skal erstattes med i, for at tilføje mere end 1 felt fra start?
                         listOfMoves.add(new int[]{location2d[0] - 1, location2d[1] - 1});
                     //count bottom left
                     //one down one left
-                    if ((location2d[0] + 1) <= 7 && (location2d[1] - 1) >= 0)
+                    if ((location2d[0] + i) <= 7 && (location2d[1] - i) >= 0)
                         listOfMoves.add(new int[]{location2d[0] + 1, location2d[1] - 1});
                     //count top right
                     //one up one right
-                    if ((location2d[0] - 1) >= 0 && (location2d[1] + 1) <= 7)
+                    if ((location2d[0] - i) >= 0 && (location2d[1] + i) <= 7)
                         listOfMoves.add(new int[]{location2d[0] - 1, location2d[1] + 1});
                     //count bottom right
                     //one down and one right
-                    if ((location2d[0] + 1) <= 7 && (location2d[1] + 1) <= 7)
+                    if ((location2d[0] + i) <= 7 && (location2d[1] + i) <= 7)
                         listOfMoves.add(new int[]{location2d[0] + 1, location2d[1] + 1});
                 }
                 System.out.println("Bishop moves calculated");
