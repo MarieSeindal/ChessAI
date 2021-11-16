@@ -1,62 +1,132 @@
 import Interfaces.I_TUI;
 import TUI.TUI;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
     private static I_TUI tui;
     private static Game game;
+    private static Board board;
     private static Scanner sc;
+    private static boolean turn; //Initializing variables
+    private static Player p1, p2;
 
     public static void main(String[] args) {
 
         tui = new TUI();
         sc = new Scanner(System.in);
-        int gameModeSelection = tui.showStartMenu(sc);
+        int gameModeSelection;
+        String resumeGame = "";
+        char startPiece = ' ';
+        char destinationPiece = ' ';
+        Player player;
+        turn = true;
 
-        Player p1 = null;
-        Player p2 = null;
+        // Prompt for resume game
+
+        //resumeGame = tui.showResumeMenu(sc);
+
+        // Prompt for gamemode
+        gameModeSelection = tui.showStartMenu(sc);
 
         switch (gameModeSelection) {
             case 1 -> { // Human vs AI
                 p1 = new Player(true, false);
                 p2 = new Player(false, true);
             }
-            case 2 -> { // AI vs AI
-                p1 = new Player(true, true);
-                p2 = new Player(false, true);
-            }
-            case 3 -> { // Human vs Human
+            case 2 -> { // Human vs Human
                 p1 = new Player(true, false);
                 p2 = new Player(false, false);
+            }
+            case 3 -> { // AI vs AI
+                p1 = new Player(true, true);
+                p2 = new Player(false, true);
             }
             default -> System.out.println("Error in game mode selection: " + gameModeSelection);
         }
 
-        game = new Game(new Board(), p1, p2, true);
+        board = new Board();
+        game = new Game(board, p1, p2, true);
+        //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+        tui.printBoard(board.getBoard());
 
-        // Start the game
+        /**
+         * Start the main game loop
+         */
+
         while (true) {
 
-            if (game.turn) {
+            // todo check if player is checkmate?
+            player = game.getPlayerTurn(turn);
 
-                while (true) {
-                    tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-                    System.out.println("Please enter the coordinate for the"
-                            + " piece you want to move: ");
-
-                    System.out.print("Start position ({X},|.{Y}): ");
-                    double startPos = tui.getMovePosition(sc);
-                    System.out.print("End position ({X},|.{Y}): ");
-                    double endPos = tui.getMovePosition(sc);
-                }
-
+            if (player.isWhite()) {
+                System.out.println("White Players turn");
+            } else {
+                System.out.println("Black Players turn");
             }
 
-            sc.close();
+            if (!player.isAi) { // Human player's turn
+
+                int[] startPos, destinationPos;
+
+                // Get start position
+                while (true) {
+
+                    System.out.println("Please enter the coordinate for the"
+                            + " piece you want to move (row(,|.)col): ");
+
+                    startPos = tui.getMovePosition(sc);
+
+                    // Validate piece based on user input
+                    try {
+                        startPiece = board.checkStartPosition(player.isWhite(), startPos[0], startPos[1]);
+                    } catch (Exception e) {
+                        System.out.println("Error: Invalid piece");
+                    }
+
+                    if (startPiece != ' ') {
+                        break;
+                    } else {
+                        System.out.println("Error: Invalid piece selected!");
+                    }
+
+                }
+
+                // Get destination position
+                while (true) {
+
+                    System.out.print("Destination position (row(,|.)col): ");
+                    destinationPos = tui.getMovePosition(sc);
+                    // Validate destination based on user input
+                    try {
+                        destinationPiece = board.getPiece(destinationPos[0], destinationPos[1]);
+                    } catch (Exception e) {
+                        System.out.println("Error: Invalid destination selected!");
+                    }
+
+                    if (startPiece != ' ' && destinationPiece == ' ') {
+                        Move move = new Move(destinationPos, startPos, false, startPiece, ' ');
+                        board.performMove(move);
+                        System.out.println("Move complete!");
+                        // Next player's turn
+                        tui.printBoard(board.getBoard());
+                        //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+                        turn = !turn;
+                        break;
+                    }
+
+                }
+            } else { // AI player's turn
+                // todo finish AI player
+                tui.printBoard(board.getBoard());
+                turn = !turn;
+            }
         }
+
+        // todo check if game is over?
+        //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
+        //sc.close();
     }
 
     public static void testBoardCompare() {
@@ -101,56 +171,4 @@ public class Main {
     // Marie first commit
     // we got a main file here
     // fixed java JDK 17
-
-
-    /**
-     * Test loop for menu and representation of chess board
-     */
-
-    private static void testUI() {
-
-        I_TUI tui = new TUI();
-
-        /**
-         * Handle user input;
-         */
-
-        int gameSelectionInt;
-
-        do {
-            tui.showStartMenu(sc);
-
-            while (!sc.hasNextInt()) {
-                tui.showStartMenu(sc);
-                System.out.println("Please enter a number!");
-                sc.next();
-            }
-            gameSelectionInt = sc.nextInt();
-        } while (gameSelectionInt <= 0);
-
-        //sc.close();
-
-        /**
-         * Test updateBoard();
-         */
-
-        String testFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        String testFEN2 = "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3P1Q2/P1P1K3/q5b1";
-
-        switch (gameSelectionInt) {
-            case 1 -> {
-                System.out.println("User selected: Player vs AI");
-                tui.updateBoard(testFEN2);
-            }
-            case 2 -> {
-                System.out.println("User selected: Player vs Player");
-                tui.updateBoard(testFEN2);
-            }
-            case 3 -> {
-                System.out.println("User selected: AI vs AI");
-                tui.updateBoard(testFEN2);
-            }
-        }
-
-    }
 }

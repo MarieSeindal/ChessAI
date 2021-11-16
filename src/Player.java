@@ -7,7 +7,6 @@ public class Player {
     public Player(boolean colorWhite, boolean isAi) {
         this.isAi = isAi;
         this.white = colorWhite;
-
     }
 
     public boolean isWhite() {
