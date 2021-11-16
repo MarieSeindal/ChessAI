@@ -462,27 +462,76 @@ public class Move {
         int checkSpot = 404;
 
         switch (piece){
-            // TODO: write this, so it checks for other pieces
             case 'p':
                 // black is in the top, so 1 down
                 // (y,x)
-                if(location[0] + 1 <= 7)
+
+                // 01 - add one spot forward
+                checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                if(checkSpot == 0 && location[0] + 1 <= 7)
                     listOfMoves.add(new int[]{location[0] +1, location[1]});
-                if(location[0] == 0)
-                    listOfMoves.add(new int[]{location[0] +2, location[1]});
+
+                // 02 - add 2 spot forward, if this is the first move for that piece
+                if(location[0] == 1)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0] +2, location[1]});
+                }
+
+                // 03 - check left kills (+1, -1)
+                if(location[0]+1 <= 7 && location[1]-1 >= 0)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0] +1, location[1]-1});
+                }
+
+                // 04 - check right kills (+1, +1)
+                if(location[0]+1 <= 7 && location[1]-1 >= 0)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0] +1, location[1]-1});
+                }
                 break;
+
             // TODO: write this, so it checks for other pieces
             case 'P':
                 // white is in the bottom, so 1 up
-                if(location[0] - 1 >= 0)
-                    listOfMoves.add(new int[]{location[0] -1, location[1]});
-                if(location[0] == 7)
-                    listOfMoves.add(new int[]{location[0] -2, location[1]});
+
+                // 01 - add one spot forward
+                checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                if(checkSpot == 0 && location[0] - 1 >= 0)
+                    listOfMoves.add(new int[]{location[0] +1, location[1]});
+
+                // 02 - add 2 spot forward, if this is the first move for that piece
+                if(location[0] == 6)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0] +2, location[1]});
+                }
+
+                // 03 - check left kills (-1, -1)
+                if(location[0]-1 >= 0 && location[1]-1 >= 0)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]-1));
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0] -1, location[1]-1});
+                }
+
+                // 04 - check right kills (-1, +1)
+                if(location[0]-1 >= 0 && location[1]+1 <= 7)
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]+1));
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0] -1, location[1]+1});
+                }
                 break;
-            // TODO: write this, so it checks for other pieces
             case 'k':
             case 'K':
-                // are we are setting the limit to 1
+                // here we are setting the limit to 1
                 listOfMoves.addAll(horizontalCheck(oldField, currentBoard, areWeWhite, 1));
                 listOfMoves.addAll(verticalCheck(oldField, currentBoard, areWeWhite, 1));
                 listOfMoves.addAll(crossCheck(oldField, currentBoard, areWeWhite, 1));
