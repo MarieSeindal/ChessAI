@@ -459,6 +459,8 @@ public class Move {
 
         boolean areWeWhite = Character.isUpperCase(piece);
 
+        int checkSpot = 404;
+
         switch (piece){
             // TODO: write this, so it checks for other pieces
             case 'p':
@@ -507,7 +509,6 @@ public class Move {
                 listOfMoves.addAll(crossCheck(oldField, currentBoard, areWeWhite, 0));
                 System.out.println("Bishop moves calculated");
                 break;
-            // TODO: write this, so it checks for other pieces
             case 'n':
             case 'N':
                 // there could be 8 moves that it can take (use * do check if it can be done)
@@ -527,34 +528,92 @@ public class Move {
                 // ------- right side --------
 
                 // (y,x) 1 up and 2 right
-                if( (location[0]-1) >= 0 && (location[1]+2) <= 7)
-                    listOfMoves.add(new int[]{location[0]-1, location[1]+2});
+                if( (location[0]-1) >= 0 && (location[1]+2) <= 7){
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] + 2));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]-1, location[1]+2});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]-1, location[1]+2});
+                }
+
                 // (y,x)  2 up and 1 right
                 if((location[0]-2) >= 0 && (location[1]+1) <= 7)
-                    listOfMoves.add(new int[]{location[0]-2, location[1]+1});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] + 1));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]-2, location[1]+1});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]-2, location[1]+1});
+                }
 
                 // (y,x) 1 down and 2 right
                 if( (location[0]+1) <= 7 && (location[1]+2) <= 7)
-                    listOfMoves.add(new int[]{location[0]+1, location[1]+2});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] + 2));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]+1, location[1]+2});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]+1, location[1]+2});
+                }
                 // (y,x)  2 down and 1 right
                 if((location[0]+2) <= 7 && (location[1]+1) <= 7)
-                    listOfMoves.add(new int[]{location[0]+2, location[1]+1});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] + 1));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]+2, location[1]+1});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]+2, location[1]+1});
+                }
 
                 // ------- left side --------
 
                 // (y,x) 1 up and 2 left
                 if( (location[0]-1) >= 0 && (location[1]-2) >= 0)
-                    listOfMoves.add(new int[]{location[0]-1, location[1]-2});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] - 2));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]-1, location[1]-2});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]-1, location[1]-2});
+                }
+
                 // (y,x)  2 up and 1 left
                 if((location[0]-2) >= 0 && (location[1]-1) >= 0)
-                    listOfMoves.add(new int[]{location[0]-2, location[1]-1});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] - 1));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]-2, location[1]-1});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]-2, location[1]-1});
+                }
 
                 // (y,x) 1 down and 2 left
                 if( (location[0]+1) <= 7 && (location[1]-2) >= 0)
-                    listOfMoves.add(new int[]{location[0]+1, location[1]-2});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] - 2));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]+1, location[1]-2});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]+1, location[1]-2});
+                }
+
                 // (y,x)  2 down and 1 left
                 if((location[0]+2) <= 7 && (location[1]-1) >= 0)
-                    listOfMoves.add(new int[]{location[0]+2, location[1]-1});
+                {
+                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] - 1));
+
+                    if(checkSpot == -1)
+                        listOfMoves.add(new int[]{location[0]+2, location[1]-1});
+                    if(checkSpot == 0)
+                        listOfMoves.add(new int[]{location[0]+2, location[1]-1});
+                }
                 break;
         }
         return listOfMoves;
