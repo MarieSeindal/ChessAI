@@ -84,10 +84,21 @@ public class Move {
 
         switch (piece){
             case 'p':
-                System.out.println("");
+                // black is in the top, so 1 down
+                // (y,x)
+                if(location2d[0] + 1 <= 7)
+                    listOfMoves.add(new int[]{location2d[0] +1, location2d[1]});
+                if(location2d[0] == 0)
+                    listOfMoves.add(new int[]{location2d[0] +2, location2d[1]});
+                break;
                 break;
             case 'P':
-                System.out.println("");
+                 // white is in the bottom, so 1 up
+                 if(location2d[0] - 1 >= 0)
+                     listOfMoves.add(new int[]{location2d[0] -1, location2d[1]});
+                if(location2d[0] == 7)
+                    listOfMoves.add(new int[]{location2d[0] -2, location2d[1]});
+                break;
                 break;
             case 'k':
             case 'K':
@@ -212,7 +223,33 @@ public class Move {
                 break;
             case 'r':
             case 'R':
-                System.out.println("");
+                // System.out.println("");
+                // there will always be 7 moves one way and 7 moves the other
+                // -,-,-,-,1,-,-,-
+                // -,-,-,-,2,-,-,-
+                // -,-,-,-,3,-,-,-
+                // 1,2,3,4,R,5,6,7
+                // -,-,-,-,4,-,-,-
+                // -,-,-,-,5,-,-,-
+                // -,-,-,-,6,-,-,-
+                // -,-,-,-,7,-,-,-
+
+                // (y,x)
+                // (0,0)
+                //       (7,7)
+
+                // horizontal
+                for (int i = 0; i < 8; i++) {
+                    int[] _move = new int[]{location2d[0], i};
+                    if(_move != location2d)
+                        listOfMoves.add(_move);
+                }
+                // vertical
+                for (int i = 0; i < 8; i++) {
+                    int[] _move = new int[]{i, location2d[1]};
+                    if(_move != location2d)
+                        listOfMoves.add(_move);
+                }
                 break;
             case 'b':
             case 'B':
@@ -246,7 +283,51 @@ public class Move {
                 break;
             case 'n':
             case 'N':
-                System.out.println("");
+                // there could be 8 moves that it can take (use * do check if it can be done)
+                // (y,x)
+                // (0,0)
+                //       (7,7)
+
+                // -,-,-,-,-,-,-,-
+                // -,-,*,8,*,1,*,-
+                // -,-,7,-,-,-,2,-
+                // -,-,*,-,N,-,*,-
+                // -,-,6,-,-,-,3,-
+                // -,-,*,5,*,4,*,-
+                // -,-,-,-,-,-,-,-
+                // -,-,-,-,-,-,-,-
+
+                // ------- right side --------
+
+                // (y,x) 1 up and 2 right
+                if( (location2d[0]-1) >= 0 && (location2d[1]+2) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]+2});
+                // (y,x)  2 up and 1 right
+                if((location2d[0]-2) >= 0 && (location2d[1]+1) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]-2, location2d[1]+1});
+
+                // (y,x) 1 down and 2 right
+                if( (location2d[0]+1) <= 7 && (location2d[1]+2) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]+2});
+                // (y,x)  2 down and 1 right
+                if((location2d[0]+2) <= 7 && (location2d[1]+1) <= 7)
+                    listOfMoves.add(new int[]{location2d[0]+2, location2d[1]+1});
+
+                // ------- left side --------
+
+                // (y,x) 1 up and 2 left
+                if( (location2d[0]-1) >= 0 && (location2d[1]-2) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]-1, location2d[1]-2});
+                // (y,x)  2 up and 1 left
+                if((location2d[0]-2) >= 0 && (location2d[1]-1) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]-2, location2d[1]-1});
+
+                // (y,x) 1 down and 2 left
+                if( (location2d[0]+1) <= 7 && (location2d[1]-2) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]+1, location2d[1]-2});
+                // (y,x)  2 down and 1 left
+                if((location2d[0]+2) <= 7 && (location2d[1]-1) >= 0)
+                    listOfMoves.add(new int[]{location2d[0]+2, location2d[1]-1});
                 break;
         }
         return listOfMoves;
