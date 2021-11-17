@@ -49,7 +49,7 @@ public class Main {
         board = new Board();
         game = new Game(board, p1, p2, true);
         //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-        tui.printBoard(board.getBoardArray());
+        tui.printBoard(board.getBoard(), false);
 
         /**
          * Start the main game loop
@@ -68,58 +68,43 @@ public class Main {
 
             if (!player.isAi) { // Human player's turn
 
-                int[] startPos, destinationPos;
+                int[] movePos;
 
-                // Get start position
+                // Get start position and destination
                 while (true) {
 
-                    System.out.println("Please enter the coordinate for the"
-                            + " piece you want to move (row(,|.)col): ");
-
-                    startPos = tui.getMovePosition(sc);
+                    System.out.println("Please enter your move ex. (a2 a3): ");
+                    movePos = tui.getMovePosition(sc);
 
                     // Validate piece based on user input
                     try {
-                        startPiece = board.checkStartPosition(player.isWhite(), startPos[0], startPos[1]);
+                        startPiece = board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid piece");
                     }
 
-                    if (startPiece != ' ') {
-                        break;
-                    } else {
-                        System.out.println("Error: Invalid piece selected!");
-                    }
-
-                }
-
-                // Get destination position
-                while (true) {
-
-                    System.out.print("Destination position (row(,|.)col): ");
-                    destinationPos = tui.getMovePosition(sc);
-                    // Validate destination based on user input
                     try {
-                        destinationPiece = board.getPiece(destinationPos[0], destinationPos[1]);
+                        destinationPiece = board.getPiece(movePos[2], movePos[3]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid destination selected!");
                     }
 
                     if (startPiece != ' ' && destinationPiece == ' ') {
-                        Move move = new Move(destinationPos, startPos, false, startPiece, ' ');
+                        Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
                         board.performMove(move);
                         System.out.println("Move complete!");
-                        // Next player's turn
-                        tui.printBoard(board.getBoardArray());
                         //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
                         turn = !turn;
+                        // Next player's turn
+                        tui.printBoard(board.getBoard(), !turn);
                         break;
                     }
 
                 }
+
             } else { // AI player's turn
                 // todo finish AI player
-                tui.printBoard(board.getBoardArray());
+                tui.printBoard(board.getBoard(), false);
                 turn = !turn;
             }
         }

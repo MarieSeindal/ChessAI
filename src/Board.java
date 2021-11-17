@@ -43,7 +43,6 @@ public class Board implements Serializable {
     }
 
     public char getPiece(int x, int y) {
-
         return board[x][y];
     }
 
