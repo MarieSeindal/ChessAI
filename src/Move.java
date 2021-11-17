@@ -92,6 +92,7 @@ public class Move {
     }
 
     // TODO: test this function
+    /// horizontalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     /// int[] location - values from 0,0 to 7,7
     /// Board currentBoard - the current board
     /// boolean white - is this piece white?
@@ -187,6 +188,7 @@ public class Move {
         return listOfMoves;
     }
 
+    /// verticalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     // TODO: test this function
     public ArrayList<int[]>  verticalCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
@@ -280,6 +282,7 @@ public class Move {
         return listOfMoves;
     }
 
+    /// crossCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     // TODO: test this function
     public ArrayList<int[]>  crossCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
@@ -446,7 +449,7 @@ public class Move {
         return listOfMoves;
     }
 
-    // gets the list of moves, that one piece can make (here we check if the for the other pieces on the board)
+    // gets the list of moves, that one piece can make (here we check the other pieces on the board too)
     // the piece can not go off of the board
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
@@ -463,6 +466,8 @@ public class Move {
 
         switch (piece){
             case 'p':
+                // region black p case
+
                 // black is in the top, so 1 down
                 // (y,x)
 
@@ -495,9 +500,10 @@ public class Move {
                         listOfMoves.add(new int[]{location[0] +1, location[1]-1});
                 }
                 break;
-
-            // TODO: write this, so it checks for other pieces
+                // endregion
             case 'P':
+                // region white p case
+
                 // white is in the bottom, so 1 up
 
                 // 01 - add one spot forward
@@ -529,15 +535,20 @@ public class Move {
                         listOfMoves.add(new int[]{location[0] -1, location[1]+1});
                 }
                 break;
+                // endregion
             case 'k':
             case 'K':
+                // region white and black k case
+
                 // here we are setting the limit to 1
                 listOfMoves.addAll(horizontalCheck(oldField, currentBoard, areWeWhite, 1));
                 listOfMoves.addAll(verticalCheck(oldField, currentBoard, areWeWhite, 1));
                 listOfMoves.addAll(crossCheck(oldField, currentBoard, areWeWhite, 1));
                 break;
+                // endregion
             case 'q':
             case 'Q':
+                // region black and white q case
 
                 // Straight
                 listOfMoves.addAll(horizontalCheck(oldField, currentBoard, areWeWhite, 0));
@@ -548,6 +559,7 @@ public class Move {
 
                 System.out.println("Queen moves calculated");
                 break;
+                // endregion
             case 'r':
             case 'R':
                 listOfMoves.addAll(horizontalCheck(oldField, currentBoard, areWeWhite, 0));
@@ -560,6 +572,7 @@ public class Move {
                 break;
             case 'n':
             case 'N':
+                // region black and white n case
                 // there could be 8 moves that it can take (use * do check if it can be done)
                 // (y,x)
                 // (0,0)
@@ -664,6 +677,7 @@ public class Move {
                         listOfMoves.add(new int[]{location[0]+2, location[1]-1});
                 }
                 break;
+                // endregion
         }
         return listOfMoves;
     }
@@ -681,6 +695,7 @@ public class Move {
 
         switch (piece){
             case 'p':
+                // region black p case
                 // black is in the top, so 1 down
                 // (y,x)
                 if(location[0] + 1 <= 7)
@@ -688,16 +703,19 @@ public class Move {
                 if(location[0] == 0)
                     listOfMoves.add(new int[]{location[0] +2, location[1]});
                 break;
+                // endregion
             case 'P':
+                // region white p case
                 // white is in the bottom, so 1 up
                 if(location[0] - 1 >= 0)
                     listOfMoves.add(new int[]{location[0] -1, location[1]});
                 if(location[0] == 7)
                     listOfMoves.add(new int[]{location[0] -2, location[1]});
                 break;
+                // endregion
             case 'k':
             case 'K':
-
+                // region black and white k case
                 if (location[0] >= 1 && location[0] <= 6 && location[1] >= 1 && location[1] <= 6){ //Not edge condition
                     listOfMoves.add(new int[]{location[0]-1, location[1]});      //up
                     listOfMoves.add(new int[]{location[0]-1, location[1]-1});    //up left
@@ -773,9 +791,10 @@ public class Move {
                 }
                 System.out.println("King moves calculated");
                 break;
+                // endregion
             case 'q':
             case 'Q':
-
+                // region black and white q case
                 // Straight
                 int counter = 0; //Is used to control that we move a field away from the piece.
                 for(int i = location[0]; i >= 0; i-- ){ //check straight up from field
@@ -816,8 +835,10 @@ public class Move {
 
                 System.out.println("Queen moves calculated");
                 break;
+                // endregion
             case 'r':
             case 'R':
+                // region black and white r case
                 // System.out.println("");
                 // there will always be 7 moves one way and 7 moves the other
                 // -,-,-,-,1,-,-,-
@@ -846,8 +867,10 @@ public class Move {
                         listOfMoves.add(_move);
                 }
                 break;
+                // endregion
             case 'b':
             case 'B':
+                // region black and white b case
                 // -,1,-,-,-,-,-,1
                 // -,-,2,-,-,-,2,-
                 // -,-,-,3,-,3,-,-
@@ -876,8 +899,11 @@ public class Move {
                 }
                 System.out.println("Bishop moves calculated");
                 break;
+                // endregion
             case 'n':
             case 'N':
+                // region black and white n case
+
                 // there could be 8 moves that it can take (use * do check if it can be done)
                 // (y,x)
                 // (0,0)
@@ -924,6 +950,7 @@ public class Move {
                 if((location[0]+2) <= 7 && (location[1]-1) >= 0)
                     listOfMoves.add(new int[]{location[0]+2, location[1]-1});
                 break;
+                // endregion
         }
         return listOfMoves;
     }
