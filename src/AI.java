@@ -108,12 +108,10 @@ public class AI {
                 //copy.getBoard().performMove( INSERT MOVE ); // Make move //todo inset move
 
                 //Add copy to list
-                //parent.addChildren(copy); //add child to the arraylist
+                parent.addChildren(copy); //add child to the arraylist
 
             }
         }
-
-
     }
 
     private static int evaluateRook(int i, int j) {
