@@ -19,7 +19,7 @@ public class TUI implements I_TUI {
         boolean whiteField = true;
 
         // Print column numbers
-        System.out.println("   0  1  2  3  4  5  6  7 ");
+        System.out.println("   a  b  c  d  e  f  g  h ");
         int row = 0;
         for (String s : out) {
 
@@ -55,48 +55,99 @@ public class TUI implements I_TUI {
                 whiteField = false;
             else whiteField = true;
 
-        }
+            // Print row numbers
+            System.out.print(row + " ");
+            row++;
 
+        }
+        System.out.println("   a  b  c  d  e  f  g  h ");
         //System.out.println("Did the string color reset?");
 
     }
 
     @Override
-    public void printBoard(char[][] board) {
+    public void printBoard(char[][] board, boolean white) {
 
         boolean whiteField = true;
 
-        // Print column numbers
-        System.out.println("   0  1  2  3  4  5  6  7 ");
-        for (int r = 0; r < board.length; r++) { //Rows
+        if (white) {
 
-            // Print row numbers
-            System.out.print(r + " ");
+            // Print column numbers
+            System.out.println("   h  g  f  e  d  c  b  a ");
+            for (int r = board.length - 1; r >= 0; r--) { //Rows
 
-            for (int c = 0; c < board[r].length; c++) { //Cols
+                // Print row numbers
+                System.out.print(8 - r + " ");
+
+                for (int c = board[r].length - 1; c >= 0; c--) { //Cols
+
+                    if (whiteField) {
+                        //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
+                        System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        whiteField = false;
+
+                        continue;
+                    }
+                    if (!whiteField) {
+
+                        System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        whiteField = true;
+                    }
+
+                }
 
                 if (whiteField) {
-                    //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
-                    System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
                     whiteField = false;
-
-                    continue;
-                }
-                if (!whiteField) {
-
-                    System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                } else {
                     whiteField = true;
                 }
 
-            }
+                // Print row numbers
+                System.out.print(" " + (8 - r));
 
-            if (whiteField) {
-                whiteField = false;
-            } else {
-                whiteField = true;
+                System.out.println(); //new line.
             }
+            System.out.println("   h  g  f  e  d  c  b  a ");
 
-            System.out.println(); //new line.
+        } else {
+
+            // Print column numbers
+            System.out.println("   a  b  c  d  e  f  g  h ");
+            for (int r = 0; r < board.length; r++) { //Rows
+
+                // Print row numbers
+                System.out.print(8 - r + " ");
+
+                for (int c = 0; c < board[r].length; c++) { //Cols
+
+                    if (whiteField) {
+                        //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
+                        System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        whiteField = false;
+
+                        continue;
+                    }
+                    if (!whiteField) {
+
+                        System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        whiteField = true;
+                    }
+
+                }
+
+                if (whiteField) {
+                    whiteField = false;
+                } else {
+                    whiteField = true;
+                }
+
+                // Print row numbers
+                System.out.print(" " + (8 - r));
+
+                System.out.println(); //new line.
+            }
+            System.out.println("   a  b  c  d  e  f  g  h ");
+
         }
 
     }
@@ -159,30 +210,80 @@ public class TUI implements I_TUI {
 
     @Override
     public int[] getMovePosition(Scanner sc) {
+
+        String input;
+
         while (true) {
+
             System.out.print("\nInput: ");
+            int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+
             try {
-                String input = sc.next();
-                String[] parts = input.split(",|\\.");
-                int x = Integer.parseInt(parts[0]);
-                int y = Integer.parseInt(parts[1]);
-                if ((x >= 0 && x <= 7) && (y >= 0 && y <= 7)) {
-                    int[] posXY = new int[]{x, y};
-                    //double position = Double.parseDouble(x + "." + y);
-                    return posXY;
+                sc.useDelimiter("\n");// To make scanner accept white space
+                input = sc.next();
+                char[] c = input.toCharArray();
+
+                if (c.length == 5 && c[2] == ' ') {
+
+                    if (Character.isLetter(c[0]) && Character.isLetter(c[3])) {
+                        y1 = convertFieldToPos(c[0]);
+                        y2 = convertFieldToPos(c[3]);
+                    }
+
+                    if (Character.isDigit(c[1]) && Character.isDigit(c[4])) {
+
+                        x1 = Character.getNumericValue(c[1]);
+                        x1 = 8 - x1;
+
+                        x2 = Character.getNumericValue(c[4]);
+                        x2 = 8 - x2;
+
+                    }
+
+                    if ((x1 >= 0 && x1 <= 7) && (y1 >= 0 && y1 <= 7)) {
+                        return new int[]{x1, y1, x2, y2};
+                    } else {
+                        System.out.println("Error: Out of range");
+                    }
                 } else {
-                    System.out.println("Error: Out of range");
+                    System.out.println("Error: Invalid input");
                 }
+
             } catch (NumberFormatException ne) {
                 System.out.println("Error: " + ne);
             }
 
         }
+
+    }
+
+    /**
+     * Converts char to column index
+     *
+     * @param c
+     * @return
+     */
+
+    int convertFieldToPos(char c) {
+
+        int out = switch (c) {
+            case 'a' -> 0;
+            case 'b' -> 1;
+            case 'c' -> 2;
+            case 'd' -> 3;
+            case 'e' -> 4;
+            case 'f' -> 5;
+            case 'g' -> 6;
+            case 'h' -> 7;
+            default -> throw new IllegalStateException("Unexpected value: " + c);
+        };
+
+        return out;
     }
 
     @Override
     public void clearConsole() {
-            System.out.println(System.lineSeparator().repeat(100));
+        System.out.println(System.lineSeparator().repeat(100));
     }
 
     public static String[] fenFormatter(String fen) {

@@ -9,7 +9,7 @@ public interface I_TUI {
 
     void initBoard(String fen);
 
-    void printBoard(char[][] board);
+    void printBoard(char[][] board, boolean reverse);
 
     int showStartMenu(Scanner sc);
 
