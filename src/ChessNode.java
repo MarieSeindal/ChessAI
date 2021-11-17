@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ChessNode {
+public class ChessNode implements Serializable {
 
     public Board getBoard() {
         return board;

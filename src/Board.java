@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.lang.reflect.Array;
 
-public class Board {
+public class Board implements Serializable {
 
     char[][] board;
 
@@ -48,7 +49,7 @@ public class Board {
 
     // - - - - - Getters and setters - - - - - //
 
-    public char[][] getBoard() {
+    public char[][] getBoardArray() {
         return board;
     }
 

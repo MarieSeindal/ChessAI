@@ -1,5 +1,7 @@
 import Data.BoardEvaluationData;
 
+import java.io.*;
+
 public class AI {
 
     private static int maxDepth = 5;
@@ -84,6 +86,43 @@ public class AI {
     // Takes position as argument and performs lookup of position value in value table
     private static int evaluatePawn(int i, int j) {
         return 100 + BoardEvaluationData.getWhitePawnValue(i, j);
+    }
+
+    public ChessNode clone() { //todo tjek op på hvilke klasser der skal være serialisable
+        //http://javatechniques.com/public/java/docs/basics/faster-deep-copy.html
+        ChessNode obj = null;
+        try {
+            // Write the object out to a byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(this);
+            out.flush();
+            out.close();
+
+            // Make an input stream from the byte array and read
+            // a copy of the object back in.
+            ObjectInputStream in = new ObjectInputStream(
+                    new ByteArrayInputStream(bos.toByteArray()));
+            obj = (ChessNode) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    public static void fillChildren(ChessNode parent){
+
+        // get parrent board
+        char[][] boardParent = parent.getBoard().getBoardArray();
+
+        // for each move possible, add a child-node to the araylist
+
+        // // The essential part // //
+        //ChessNode copy = parent.clone(); //make copy
+        //copy.getState().setSinglePiece(rows,column,currentPlayer); // Make the vacant move
+        //parent.addChildren(copy); //add child to the arraylist
+
+
     }
 
     private static int evaluateRook(int i, int j) {
