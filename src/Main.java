@@ -51,13 +51,15 @@ public class Main {
         //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
         tui.printBoard(board.getBoard(), false);
 
-        /**
-         * Start the main game loop
-         */
-
+        /* Start the main game loop */
         while (true) {
 
-            // todo check if player is checkmate?
+            // todo check end game conditions (checkmate, 50 moves no kill etc.)
+            if (game.turnsSinceKill >= 50) {
+                System.out.println("********** GAME OVER: Draw **********");
+                break;
+            }
+
             player = game.getPlayerTurn(turn);
 
             if (player.isWhite()) {
@@ -89,15 +91,30 @@ public class Main {
                         System.out.println("Error: Invalid destination selected!");
                     }
 
-                    if (startPiece != ' ' && destinationPiece == ' ') {
-                        Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
-                        board.performMove(move);
-                        System.out.println("Move complete!");
-                        //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-                        turn = !turn;
-                        // Next player's turn
-                        tui.printBoard(board.getBoard(), !turn);
-                        break;
+                    /* Check if chosen board position is empty */
+                    if (startPiece != ' ') {
+
+                        boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
+
+                        /* Check if chosen destination position is empty or enemy */
+                        if (destinationPiece == ' ' || isKill) {
+                            Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
+                            board.performMove(move);
+
+                            if (isKill) {
+                                /* Reset kill counter */
+                                game.setTurnsSinceKill(0);
+                            } else {
+                                game.setTurnsSinceKill(game.getTurnsSinceKill()+1);
+                            }
+
+                            System.out.println("Move complete!");
+                            //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+                            turn = !turn;
+                            // Next player's turn
+                            tui.printBoard(board.getBoard(), !turn);
+                            break;
+                        }
                     }
 
                 }

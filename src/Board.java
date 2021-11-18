@@ -27,6 +27,10 @@ public class Board {
 
     }
 
+    public boolean isEnemyPiece(boolean isWhite, char c) {
+        return isWhite && Character.isLowerCase(c);
+    }
+
     public void resetBoard(){
 
     }
