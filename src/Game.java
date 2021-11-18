@@ -30,16 +30,109 @@ public class Game {
         //Play
     }
 
+    // int return - 0 is nothing, 1 is "check", 2 is "check mate", 3 is "remis"
     // TODO: test this function
-    /// boolean white - is the checker white ?
+    public int checkTheKing(Board currentBoard, boolean whiteTurnNow){
+        ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
+        int[] blackKingLocation;
+        int[] whiteKingLocation;
+
+        int output = 404;
+
+        // 001 - get a list of the other team's pieces
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                // 002 - set the locations of the kings, when we see them
+
+                // set the black king location, if we see it
+                if( currentBoard.getPiece(j,i) == 'k' )
+                    blackKingLocation = new int[]{i,j};
+                // set the white king location, if we see it
+                if( currentBoard.getPiece(j,i) == 'K' )
+                    whiteKingLocation = new int[]{i,j};
+
+                if( checkLocation(!whiteTurnNow, currentBoard.getPiece(j,i)) == -1)
+                    listOfPieces.add(new int[]{i, j});
+            }
+        }
+
+        // 003 - check white or black
+
+        // when it is white's turn, we will be looking for black pieces
+        if(whiteTurnNow){
+            ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
+
+            // 004 - get all the spots the enemy can go to
+            for (int[] x : listOfPieces) {
+                // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
+                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[1],x[0]), x, currentBoard, false) ) ;
+            }
+
+            // 005 - get our white king's moveset
+            ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
+            kingMoveset.addAll(pieceMoveset('K', whiteKingLocation, currentBoard, true));
+
+            // 006 - check if king is in "check", "check mate" or "remis"
+
+            // here we need to check the other team, before the next turn
+            // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
+            if(allSpotsTheEnemyCanMoveToo.containsAll(kingMoveset) && !allSpotsTheEnemyCanMoveToo.contains(whiteKingLocation)) // "remis"
+            {
+                output = 3;
+            }
+            // TODO: this needs to be checked, since I don't believe this will do it for all cases
+            else if(allSpotsTheEnemyCanMoveToo.containsAll(kingMoveset) && allSpotsTheEnemyCanMoveToo.contains(whiteKingLocation)) // "check mate"
+                output = 2;
+            else if(allSpotsTheEnemyCanMoveToo.contains(whiteKingLocation)) // "check"
+                output = 1;
+            else
+                output = 0;
+        }
+        else // when it is black's turn, we will be looking for white pieces
+        {
+            ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
+
+            // 004 - get all the spots the enemy can go to
+            for (int[] x : listOfPieces) {
+                // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
+                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[1],x[0]), x, currentBoard, true) ) ;
+            }
+
+            // 005 - get our black king's moveset
+            ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
+            kingMoveset.addAll(pieceMoveset('k', blackKingLocation, currentBoard, false));
+
+            // 006 - check if king is in "check", "check mate" or "remis"
+
+            // here we need to check the other team, before the next turn
+            // so based on black's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
+            if(allSpotsTheEnemyCanMoveToo.containsAll(kingMoveset) && !allSpotsTheEnemyCanMoveToo.contains(blackKingLocation)) // "remis"
+            {
+                output = 3;
+            }
+            // TODO: this needs to be checked, since I don't believe this will do it for all cases
+            else if(allSpotsTheEnemyCanMoveToo.containsAll(kingMoveset) && allSpotsTheEnemyCanMoveToo.contains(blackKingLocation)) // "check mate"
+                output = 2;
+            else if(allSpotsTheEnemyCanMoveToo.contains(blackKingLocation)) // "check"
+                output = 1;
+            else
+                output = 0;
+        }
+
+        return output;
+    }
+
+    // TODO: test this function
+    /// boolean isYourPieceWhite - is the checker white ?
     /// char target - the char value of the spot, that we want to check
     /// return int - 0 is empty, 1 is the same color, -1 is the enemy
-    public int checkLocation(boolean white, char target) {
+    public int checkLocation(boolean isYourPieceWhite, char target) {
         boolean isTargetWhite = Character.isUpperCase(target);
 
         if(target == ' ')
             return 0;
-        else if (white && isTargetWhite)
+        else if (isYourPieceWhite && isTargetWhite || (!isYourPieceWhite && !isTargetWhite) ) // the piece and the target have the same color
             return 1;
         else
             return -1;
