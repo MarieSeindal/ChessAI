@@ -28,7 +28,13 @@ public class Board {
     }
 
     public boolean isEnemyPiece(boolean isWhite, char c) {
-        return isWhite && Character.isLowerCase(c);
+
+        if (isWhite && Character.isLowerCase(c)) {
+            return true;
+        } else if (!isWhite && Character.isUpperCase(c)) {
+            return true;
+        }
+        return false;
     }
 
     public void resetBoard(){
