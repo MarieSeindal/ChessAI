@@ -1,5 +1,7 @@
 import Data.BoardEvaluationData;
 
+import java.io.*;
+
 public class AI {
 
     private static int maxDepth = 5;
@@ -38,6 +40,7 @@ public class AI {
         System.out.println("Max beta " + beta); //todo debug print
 
         //todo Fill children to list //Ad children to the parents arraylist
+        fillChildren(nodeToSearch);
 
         for (ChessNode child : nodeToSearch.getChildren()) {
             value = minimax(child, depth + 1, false, alpha, beta);
@@ -56,6 +59,7 @@ public class AI {
         System.out.println("Min beta " + beta);
 
         //todo Fill children to list //Ad children to the parents arraylist
+        fillChildren(nodeTosearch);
 
         for (ChessNode child : nodeTosearch.getChildren()) {
             value = minimax(child, depth + 1, true, alpha, beta);
@@ -84,6 +88,30 @@ public class AI {
     // Takes position as argument and performs lookup of position value in value table
     private static int evaluatePawn(int i, int j) {
         return 100 + BoardEvaluationData.getWhitePawnValue(i, j);
+    }
+
+
+
+    public static void fillChildren(ChessNode parent){
+
+        // get parrent board
+        char[][] boardParent = parent.getBoard().getBoardArray();
+
+        for (char[] row : boardParent) {
+            for (char field : row) {
+                //Check each field for each possible move.
+
+                //When a move is found, clone it
+                ChessNode copy = parent.clone(); //make copy
+
+                //Then execute the move on the clone
+                //copy.getBoard().performMove( INSERT MOVE ); // Make move //todo inset move
+
+                //Add copy to list
+                parent.addChildren(copy); //add child to the arraylist
+
+            }
+        }
     }
 
     private static int evaluateRook(int i, int j) {

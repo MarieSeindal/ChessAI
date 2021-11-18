@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.lang.reflect.Array;
 
-public class Board {
+public class Board implements Serializable {
 
     char[][] board;
 
@@ -27,6 +28,16 @@ public class Board {
 
     }
 
+    public boolean isEnemyPiece(boolean isWhite, char c) {
+
+        if (isWhite && Character.isLowerCase(c)) {
+            return true;
+        } else if (!isWhite && Character.isUpperCase(c)) {
+            return true;
+        }
+        return false;
+    }
+
     public void resetBoard(){
 
     }
@@ -42,13 +53,12 @@ public class Board {
     }
 
     public char getPiece(int x, int y) {
-
         return board[x][y];
     }
 
     // - - - - - Getters and setters - - - - - //
 
-    public char[][] getBoard() {
+    public char[][] getBoardArray() {
         return board;
     }
 
