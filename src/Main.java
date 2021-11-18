@@ -49,7 +49,7 @@ public class Main {
         board = new Board();
         game = new Game(board, p1, p2, true);
         //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-        tui.printBoard(board.getBoard(), false);
+        tui.printBoard(board.getBoardArray(), false);
 
         /* Start the main game loop */
         while (true) {
@@ -112,7 +112,7 @@ public class Main {
                             //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
                             turn = !turn;
                             // Next player's turn
-                            tui.printBoard(board.getBoard(), !turn);
+                            tui.printBoard(board.getBoardArray(), !turn);
                             break;
                         }
                     }
@@ -121,7 +121,7 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                tui.printBoard(board.getBoard(), false);
+                tui.printBoard(board.getBoardArray(), false);
                 turn = !turn;
             }
         }
