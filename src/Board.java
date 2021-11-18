@@ -28,6 +28,16 @@ public class Board implements Serializable {
 
     }
 
+    public boolean isEnemyPiece(boolean isWhite, char c) {
+
+        if (isWhite && Character.isLowerCase(c)) {
+            return true;
+        } else if (!isWhite && Character.isUpperCase(c)) {
+            return true;
+        }
+        return false;
+    }
+
     public void resetBoard(){
 
     }
