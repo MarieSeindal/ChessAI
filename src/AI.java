@@ -90,7 +90,7 @@ public class AI {
             int column=0;
             for (char piece : row) {
                 //Check each piece for each possible move.
-                if(currentPlayerWhite && piece >= 66 && piece <= 82){ //If it's the current player, and It's that players pieces.
+                if(currentPlayerWhite && Character.isUpperCase(piece)){ //If it's the current player, and It's that players pieces.
                     //Get possible moves for that piece
                     int[] coords = {rows,column};
                     tempListOfMoves = pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
@@ -112,7 +112,7 @@ public class AI {
                     }
                     currentPlayerWhite = !currentPlayerWhite;
                 }
-                else if(!currentPlayerWhite && piece >= 98 && piece <= 113){ //black
+                else if(!currentPlayerWhite && Character.isLowerCase(piece)){ //black
                     //Get possible moves for that piece
                     int[] coords = {rows,column};
                     tempListOfMoves = pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
