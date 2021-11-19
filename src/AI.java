@@ -1,12 +1,12 @@
 import Data.BoardEvaluationData;
-
 import java.io.*;
+import java.lang.*;
 import java.util.ArrayList;
 
 public class AI {
 
     private static int maxDepth = 5;
-    private Board currentBoard;
+    protected Board currentBoard;
     private boolean currentPlayerWhite = false;
 
     public AI(Board currentBoard) {
@@ -85,28 +85,58 @@ public class AI {
 
         ArrayList<int[]> tempListOfMoves = new ArrayList<int[]>();
 
+        int rows=0;
         for (char[] row : boardParent) {
-            for (char field : row) {
-                //Check each field for each possible move.
-//                if(currentPlayerWhite && field > ){
-//
-//                }
-//                else if(!currentPlayerWhite &&){
-//
-//                }
+            int column=0;
+            for (char piece : row) {
+                //Check each piece for each possible move.
+                if(currentPlayerWhite && piece >= 66 && piece <= 82){ //If it's the current player, and It's that players pieces.
+                    //Get possible moves for that piece
+                    int[] coords = {rows,column};
+                    tempListOfMoves = pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
+                    for (int[] moveFound : tempListOfMoves) {
 
+                        //When a move is found, clone it
+                        ChessNode copy = parent.clone(); //make copy
 
+                        //todo Figure out if its a special move. Now assumes that AI cannot make special moves
 
-                //When a move is found, clone it
-                ChessNode copy = parent.clone(); //make copy
+                        //Create the move
+                        Move makeMove = new Move(moveFound, coords, false, piece, currentBoard.getPiece(rows,column));
 
-                //Then execute the move on the clone
-                //copy.getBoard().performMove( INSERT MOVE ); // Make move //todo inset move
+                        //Then execute the move on the clone
+                        copy.getBoard().performMove(makeMove); // Make move
 
-                //Add copy to list
-                parent.addChildren(copy); //add child to the arraylist
+                        //Add copy to list
+                        parent.addChildren(copy); //add child to the arraylist
+                    }
+                    currentPlayerWhite = !currentPlayerWhite;
+                }
+                else if(!currentPlayerWhite && piece >= 98 && piece <= 113){ //black
+                    //Get possible moves for that piece
+                    int[] coords = {rows,column};
+                    tempListOfMoves = pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
+                    for (int[] moveFound : tempListOfMoves) {
 
+                        //When a move is found, clone it
+                        ChessNode copy = parent.clone(); //make copy
+
+                        //todo Figure out if its a special move. Now assumes that AI cannot make special moves
+
+                        //Create the move
+                        Move makeMove = new Move(moveFound, coords, false, piece, currentBoard.getPiece(rows,column));
+
+                        //Then execute the move on the clone
+                        copy.getBoard().performMove(makeMove); // Make move
+
+                        //Add copy to list
+                        parent.addChildren(copy); //add child to the arraylist
+                    }
+                    currentPlayerWhite = !currentPlayerWhite;
+                }
+                column++;
             }
+            rows++;
         }
     }
 
