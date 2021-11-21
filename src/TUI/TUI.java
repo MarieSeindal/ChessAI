@@ -7,6 +7,67 @@ import java.util.*;
 
 public class TUI implements I_TUI {
 
+    public String charToSymbol(char piece) {
+        String output = "";
+
+        String blackColor = "\u001b[32;1m"; // green
+        String whiteColor = "\u001b[31;1m"; // red
+
+        switch (piece) {
+            case ' ' -> output = String.valueOf((char) 9817);
+            case 'p' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9823);
+            }
+            case 'P' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9817);
+            }
+            case 'k' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9818);
+            }
+            case 'K' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9812);
+            }
+            case 'Q' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9813);
+            }
+            case 'q' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9819);
+            }
+            case 'r' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9820);
+            }
+            case 'R' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9814);
+            }
+            case 'B' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9815);
+            }
+            case 'b' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9821);
+            }
+            case 'N' -> {
+                output += whiteColor;
+                output += String.valueOf((char) 9816);
+            }
+            case 'n' -> {
+                output += blackColor;
+                output += String.valueOf((char) 9822);
+            }
+        }
+
+        return output;
+    }
+
     @Override
     public void resetBoard() {
 
@@ -14,6 +75,49 @@ public class TUI implements I_TUI {
 
     @Override
     public void initBoard(String fen) {
+        Fen f = parseFen(fen);
+        //String[] out = fenFormatter(fen);
+        char[][] board = f.getBoardLayout();
+        boolean whiteField = true;
+
+            // Print column numbers
+            System.out.println("  h   g   f   e   d   c   b   a  ");
+            for (int r = board.length - 1; r >= 0; r--) { //Rows
+
+                // Print row numbers
+                System.out.print(8 - r + " ");
+
+                for (int c = board[r].length - 1; c >= 0; c--) { //Cols
+
+                    if (whiteField) {
+                        // System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
+                        // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
+                        whiteField = false;
+
+                        continue;
+                    }
+                    if (!whiteField) {
+
+                        // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
+                        whiteField = true;
+                    }
+
+                }
+
+                if (whiteField) {
+                    whiteField = false;
+                } else {
+                    whiteField = true;
+                }
+
+                // Print row numbers
+                System.out.print(" " + (8 - r));
+
+                System.out.println(); //new line.
+            }
+            System.out.println("  h   g   f   e   d   c   b   a ");
 
     }
 
@@ -25,7 +129,7 @@ public class TUI implements I_TUI {
         if (white) {
 
             // Print column numbers
-            System.out.println("   h  g  f  e  d  c  b  a ");
+            System.out.println("  h   g   f   e   d   c   b   a  ");
             for (int r = board.length - 1; r >= 0; r--) { //Rows
 
                 // Print row numbers
@@ -34,15 +138,17 @@ public class TUI implements I_TUI {
                 for (int c = board[r].length - 1; c >= 0; c--) { //Cols
 
                     if (whiteField) {
-                        //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
-                        System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        // System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
+                        // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = false;
 
                         continue;
                     }
                     if (!whiteField) {
 
-                        System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = true;
                     }
 
@@ -59,12 +165,12 @@ public class TUI implements I_TUI {
 
                 System.out.println(); //new line.
             }
-            System.out.println("   h  g  f  e  d  c  b  a ");
+            System.out.println("  h   g   f   e   d   c   b   a ");
 
         } else {
 
             // Print column numbers
-            System.out.println("   a  b  c  d  e  f  g  h ");
+            System.out.println("  a   b   c   d   e   f   g   h ");
             for (int r = 0; r < board.length; r++) { //Rows
 
                 // Print row numbers
@@ -74,12 +180,16 @@ public class TUI implements I_TUI {
 
                     if (whiteField) {
                         //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
-                        System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
+                        System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = false;
                         continue;
                     }
                     if (!whiteField) {
                         System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+
+                        // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
+                        System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = true;
                     }
 
@@ -93,9 +203,9 @@ public class TUI implements I_TUI {
 
                 // Print row numbers
                 System.out.print(" " + (8 - r));
-                System.out.println(); //new line.
+                System.out.println();
             }
-            System.out.println("   a  b  c  d  e  f  g  h ");
+            System.out.println("  a   b   c   d   e   f   g   h ");
 
         }
 
@@ -391,24 +501,24 @@ public class TUI implements I_TUI {
     }
 
     //https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println //
-    public static final String RESET = "\u001B[0m";
-    public static final String BLACK = "\u001B[30m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String CYAN = "\u001B[36m";
-    public static final String WHITE = "\u001B[37m";
+    public static final String RESET = "\u001B[0;1m";
+    public static final String BLACK = "\u001B[37;1m";
+    public static final String RED = "\u001B[31;1m";
+    public static final String GREEN = "\u001B[32;1m";
+    public static final String YELLOW = "\u001B[33;1m";
+    public static final String BLUE = "\u001B[34;1m";
+    public static final String PURPLE = "\u001B[35;1m";
+    public static final String CYAN = "\u001B[36;1m";
+    public static final String WHITE = "\u001B[30;1m";
 
-    public static final String BLACK_BACKGROUND = "\u001B[40m";
-    public static final String RED_BACKGROUND = "\u001B[41m";
-    public static final String GREEN_BACKGROUND = "\u001B[42m";
-    public static final String YELLOW_BACKGROUND = "\u001B[43m";
-    public static final String BLUE_BACKGROUND = "\u001B[44m";
-    public static final String PURPLE_BACKGROUND = "\u001B[45m";
-    public static final String CYAN_BACKGROUND = "\u001B[46m";
-    public static final String WHITE_BACKGROUND = "\u001B[47m";
+    public static final String BLACK_BACKGROUND = "\u001B[47;1m";
+    public static final String RED_BACKGROUND = "\u001B[41;1m";
+    public static final String GREEN_BACKGROUND = "\u001B[42;1m";
+    public static final String YELLOW_BACKGROUND = "\u001B[43;1m";
+    public static final String BLUE_BACKGROUND = "\u001B[44;1m";
+    public static final String PURPLE_BACKGROUND = "\u001B[45;1m";
+    public static final String CYAN_BACKGROUND = "\u001B[46;1m";
+    public static final String WHITE_BACKGROUND = "\u001B[40;1m";
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  //
 
     /* Check if string value is an integer */
