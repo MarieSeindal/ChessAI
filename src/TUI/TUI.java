@@ -183,10 +183,10 @@ public class TUI implements I_TUI {
                         // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
                         System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = false;
+
                         continue;
                     }
                     if (!whiteField) {
-                        System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
 
                         // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
                         System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
@@ -203,7 +203,8 @@ public class TUI implements I_TUI {
 
                 // Print row numbers
                 System.out.print(" " + (8 - r));
-                System.out.println();
+
+                System.out.println(); //new line.
             }
             System.out.println("  a   b   c   d   e   f   g   h ");
 
