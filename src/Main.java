@@ -1,3 +1,4 @@
+import Helper.Fen;
 import Interfaces.I_TUI;
 import TUI.TUI;
 
@@ -17,15 +18,14 @@ public class Main {
         tui = new TUI();
         sc = new Scanner(System.in);
         int gameModeSelection;
-        String resumeGame = "";
+        Fen resumeFen;
         char startPiece = ' ';
         char destinationPiece = ' ';
         Player player;
         turn = true;
 
         // Prompt for resume game
-
-        //resumeGame = tui.showResumeMenu(sc);
+        resumeFen = tui.showResumeMenu(sc);
 
         // Prompt for gamemode
         gameModeSelection = tui.showStartMenu(sc);
@@ -47,9 +47,21 @@ public class Main {
         }
 
         board = new Board();
-        game = new Game(board, p1, p2, true);
+        game = new Game(board, p1, p2, turn);
+
+        // Resume game
+        if (resumeFen != null) {
+            turn = resumeFen.getPlayerTurn();
+            board.setBoard(resumeFen.getBoardLayout());
+            game.setTurn(turn);
+            game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
+            game.setTotalTurns(resumeFen.getTotalTurns());
+            game.setCastling(resumeFen.getCastling());
+            game.setEnPassantTarget(resumeFen.getEnPassantTarget());
+            tui.showResumeGameData(resumeFen);
+        }
+
         //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-        tui.printBoard(board.getBoardArray(), false);
 
         /* Start the main game loop */
         while (true) {
@@ -66,7 +78,11 @@ public class Main {
                 System.out.println("White Players turn");
             } else {
                 System.out.println("Black Players turn");
+                // Increment after each black player move.
+                game.setTotalTurns(game.getTotalTurns()+1);
             }
+
+            tui.printBoard(board.getBoardArray(), !turn);
 
             if (!player.isAi) { // Human player's turn
 
@@ -75,7 +91,7 @@ public class Main {
                 // Get start position and destination
                 while (true) {
 
-                    System.out.println("Please enter your move ex. (a2 a3): ");
+                    System.out.println("Please enter your move ex. (a2 a3) ");
                     movePos = tui.getMovePosition(sc);
 
                     // Validate piece based on user input
@@ -105,14 +121,14 @@ public class Main {
                                 /* Reset kill counter */
                                 game.setTurnsSinceKill(0);
                             } else {
-                                game.setTurnsSinceKill(game.getTurnsSinceKill()+1);
+                                game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
                             }
 
                             System.out.println("Move complete!");
-                            //tui.updateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+                            System.out.println("------------------------");
                             turn = !turn;
+
                             // Next player's turn
-                            tui.printBoard(board.getBoardArray(), !turn);
                             break;
                         }
                     }

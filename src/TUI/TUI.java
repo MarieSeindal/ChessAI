@@ -1,9 +1,9 @@
 package TUI;
 
+import Helper.Fen;
 import Interfaces.I_TUI;
 
-import java.awt.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class TUI implements I_TUI {
 
@@ -14,54 +14,6 @@ public class TUI implements I_TUI {
 
     @Override
     public void initBoard(String fen) {
-
-        String[] out = fenFormatter(fen);
-        boolean whiteField = true;
-
-        // Print column numbers
-        System.out.println("   a  b  c  d  e  f  g  h ");
-        int row = 0;
-        for (String s : out) {
-
-            if (s.length() == 0)
-                continue;
-
-            // Print row numbers
-            System.out.print(row + " ");
-            row++;
-
-            for (int i = 0; i < s.length(); i++) {
-                if (whiteField) {
-                    //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
-                    System.out.print(WHITE_BACKGROUND + BLACK + " " + s.charAt(i) + " " + RESET);
-                    whiteField = false;
-
-                    if (i == s.length() - 1) { //If end of line, new line
-                        System.out.println("");
-                    }
-                    continue;
-                }
-                if (!whiteField) {
-
-                    System.out.print(BLACK_BACKGROUND + WHITE + " " + s.charAt(i) + " " + RESET);
-                    whiteField = true;
-
-                    if (i == s.length() - 1) { //If end of line, new line
-                        System.out.println("");
-                    }
-                }
-            }
-            if (whiteField)
-                whiteField = false;
-            else whiteField = true;
-
-            // Print row numbers
-            System.out.print(row + " ");
-            row++;
-
-        }
-        System.out.println("   a  b  c  d  e  f  g  h ");
-        //System.out.println("Did the string color reset?");
 
     }
 
@@ -124,11 +76,9 @@ public class TUI implements I_TUI {
                         //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
                         System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
                         whiteField = false;
-
                         continue;
                     }
                     if (!whiteField) {
-
                         System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
                         whiteField = true;
                     }
@@ -143,7 +93,6 @@ public class TUI implements I_TUI {
 
                 // Print row numbers
                 System.out.print(" " + (8 - r));
-
                 System.out.println(); //new line.
             }
             System.out.println("   a  b  c  d  e  f  g  h ");
@@ -179,14 +128,14 @@ public class TUI implements I_TUI {
     }
 
     @Override
-    public String showResumeMenu(Scanner sc) {
-        int resumeSelectionInt = 0;
+    public Fen showResumeMenu(Scanner sc) {
+        int resumeSelectionInt = -1;
 
         do {
             System.out.println("""
                     Do you want to resume a game by FEN?:\s
-                    1) No.
-                    2) Yes.
+                    1) No
+                    2) Yes
                     """);
             System.out.print("Input: ");
             while (!sc.hasNextInt()) {
@@ -194,13 +143,23 @@ public class TUI implements I_TUI {
                 sc.next();
             }
             resumeSelectionInt = sc.nextInt();
-        } while (resumeSelectionInt != 1 || resumeSelectionInt != 2);
+        } while (resumeSelectionInt < 1 || resumeSelectionInt > 2);
 
         if (resumeSelectionInt == 2) {
-            return sc.nextLine();
+            while (true) {
+                System.out.println("\nPlease enter a FEN string\n ");
+                System.out.print("Input: ");
+                sc.useDelimiter("\n");// To make scanner accept white space
+                String f = sc.next();
+                Fen fen = parseFen(f);
+                if (fen != null) {
+                    return fen;
+                } else {
+                    break;
+                }
+            }
         }
-
-        return "";
+        return null;
     }
 
     @Override
@@ -215,7 +174,7 @@ public class TUI implements I_TUI {
 
         while (true) {
 
-            System.out.print("\nInput: ");
+            System.out.print("Input: ");
             int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
 
             try {
@@ -286,38 +245,130 @@ public class TUI implements I_TUI {
         System.out.println(System.lineSeparator().repeat(100));
     }
 
-    public static String[] fenFormatter(String fen) {
-
-        String[] out = new String[10];
-
-        out[0] = ""; // Print these another place, so this method only handles the board
-        out[9] = "";
-
-        /* Convert FEN string to rows with "/" as the delimiter */
-        String[] str = fen.split("/");
-
-        /* Split each item into its own and get the piece */
-        for (int i = 0; i < str.length; i++) {
-            String[] chars = str[i].split("");
-            String temp = "";
-            for (String aChar : chars) {
-                int code = getPiece(aChar);
-
-                /* Check if we have a number (empty rows) instead of a chess piece position */
-                if (code == 0) {
-                    int num = Integer.parseInt("" + aChar);
-                    for (int k = 0; k < num; k++) {
-                        temp += " "; //temp += "___|";
-                    }
-                } else {
-                    //temp += "_" + aChar + "_|";
-                    temp += aChar;
-                }
-                out[i + 1] = temp;
-            }
+    @Override
+    public void showResumeGameData(Fen f) {
+        System.out.println("Resume Game info: ");
+        System.out.println("Side to move: "+(f.getPlayerTurn() ? "White " : "Black ")+"Player");
+        System.out.print("Castling ability: ");
+        for (int i = 0; i<f.getCastling().size(); i++) {
+            System.out.print(f.getCastling().get(i));
         }
+        System.out.println("");
+        System.out.println("En passant target square: "+f.getEnPassantTarget());
+        System.out.println("Total Moves: "+f.getTotalTurns());
+        System.out.println("Total Moves Since Kill: "+f.getTurnsSinceKill());
+        System.out.println("------------------------");
+        System.out.println("");
+    }
 
-        return out;
+    public static Fen parseFen(String fen) {
+
+        Fen f = new Fen();
+        try {
+
+            char[][] out = new char[8][8];
+
+            /* Convert FEN string individual "bits" using " " as the delimiter */
+            String[] str_spaces = fen.split(" ");
+
+            /**
+             * Board Positions
+             */
+
+            /* Convert FEN string to rows with "/" as the delimiter */
+            String[] str_board = str_spaces[0].split("/");
+
+            String output = "";
+
+            for (int i = 0; i<str_board.length; i++) {
+                /* Split each item into its own and get the piece */
+                String[] str = str_board[i].split("");
+
+                for (int j = 0; j<str.length; j++) {
+                    char c = str[j].charAt(0);
+                    if (checkInt(str[j]) != -1) {
+                        int num = Integer.parseInt(str[j]);
+                        for (int k = 0; k < num; k++) {
+                            output = output + " ";
+                        }
+                    } else {
+                        output = output + c;
+                    }
+                }
+
+            }
+
+            // Convert string to 2d char array
+            int offset = 0;
+            for (int k = 0; k<8; k++) {
+                for (int l = 0; l<8; l++) {
+                    out[k][l] = output.charAt(offset++);
+                }
+
+            }
+
+            // test output
+            /*for (int k = 0; k<8; k++) {
+                for (int l = 0; l<8; l++) {
+                    System.out.print(out[k][l]);
+                    if (l == 7) {
+                        System.out.println("\n");
+                    }
+                }
+
+            }*/
+
+            f.setBoardLayout(out);
+
+            /**
+             * Player
+             */
+
+            if (str_spaces[1] != null) {
+                String turn = str_spaces[1];
+                f.setPlayerTurn(turn.charAt(0) == 'w' ? true : false);
+            }
+
+            /**
+             * Castling
+             */
+
+            if (str_spaces[2] != null) {
+                String castling = str_spaces[2];
+                String[] castlingArr = castling.split("");
+                ArrayList<String> c = new ArrayList();
+                Collections.addAll(c, castlingArr);
+                f.setCastling(c);
+            }
+
+            /**
+             * En passant target square
+             */
+
+            if (str_spaces[3] != null) {
+                f.setEnPassantTarget(str_spaces[3]);
+            }
+
+            /**
+             * Moves Since Kill
+             */
+
+            if (str_spaces[4] != null) {
+                f.setMovesKill(Integer.parseInt(str_spaces[4]));
+            }
+
+            /**
+             * Total number of Moves
+             */
+
+            if (str_spaces[5] != null) {
+               f.setTotalMoves(Integer.parseInt(str_spaces[5]));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Invalid FEN: "+e);
+        }
+        return f;
     }
 
     static int getPiece(String t) {
@@ -359,5 +410,16 @@ public class TUI implements I_TUI {
     public static final String CYAN_BACKGROUND = "\u001B[46m";
     public static final String WHITE_BACKGROUND = "\u001B[47m";
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  //
+
+    /* Check if string value is an integer */
+    public static int checkInt(String s) {
+
+        try{
+            int n = Integer.parseInt(s);
+            return n;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 
 }

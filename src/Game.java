@@ -1,18 +1,17 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
 import java.util.List;
 
 public class Game {
 
     Board board; //The game board
-    ArrayList<Board> usedBoards = new ArrayList<Board>(); //List of use boards, Do not have more than 3 duplicates
+    ArrayList<Board> usedBoards = new ArrayList<>(); //List of use boards, Do not have more than 3 duplicates
     Player p1;
     Player p2;
     boolean turn; // true for white?
     int turnsSinceKill = 0;
-    Player player;
+    int totalTurns = 0;
+    ArrayList<String> castling = new ArrayList<>();
+    String enPassantTarget;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
 
@@ -100,6 +99,9 @@ public class Game {
     public void setTurn(boolean turn) {
         this.turn = turn;
     }
+    public boolean getTurn() {
+        return turn;
+    }
 
     public int getTurnsSinceKill() {
         return turnsSinceKill;
@@ -108,5 +110,17 @@ public class Game {
     public void setTurnsSinceKill(int turnsSinceKill) {
         this.turnsSinceKill = turnsSinceKill;
     }
+
+    public int getTotalTurns() {return totalTurns;}
+
+    public void setTotalTurns(int totalTurns) {this.totalTurns = totalTurns;}
+
+    public ArrayList<String> getCastling() {return castling;}
+
+    public void setCastling(ArrayList<String> castling) {this.castling = castling;}
+
+    public String getEnPassantTarget() {return enPassantTarget;}
+
+    public void setEnPassantTarget(String enPassantTarget) {this.enPassantTarget = enPassantTarget;}
 
 }
