@@ -18,6 +18,14 @@ public class Move {
 
     }
 
+    public Move() {
+        this.newField = new int[]{404,404};
+        this.oldField = new int[]{404,404};
+        this.specialMove = true;
+        this.piece = 'o';
+        this.content = 'o';
+    }
+
     // check if the value from "pieceGeneralMoveset", can be used
     // or if there is anything in it's way
     // TODO: write this function
