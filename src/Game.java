@@ -21,17 +21,17 @@ public class Game {
         this.turn = turn;
     }
 
-    public void initializeGame() {
-        // Setup settings for the game before starting the game
-    }
-
-    public void play() {
-        //Play
-    }
+//    public void initializeGame() {
+//        // Setup settings for the game before starting the game
+//    }
+//
+//    public void play() {
+//        //Play
+//    }
 
     // int return - 0 is nothing, 1 is "check", 2 is "check mate", 3 is "remis"
     // TODO: test this function
-    public int checkTheKing(Board currentBoard, boolean whiteTurnNow){
+    public static int checkTheKing(Board currentBoard, boolean whiteTurnNow){
         ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
         int[] blackKingLocation;
         int[] whiteKingLocation;
@@ -126,7 +126,7 @@ public class Game {
     /// boolean isYourPieceWhite - is the checker white ?
     /// char target - the char value of the spot, that we want to check
     /// return int - 0 is empty, 1 is the same color, -1 is the enemy
-    public int checkLocation(boolean isYourPieceWhite, char target) {
+    public static int checkLocation(boolean isYourPieceWhite, char target) {
         boolean isTargetWhite = Character.isUpperCase(target);
 
         if(target == ' ')
@@ -143,7 +143,7 @@ public class Game {
     /// Board currentBoard - the current board
     /// boolean white - is this piece white?
     /// int limit - there is no limit, if the value is 0, you can use it for more than 1, but it will only be 0 or 1 (1 is the king)
-    public ArrayList<int[]> horizontalCheck(int[] location, Board currentBoard, boolean white, int limit)
+    public static ArrayList<int[]> horizontalCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
 
@@ -158,7 +158,7 @@ public class Game {
                 end = true;
             }
             // check next spot
-            int checkNextSport = checkLocation(white, currentBoard.board[ location[0] ][ (location[1] - counter) ]);
+            int checkNextSport = Game.checkLocation(white, currentBoard.board[ location[0] ][ (location[1] - counter) ]);
 
             // 01 - enemy
             if (checkNextSport == -1){
@@ -200,7 +200,7 @@ public class Game {
                 break;
             }
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ location[0] ][ (location[1] + counter) ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] ][ (location[1] + counter) ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -236,7 +236,7 @@ public class Game {
 
     /// verticalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     // TODO: test this function
-    public ArrayList<int[]>  verticalCheck(int[] location, Board currentBoard, boolean white, int limit)
+    public static ArrayList<int[]>  verticalCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
 
@@ -252,7 +252,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ (location[0] - counter) ][ location[1] ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ (location[0] - counter) ][ location[1] ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -294,7 +294,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ (location[0] + counter) ][ location[1] ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ (location[0] + counter) ][ location[1] ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -330,7 +330,7 @@ public class Game {
 
     /// crossCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     // TODO: test this function
-    public ArrayList<int[]>  crossCheck(int[] location, Board currentBoard, boolean white, int limit)
+    public static ArrayList<int[]>  crossCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
 
@@ -346,7 +346,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] + counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] + counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -384,7 +384,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] - counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] - counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -423,7 +423,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] + counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] + counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -462,7 +462,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] - counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] - counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -499,7 +499,7 @@ public class Game {
     // the piece can not go off of the board
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
-    public ArrayList<int[]> pieceMoveset(char piece, int[] location, Board currentBoard, boolean white){
+    public static ArrayList<int[]> pieceMoveset(char piece, int[] location, Board currentBoard, boolean white){
 
         // this will be the 2D array, that which ever piece we have, will need
         // int[] location2d = convertIndexTo2D(1);
@@ -518,14 +518,14 @@ public class Game {
                 // (y,x)
 
                 // 01 - add one spot forward
-                checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                 if(checkSpot == 0 && location[0] + 1 <= 7)
                     listOfMoves.add(new int[]{location[0] +1, location[1]});
 
                 // 02 - add 2 spot forward, if this is the first move for that piece
                 if(location[0] == 1)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
                     if(checkSpot == 0)
                         listOfMoves.add(new int[]{location[0] +2, location[1]});
                 }
@@ -533,7 +533,7 @@ public class Game {
                 // 03 - check left kills (+1, -1)
                 if(location[0]+1 <= 7 && location[1]-1 >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0] +1, location[1]-1});
                 }
@@ -541,7 +541,7 @@ public class Game {
                 // 04 - check right kills (+1, +1)
                 if(location[0]+1 <= 7 && location[1]-1 >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0] +1, location[1]-1});
                 }
@@ -553,14 +553,14 @@ public class Game {
                 // white is in the bottom, so 1 up
 
                 // 01 - add one spot forward
-                checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                 if(checkSpot == 0 && location[0] - 1 >= 0)
                     listOfMoves.add(new int[]{location[0] +1, location[1]});
 
                 // 02 - add 2 spot forward, if this is the first move for that piece
                 if(location[0] == 6)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
                     if(checkSpot == 0)
                         listOfMoves.add(new int[]{location[0] +2, location[1]});
                 }
@@ -568,7 +568,7 @@ public class Game {
                 // 03 - check left kills (-1, -1)
                 if(location[0]-1 >= 0 && location[1]-1 >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]-1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]-1));
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0] -1, location[1]-1});
                 }
@@ -576,7 +576,7 @@ public class Game {
                 // 04 - check right kills (-1, +1)
                 if(location[0]-1 >= 0 && location[1]+1 <= 7)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]+1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]+1));
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0] -1, location[1]+1});
                 }
@@ -587,9 +587,9 @@ public class Game {
                 // region white and black k case
 
                 // here we are setting the limit to 1
-                listOfMoves.addAll(horizontalCheck(location, currentBoard, areWeWhite, 1));
-                listOfMoves.addAll(verticalCheck(location, currentBoard, areWeWhite, 1));
-                listOfMoves.addAll(crossCheck(location, currentBoard, areWeWhite, 1));
+                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 1));
+                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 1));
+                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 1));
                 break;
             // endregion
             case 'q':
@@ -597,23 +597,23 @@ public class Game {
                 // region black and white q case
 
                 // Straight
-                listOfMoves.addAll(horizontalCheck(location, currentBoard, areWeWhite, 0));
-                listOfMoves.addAll(verticalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 0));
 
                 // Diagonal
-                listOfMoves.addAll(crossCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
 
                 System.out.println("Queen moves calculated");
                 break;
             // endregion
             case 'r':
             case 'R':
-                listOfMoves.addAll(horizontalCheck(location, currentBoard, areWeWhite, 0));
-                listOfMoves.addAll(verticalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 0));
                 break;
             case 'b':
             case 'B':
-                listOfMoves.addAll(crossCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
                 System.out.println("Bishop moves calculated");
                 break;
             case 'n':
@@ -637,7 +637,7 @@ public class Game {
 
                 // (y,x) 1 up and 2 right
                 if( (location[0]-1) >= 0 && (location[1]+2) <= 7){
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] + 2));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] + 2));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]-1, location[1]+2});
@@ -648,7 +648,7 @@ public class Game {
                 // (y,x)  2 up and 1 right
                 if((location[0]-2) >= 0 && (location[1]+1) <= 7)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] + 1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] + 1));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]-2, location[1]+1});
@@ -659,7 +659,7 @@ public class Game {
                 // (y,x) 1 down and 2 right
                 if( (location[0]+1) <= 7 && (location[1]+2) <= 7)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] + 2));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] + 2));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]+1, location[1]+2});
@@ -669,7 +669,7 @@ public class Game {
                 // (y,x)  2 down and 1 right
                 if((location[0]+2) <= 7 && (location[1]+1) <= 7)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] + 1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] + 1));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]+2, location[1]+1});
@@ -682,7 +682,7 @@ public class Game {
                 // (y,x) 1 up and 2 left
                 if( (location[0]-1) >= 0 && (location[1]-2) >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] - 2));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1] - 2));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]-1, location[1]-2});
@@ -693,7 +693,7 @@ public class Game {
                 // (y,x)  2 up and 1 left
                 if((location[0]-2) >= 0 && (location[1]-1) >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] - 1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1] - 1));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]-2, location[1]-1});
@@ -704,7 +704,7 @@ public class Game {
                 // (y,x) 1 down and 2 left
                 if( (location[0]+1) <= 7 && (location[1]-2) >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] - 2));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1] - 2));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]+1, location[1]-2});
@@ -715,7 +715,7 @@ public class Game {
                 // (y,x)  2 down and 1 left
                 if((location[0]+2) <= 7 && (location[1]-1) >= 0)
                 {
-                    checkSpot = checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] - 1));
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1] - 1));
 
                     if(checkSpot == -1)
                         listOfMoves.add(new int[]{location[0]+2, location[1]-1});
@@ -746,9 +746,9 @@ public class Game {
         return counter >= 3;
     }
 
-    public boolean isMoveLegal() {
-        return false;
-    }
+//    public boolean isMoveLegal() {
+//        return false;
+//    }
 
     // - - - - - Getters and setters - - - - - //
 
