@@ -213,7 +213,7 @@ public class Main {
                 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                 {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
         // should give -
-        // 7,6 ; 1,6 ; 2,6 ; 3,6 ; 4,6 ; 6,6 ;
+        // 1,6 ; 2,6 ; 3,6 ; 4,6 ; 6,6 ; 7,6
         // 5,0 ; 5,1 ; 5,2 ; 5,3 ; 5,4 ; 5,5 ; 5,7
         // 4,7
         // 6,5 ; 7,4 ;
@@ -371,10 +371,10 @@ public class Main {
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {'R', 'N', 'B', 'Q', ' ', 'B', ' ', 'R'}};
         // should give -
-        // 1,2 ; 2,2 ; 1,3
+        // 2,3 ; 2,2 ; 3,2
         ArrayList<int[]> checkList9 = new ArrayList<int[]>();
-        checkList9.add(new int[]{1,2}); checkList9.add(new int[]{2,2});
-        checkList9.add(new int[]{1,3});
+        checkList9.add(new int[]{3,2}); checkList9.add(new int[]{2,2});
+        checkList9.add(new int[]{2,3});
 
         // white p test
         int[] location10 = new int[]{6,2};
@@ -388,7 +388,7 @@ public class Main {
                         {' ', ' ', 'P', ' ', ' ', ' ', ' ', ' '},
                         {'R', 'N', 'B', 'K', ' ', 'B', ' ', 'R'}};
         // should give -
-        // 5,2 ; 4,2 ;  5,1
+        // 5,2 ; 4,2 ; 5,1
         ArrayList<int[]> checkList10 = new ArrayList<int[]>();
         checkList10.add(new int[]{5,2}); checkList10.add(new int[]{4,2});
         checkList10.add(new int[]{5,1});
