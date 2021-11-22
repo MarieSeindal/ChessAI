@@ -283,8 +283,9 @@ public class Game {
             counter++;
         }
 
-        counter = 1;
+        // resets
         end = false;
+        counter = 1;
 
         // down
         while(end == false){
@@ -376,6 +377,10 @@ public class Game {
             counter++;
         }
 
+        // resets
+        end = false;
+        counter = 1;
+
         // up and left (-1,-1)
         while (end == false){
             // 00 - end the while loop
@@ -415,6 +420,10 @@ public class Game {
             counter++;
         }
 
+        // resets
+        end = false;
+        counter = 1;
+
         // down and right (+1, +1)
         while (end == false){
             // 00 - end the while loop
@@ -453,6 +462,10 @@ public class Game {
 
             counter++;
         }
+
+        // resets
+        end = false;
+        counter = 1;
 
         // down and left (+1, -1)
         while (end == false){
