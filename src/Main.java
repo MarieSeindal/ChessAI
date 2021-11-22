@@ -328,16 +328,15 @@ public class Main {
                         {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '},
-                        {' ', ' ', 'n', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', 'N', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', 'K', ' ', ' ', 'q', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {'R', 'N', 'B', 'Q', ' ', 'B', 'N', 'R'}};
         // should give -
-        // 1,3 ; 2,4 ; 4,4 ; 5,3 ; 5,1 ; 4,0 ; 2,0
+        // 1,1 ; 1,3 ; 4,4 ; 5,1 ; 4,0 ; 2,0
         ArrayList<int[]> checkList7 = new ArrayList<int[]>();
-        checkList7.add(new int[]{1,3}); checkList7.add(new int[]{5,3});
-        checkList7.add(new int[]{2,4}); checkList7.add(new int[]{5,1});
+        checkList7.add(new int[]{1,3}); checkList7.add(new int[]{5,1}); checkList7.add(new int[]{1,1});
         checkList7.add(new int[]{4,4}); checkList7.add(new int[]{4,0}); checkList7.add(new int[]{2,0});
 
 
@@ -348,17 +347,17 @@ public class Main {
                         {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '},
-                        {' ', ' ', 'N', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', 'n', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', 'K', ' ', ' ', 'q', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {'R', 'N', 'B', 'Q', ' ', 'B', 'N', 'R'}};
         // should give -
-        // 1,1 ; 1,3 ; 4,4 ; 5,1 ; 4,0 ; 2,0
+        // 1,3 ; 2,4 ; 4,4 ; 5,1 ; 5,3 ; 4,0 ; 2,0
         ArrayList<int[]> checkList8 = new ArrayList<int[]>();
-        checkList8.add(new int[]{1,1}); checkList8.add(new int[]{5,1});
+        checkList8.add(new int[]{5,1}); checkList8.add(new int[]{5,3});
         checkList8.add(new int[]{1,3}); checkList8.add(new int[]{4,0});
-        checkList8.add(new int[]{4,4}); checkList8.add(new int[]{2,0});
+        checkList8.add(new int[]{4,4}); checkList8.add(new int[]{2,0}); checkList8.add(new int[]{2,4});
 
         // black p test
         int[] location9 = new int[]{1,2};
