@@ -33,8 +33,8 @@ public class Game {
     // TODO: test this function
     public static int checkTheKing(Board currentBoard, boolean whiteTurnNow){
         ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
-        int[] blackKingLocation;
-        int[] whiteKingLocation;
+        int[] blackKingLocation = new int []{404, 404};
+        int[] whiteKingLocation = new int []{404, 404};
 
         int output = 404;
 
