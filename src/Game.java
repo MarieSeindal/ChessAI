@@ -412,7 +412,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -455,7 +455,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -498,7 +498,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -553,11 +553,11 @@ public class Game {
                 }
 
                 // 04 - check right kills (+1, +1)
-                if(location[0]+1 <= 7 && location[1]-1 >= 0)
+                if(location[0]+1 <= 7 && location[1]+1 <= 7)
                 {
                     checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
                     if(checkSpot == -1)
-                        listOfMoves.add(new int[]{location[0] +1, location[1]-1});
+                        listOfMoves.add(new int[]{location[0] +1, location[1]+1});
                 }
                 break;
             // endregion
@@ -576,7 +576,7 @@ public class Game {
                 {
                     checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
                     if(checkSpot == 0)
-                        listOfMoves.add(new int[]{location[0] +2, location[1]});
+                        listOfMoves.add(new int[]{location[0] -2, location[1]});
                 }
 
                 // 03 - check left kills (-1, -1)

@@ -213,14 +213,14 @@ public class Main {
                 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                 {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
         // should give -
-        // 0,6 ; 1,6 ; 2,6 ; 3,6 ; 4,6 ; 6,6 ;
+        // 7,6 ; 1,6 ; 2,6 ; 3,6 ; 4,6 ; 6,6 ;
         // 5,0 ; 5,1 ; 5,2 ; 5,3 ; 5,4 ; 5,5 ; 5,7
         // 4,7
         // 6,5 ; 7,4 ;
         // 6,7 ;
         // 4,5 ;
         ArrayList<int[]> checkList2 = new ArrayList<int[]>();
-        checkList2.add(new int[]{0,6}); checkList2.add(new int[]{2,6});
+        checkList2.add(new int[]{7,6}); checkList2.add(new int[]{2,6});
         checkList2.add(new int[]{1,6}); checkList2.add(new int[]{3,6});
         checkList2.add(new int[]{6,6}); checkList2.add(new int[]{4,6});
 
