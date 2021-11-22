@@ -212,10 +212,10 @@ public class TUI implements I_TUI {
 
     }
 
-    @Override
+    /*@Override
     public int showStartMenu(Scanner sc) {
 
-        int gameSelectionInt = -1;
+        int gameSelectionInt;
 
         do {
             System.out.println("+-----------------------------------+");
@@ -236,6 +236,43 @@ public class TUI implements I_TUI {
         } while (gameSelectionInt <= 0 || gameSelectionInt > 3);
 
         return gameSelectionInt;
+    }*/
+    @Override
+    public int[] showStartMenu(Scanner sc) {
+
+        int[] gameSelectionInt = new int[] {0,0};
+
+        System.out.println("+-----------------------------------+");
+        System.out.println("|  Welcome to Group 7's Chess game  |");
+        System.out.println("+-----------------------------------+");
+        System.out.println("""
+                    Please select a game mode from below options:
+                    
+                    1) Player vs AI.
+                    2) Player vs Player.
+                    3) AI vs AI. (Danger! Not done. Will run an infinite loop)
+                    
+                    Optional: input "b" after gamemode to specify if p1 is black instead of white eg. (1 b)
+                    """);
+
+        while(true) {
+            System.out.print("Input: ");
+            sc.useDelimiter("\n");// To make scanner accept white space
+            String g = sc.next();
+            String[] g_spaces = g.split(" ");
+
+            if (g_spaces.length == 2) {
+                if (g_spaces[1] == "b") {
+                    // 1 for black, 0 for white
+                    gameSelectionInt[1] = 1;
+                }
+            }
+
+            if (checkInt(g_spaces[0])) {
+                gameSelectionInt[0] = Integer.parseInt(g_spaces[0]);
+                return gameSelectionInt;
+            }
+        }
     }
 
     @Override
@@ -397,7 +434,7 @@ public class TUI implements I_TUI {
 
                 for (int j = 0; j<str.length; j++) {
                     char c = str[j].charAt(0);
-                    if (checkInt(str[j]) != -1) {
+                    if (checkInt(str[j])) {
                         int num = Integer.parseInt(str[j]);
                         for (int k = 0; k < num; k++) {
                             output = output + " ";
@@ -523,13 +560,13 @@ public class TUI implements I_TUI {
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  //
 
     /* Check if string value is an integer */
-    public static int checkInt(String s) {
+    public static boolean checkInt(String s) {
 
         try{
             int n = Integer.parseInt(s);
-            return n;
+            return true;
         } catch (NumberFormatException e) {
-            return -1;
+            return false;
         }
     }
 

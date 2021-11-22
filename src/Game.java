@@ -14,7 +14,6 @@ public class Game {
     String enPassantTarget;
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
-
         this.board = startingBoard;
         this.p1 = p1;
         this.p2 = p2;
@@ -84,10 +83,6 @@ public class Game {
         this.p2 = p2;
     }
 
-    public boolean isTurn() {
-        return turn;
-    }
-
     public Player getPlayerTurn(boolean turn) {
 
         if (turn) {
@@ -96,11 +91,12 @@ public class Game {
         return p2;
     }
 
-    public void setTurn(boolean turn) {
-        this.turn = turn;
-    }
     public boolean getTurn() {
         return turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
     }
 
     public int getTurnsSinceKill() {
@@ -111,16 +107,28 @@ public class Game {
         this.turnsSinceKill = turnsSinceKill;
     }
 
-    public int getTotalTurns() {return totalTurns;}
+    public int getTotalTurns() {
+        return totalTurns;
+    }
 
-    public void setTotalTurns(int totalTurns) {this.totalTurns = totalTurns;}
+    public void setTotalTurns(int totalTurns) {
+        this.totalTurns = totalTurns;
+    }
 
-    public ArrayList<String> getCastling() {return castling;}
+    public ArrayList<String> getCastling() {
+        return castling;
+    }
 
-    public void setCastling(ArrayList<String> castling) {this.castling = castling;}
+    public void setCastling(ArrayList<String> castling) {
+        this.castling = castling;
+    }
 
-    public String getEnPassantTarget() {return enPassantTarget;}
+    public String getEnPassantTarget() {
+        return enPassantTarget;
+    }
 
-    public void setEnPassantTarget(String enPassantTarget) {this.enPassantTarget = enPassantTarget;}
+    public void setEnPassantTarget(String enPassantTarget) {
+        this.enPassantTarget = enPassantTarget;
+    }
 
 }

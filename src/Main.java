@@ -17,12 +17,11 @@ public class Main {
 
         tui = new TUI();
         sc = new Scanner(System.in);
-        int gameModeSelection;
+        int gameModeSelection[];
         Fen resumeFen;
         char startPiece = ' ';
         char destinationPiece = ' ';
         Player player;
-        turn = true;
 
         // Prompt for resume game
         resumeFen = tui.showResumeMenu(sc);
@@ -30,30 +29,48 @@ public class Main {
         // Prompt for gamemode
         gameModeSelection = tui.showStartMenu(sc);
 
-        switch (gameModeSelection) {
+        boolean p1White = (gameModeSelection[1] == 1? turn = true : false);
+
+        if (p1White) {
+            turn = true;
+        } else {
+            turn = false;
+        }
+
+        switch (gameModeSelection[0]) {
             case 1 -> { // Human vs AI
-                p1 = new Player(true, false);
-                p2 = new Player(false, true);
+                p1 = new Player(p1White, false);
+                p2 = new Player(!p1White, true);
             }
             case 2 -> { // Human vs Human
-                p1 = new Player(true, false);
-                p2 = new Player(false, false);
+                p1 = new Player(p1White, false);
+                p2 = new Player(!p1White, false);
             }
             case 3 -> { // AI vs AI
-                p1 = new Player(true, true);
-                p2 = new Player(false, true);
+                p1 = new Player(p1White, true);
+                p2 = new Player(!p1White, true);
             }
-            default -> System.out.println("Error in game mode selection: " + gameModeSelection);
+            default -> System.out.println("Error in game mode selection: " + gameModeSelection[0]);
         }
+
+        /*System.out.println("p1 is white: "+p1.isWhite());
+        System.out.println("p2 is white: "+p2.isWhite());*/
 
         board = new Board();
         game = new Game(board, p1, p2, turn);
 
         // Resume game
         if (resumeFen != null) {
-            turn = resumeFen.getPlayerTurn();
+            System.out.println("Fen player turn: "+resumeFen.getPlayerTurn());
+            boolean fTurn = resumeFen.getPlayerTurn();
             board.setBoard(resumeFen.getBoardLayout());
-            game.setTurn(turn);
+            if (fTurn) {
+                game.setTurn(true);
+                turn = false;
+            } else {
+                game.setTurn(false);
+                turn = true;
+            }
             game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
             game.setTotalTurns(resumeFen.getTotalTurns());
             game.setCastling(resumeFen.getCastling());
@@ -74,15 +91,21 @@ public class Main {
 
             player = game.getPlayerTurn(turn);
 
+            //System.out.println("P1 is black: "+gameModeSelection[1]+" = "+(gameModeSelection[1] == 1? true : false)+". Is currentplayer P1 "+(player==game.getP1() ? true : false));
+
+            System.out.println();
+
+            //System.out.println("is current player white? "+player.isWhite());
+
             if (player.isWhite()) {
-                System.out.println("White Players turn");
+                System.out.println("White Players turn ("+(player == p1? "p1" : "p2")+")");
             } else {
-                System.out.println("Black Players turn");
+                System.out.println("Black Players turn ("+(player == p1? "p1" : "p2")+")");
                 // Increment after each black player move.
                 game.setTotalTurns(game.getTotalTurns()+1);
             }
 
-            tui.printBoard(board.getBoardArray(), !turn);
+            tui.printBoard(board.getBoardArray(), turn);
 
             if (!player.isAi) { // Human player's turn
 
@@ -91,7 +114,7 @@ public class Main {
                 // Get start position and destination
                 while (true) {
 
-                    System.out.println("Please enter your move ex. (a2 a3) ");
+                    System.out.println("Please enter your move eg. (a2 a3) ");
                     movePos = tui.getMovePosition(sc);
 
                     // Validate piece based on user input
@@ -127,12 +150,10 @@ public class Main {
                             System.out.println("Move complete!");
                             System.out.println("------------------------");
                             turn = !turn;
-
                             // Next player's turn
                             break;
                         }
                     }
-
                 }
 
             } else { // AI player's turn
@@ -151,7 +172,7 @@ public class Main {
         Player p1 = new Player(true, false);
         Player p2 = new Player(false, false);
 
-        Game testGame = new Game(new Board(), p1, p2, false);
+        Game testGame = new Game(new Board(), p1, p2,false);
 
         // temp, will be deleted after testing
         char[][] tBoard = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},

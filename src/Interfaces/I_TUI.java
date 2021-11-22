@@ -11,7 +11,7 @@ public interface I_TUI {
 
     void printBoard(char[][] board, boolean reverse);
 
-    int showStartMenu(Scanner sc);
+    int[] showStartMenu(Scanner sc);
 
     Fen showResumeMenu(Scanner sc);
 
