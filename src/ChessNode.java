@@ -3,6 +3,9 @@ import java.util.ArrayList;
 
 public class ChessNode implements Serializable {
 
+    Board board;
+    ArrayList<ChessNode> children;
+
     public Board getBoard() {
         return board;
     }
@@ -19,11 +22,10 @@ public class ChessNode implements Serializable {
         this.children = children;
     }
 
-    Board board;
-    ArrayList<ChessNode> children;
 
     public ChessNode(Board boardInNode){
-
+        children = new ArrayList<>();
+        this.board = boardInNode;
     }
 
     public void addChildren(ChessNode child) {

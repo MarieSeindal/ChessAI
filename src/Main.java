@@ -3,8 +3,6 @@ import Interfaces.I_TUI;
 import TUI.TUI;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -56,7 +54,7 @@ public class Main {
         // Resume game
         if (resumeFen != null) {
             turn = resumeFen.getPlayerTurn();
-            board.setBoard(resumeFen.getBoardLayout());
+            board.setBoardArray(resumeFen.getBoardLayout());
             game.setTurn(turn);
             game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
             game.setTotalTurns(resumeFen.getTotalTurns());
@@ -69,9 +67,6 @@ public class Main {
 
         /* Start the main game loop */
         while (true) {
-            AI ai = new AI(board, true);
-            ChessNode firstNode = new ChessNode(board);
-            ai.runAI(firstNode);
 
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
@@ -144,9 +139,21 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-//                AI ai = new AI(board, true);
-//                ChessNode firstNode = new ChessNode(board);
-//                ai.runAI(firstNode);
+                AI ai = new AI(board, false);
+
+//                char[][] testArray = {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
+//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                        {' ', ' ', ' ', ' ', 'b', ' ', ' ', ' '},
+//                        {' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '},
+//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                        {' ', 'B', ' ', ' ', ' ', ' ', ' ', ' '},
+//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                        {'R', 'N', ' ', ' ', 'K', 'B', 'N', 'R'}};
+//                Board testBoard = new Board(testArray);
+
+                ChessNode firstNode = new ChessNode(board);
+                ai.runAI(firstNode);
+                //board.performMove(ai.getBestmove());
                 tui.printBoard(board.getBoardArray(), false);
                 turn = !turn;
             }
@@ -442,7 +449,7 @@ public class Main {
         boolean output = false;
 
         // test 1 - white q
-        testBoard.setBoard(tBoard1);
+        testBoard.setBoardArray(tBoard1);
         testValues = Game.pieceMoveset('Q', location1, testBoard, true);
         output = checkList1.containsAll(testValues);
         System.out.println("white q test values : ");
@@ -452,7 +459,7 @@ public class Main {
         System.out.println("did white q pass the test? : " + output);
 
         // test 2 - black q
-        testBoard.setBoard(tBoard2);
+        testBoard.setBoardArray(tBoard2);
         testValues = Game.pieceMoveset('q', location2, testBoard, false);
         output = checkList2.containsAll(testValues);
         System.out.println("black q test values : ");
@@ -462,7 +469,7 @@ public class Main {
         System.out.println("did black q pass the test? : " + output);
 
         // test 3 - white r
-        testBoard.setBoard(tBoard3);
+        testBoard.setBoardArray(tBoard3);
         testValues = Game.pieceMoveset('R', location3, testBoard, true);
         output = checkList3.containsAll(testValues);
         System.out.println("white r test values : ");
@@ -472,7 +479,7 @@ public class Main {
         System.out.println("did white r pass the test? : " + output);
 
         // test 4 - black r
-        testBoard.setBoard(tBoard4);
+        testBoard.setBoardArray(tBoard4);
         testValues = Game.pieceMoveset('r', location4, testBoard, false);
         output = checkList4.containsAll(testValues);
         System.out.println("black r test values : ");
@@ -482,7 +489,7 @@ public class Main {
         System.out.println("did black r pass the test? : " + output);
 
         // test 5 - white b
-        testBoard.setBoard(tBoard5);
+        testBoard.setBoardArray(tBoard5);
         testValues = Game.pieceMoveset('B', location5, testBoard, true);
         output = checkList5.containsAll(testValues);
         System.out.println("white b test values : ");
@@ -492,7 +499,7 @@ public class Main {
         System.out.println("did white b pass the test? : " + output);
 
         // test 6 - black b
-        testBoard.setBoard(tBoard6);
+        testBoard.setBoardArray(tBoard6);
         testValues = Game.pieceMoveset('b', location6, testBoard, false);
         output = checkList6.containsAll(testValues);
         System.out.println("black b test values : ");
@@ -502,7 +509,7 @@ public class Main {
         System.out.println("did black b pass the test? : " + output);
 
         // test 7 - white n
-        testBoard.setBoard(tBoard7);
+        testBoard.setBoardArray(tBoard7);
         testValues = Game.pieceMoveset('N', location7, testBoard, true);
         output = checkList7.containsAll(testValues);
         System.out.println("white n test values : ");
@@ -512,7 +519,7 @@ public class Main {
         System.out.println("did white n pass the test? : " + output);
 
         // test 8 - black n
-        testBoard.setBoard(tBoard8);
+        testBoard.setBoardArray(tBoard8);
         testValues = Game.pieceMoveset('n', location8, testBoard, false);
         output = checkList8.containsAll(testValues);
         System.out.println("black n test values : ");
@@ -522,7 +529,7 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 9 - black p
-        testBoard.setBoard(tBoard9);
+        testBoard.setBoardArray(tBoard9);
         testValues = Game.pieceMoveset('p', location9, testBoard, false);
         output = checkList9.containsAll(testValues);
         System.out.println("black p test values : ");
@@ -532,7 +539,7 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 10 - white p
-        testBoard.setBoard(tBoard10);
+        testBoard.setBoardArray(tBoard10);
         testValues = Game.pieceMoveset('P', location10, testBoard, true);
         output = checkList10.containsAll(testValues);
         System.out.println("white p test values : ");
@@ -542,7 +549,7 @@ public class Main {
         System.out.println("did white p pass the test? : " + output);
 
         // test 11 - white k
-        testBoard.setBoard(tBoard11);
+        testBoard.setBoardArray(tBoard11);
         testValues = Game.pieceMoveset('K', location11, testBoard, true);
         output = checkList11.containsAll(testValues);
         System.out.println("white k test values : ");
@@ -552,7 +559,7 @@ public class Main {
         System.out.println("did white k pass the test? : " + output);
 
         // test 12 - black k
-        testBoard.setBoard(tBoard12);
+        testBoard.setBoardArray(tBoard12);
         testValues = Game.pieceMoveset('k', location12, testBoard, false);
         output = checkList12.containsAll(testValues);
         System.out.println("black k test values : ");

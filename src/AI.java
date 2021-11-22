@@ -1,23 +1,33 @@
 import Data.BoardEvaluationData;
-import java.io.*;
+
 import java.lang.*;
 import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 5;
+    private static int maxDepth = 2;
     protected Board currentBoard;
-    private boolean currentPlayerWhite = false;
+    private boolean isWhite = false;
+    private int alpha = -10000000;
+    private int beta = 10000000;
+    public Move bestMove;
 
-    public AI(Board currentBoard) {
+    public AI(Board currentBoard, boolean isWhite) {
         this.currentBoard = currentBoard;
+        this.isWhite = isWhite;
     }
 
-    public void runAI() {
+    public void runAI(ChessNode firstNode) {
+        System.out.println("Running AI!");
+        minimax(firstNode, 0,true, alpha, beta);
+    }
+
+    public Move getBestmove(){
+        return this.bestMove;
     }
 
     public void setCurrentPlayerAI(boolean isWhite){ // todo call this from Game(?) to tell the AI if it is black or white
-        currentPlayerWhite = isWhite;
+        this.isWhite = isWhite;
     }
 
     public int minimax(ChessNode nodeToSearch, int depth, boolean isMax, int alpha, int beta) {
@@ -74,6 +84,7 @@ public class AI {
 
             if (beta <= alpha) break;
         }
+        System.out.println("Returning in AI, best val: " + bestValue);
         return bestValue;
     }
 
@@ -90,10 +101,10 @@ public class AI {
             int column=0;
             for (char piece : row) {
                 //Check each piece for each possible move.
-                if(currentPlayerWhite && Character.isUpperCase(piece)){ //If it's the current player, and It's that players pieces.
+                if(isWhite && Character.isUpperCase(piece)){ //If it's the current player, and It's that players pieces.
                     //Get possible moves for that piece
                     int[] coords = {rows,column};
-                    tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
+                    tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, isWhite);
                     for (int[] moveFound : tempListOfMoves) {
 
                         //When a move is found, clone it
@@ -110,12 +121,12 @@ public class AI {
                         //Add copy to list
                         parent.addChildren(copy); //add child to the arraylist
                     }
-                    currentPlayerWhite = !currentPlayerWhite;
+                    isWhite = !isWhite;
                 }
-                else if(!currentPlayerWhite && Character.isLowerCase(piece)){ //black
+                else if(!isWhite && Character.isLowerCase(piece)){ //black
                     //Get possible moves for that piece
                     int[] coords = {rows,column};
-                    tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, currentPlayerWhite);
+                    tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, isWhite);
                     for (int[] moveFound : tempListOfMoves) {
 
                         //When a move is found, clone it
@@ -132,7 +143,7 @@ public class AI {
                         //Add copy to list
                         parent.addChildren(copy); //add child to the arraylist
                     }
-                    currentPlayerWhite = !currentPlayerWhite;
+                    isWhite = !isWhite;
                 }
                 column++;
             }

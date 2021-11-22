@@ -2,14 +2,14 @@ import java.io.Serializable;
 
 public class Board implements Serializable {
 
-    char[][] board;
+    char[][] boardArray;
 
-    public Board(char[][] board){
-        this.board = board;
+    public Board(char[][] boardArray){
+        this.boardArray = boardArray;
     }
 
     public Board(){
-        this.board = new char[][] {
+        this.boardArray = new char[][] {
                 {'r','n','b','q','k','b','n','r'},
                 {'p','p','p','p','p','p','p','p'},
                 {' ',' ',' ',' ',' ',' ',' ',' '},
@@ -22,8 +22,8 @@ public class Board implements Serializable {
 
     public void performMove(Move move) {
 
-        board[move.oldField[0]][move.oldField[1]] = ' ';
-        board[move.newField[0]][move.newField[1]] = move.piece;
+        boardArray[move.oldField[0]][move.oldField[1]] = ' ';
+        boardArray[move.newField[0]][move.newField[1]] = move.piece;
 
     }
 
@@ -42,7 +42,7 @@ public class Board implements Serializable {
     }
 
     public char checkStartPosition(boolean isWhite, int x, int y) {
-        char piece = board[x][y];
+        char piece = boardArray[x][y];
         if (isWhite && Character.isUpperCase(piece)) {
             return piece;
         } else if (!isWhite && Character.isLowerCase(piece)) {
@@ -52,17 +52,17 @@ public class Board implements Serializable {
     }
 
     public char getPiece(int x, int y) {
-        return board[x][y];
+        return boardArray[x][y];
     }
 
     // - - - - - Getters and setters - - - - - //
 
     public char[][] getBoardArray() {
-        return board;
+        return boardArray;
     }
 
-    public void setBoard(char[][] board) {
-        this.board = board;
+    public void setBoardArray(char[][] boardArray) {
+        this.boardArray = boardArray;
     }
 
 
@@ -71,7 +71,7 @@ public class Board implements Serializable {
         for (int i = 0; i < 8; i++) {
 
             for (int j = 0; j < 8; j++) {
-                output.append(board[i][j]);
+                output.append(boardArray[i][j]);
             }
         }
 
