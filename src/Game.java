@@ -122,7 +122,6 @@ public class Game {
         return output;
     }
 
-    // TODO: test this function
     /// boolean isYourPieceWhite - is the checker white ?
     /// char target - the char value of the spot, that we want to check
     /// return int - 0 is empty, 1 is the same color, -1 is the enemy
@@ -137,7 +136,6 @@ public class Game {
             return -1;
     }
 
-    // TODO: test this function
     /// horizontalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     /// int[] location - values from 0,0 to 7,7
     /// Board currentBoard - the current board
@@ -236,7 +234,6 @@ public class Game {
     }
 
     /// verticalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
-    // TODO: test this function
     public static ArrayList<int[]>  verticalCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
@@ -331,7 +328,6 @@ public class Game {
     }
 
     /// crossCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
-    // TODO: test this function
     public static ArrayList<int[]>  crossCheck(int[] location, Board currentBoard, boolean white, int limit)
     {
         ArrayList<int[]> listOfMoves = new ArrayList<int[]>();
