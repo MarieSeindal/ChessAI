@@ -153,9 +153,10 @@ public class Game {
         // left
         while (!end){
             // 00 - end the while loop
-            if (location[1] - counter >= 0)
+            if (location[1] - counter <= -1)
             {
                 end = true;
+                break;
             }
             // check next spot
             int checkNextSport = Game.checkLocation(white, currentBoard.board[ location[0] ][ (location[1] - counter) ]);
@@ -194,7 +195,7 @@ public class Game {
         // right
         while(!end){
             // 00 - end the while loop
-            if (location[1] + counter > 7)
+            if (location[1] + counter >= 8)
             {
                 end = true;
                 break;
@@ -246,7 +247,7 @@ public class Game {
         // up
         while (end == false){
             // 00 - end the while loop
-            if (location[0] - counter < 0) {
+            if (location[0] - counter <= -1) {
                 end = true;
                 break;
             }
@@ -288,7 +289,7 @@ public class Game {
         // down
         while(end == false){
             // 00 - end the while loop
-            if (location[0] + counter > 7){
+            if (location[0] + counter >= 8){
                 end = true;
                 break;
             }
@@ -340,7 +341,7 @@ public class Game {
         // up and right (-1,+1)
         while (end == false){
             // 00 - end the while loop
-            if (location[0] - counter < 0 || location[1] + counter > 7) {
+            if (location[0] - counter <= -1 || location[1] + counter >= 8) {
                 end = true;
                 break;
             }
@@ -378,7 +379,7 @@ public class Game {
         // up and left (-1,-1)
         while (end == false){
             // 00 - end the while loop
-            if (location[0] - counter < 0 || location[1] - counter < 0) {
+            if (location[0] - counter <= -1 || location[1] - counter <= -1) {
                 end = true;
                 break;
             }
@@ -417,7 +418,7 @@ public class Game {
         // down and right (+1, +1)
         while (end == false){
             // 00 - end the while loop
-            if (location[0] + counter > 7 || location[1] + counter > 7) {
+            if (location[0] + counter >= 8 || location[1] + counter >= 8) {
                 end = true;
                 break;
             }
@@ -456,7 +457,7 @@ public class Game {
         // down and left (+1, -1)
         while (end == false){
             // 00 - end the while loop
-            if (location[0] + counter > 7 || location[1] - counter < 0) {
+            if (location[0] + counter >= 8 || location[1] - counter <= -1) {
                 end = true;
                 break;
             }
