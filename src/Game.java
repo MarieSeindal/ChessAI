@@ -179,7 +179,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -222,7 +222,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -274,7 +274,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -316,7 +316,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
@@ -367,7 +367,7 @@ public class Game {
             }
 
             // 04 - limit for the counter
-            else if (counter >= limit && limit != 0)
+            if (counter >= limit && limit != 0)
             {
                 end = true;
             }
