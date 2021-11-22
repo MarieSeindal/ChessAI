@@ -153,7 +153,7 @@ public class Game {
         // left
         while (!end){
             // 00 - end the while loop
-            if (location[1] - counter < 0)
+            if (location[1] - counter >= 0)
             {
                 end = true;
             }

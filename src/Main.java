@@ -3,6 +3,8 @@ import Interfaces.I_TUI;
 import TUI.TUI;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -16,136 +18,147 @@ public class Main {
 
     public static void main(String[] args) {
 
-        tui = new TUI();
-        sc = new Scanner(System.in);
-        int gameModeSelection;
-        Fen resumeFen;
-        char startPiece = ' ';
-        char destinationPiece = ' ';
-        Player player;
-        turn = true;
+        testMovesetFunctions();
+//        tui = new TUI();
+//        sc = new Scanner(System.in);
+//        int gameModeSelection;
+//        Fen resumeFen;
+//        char startPiece = ' ';
+//        char destinationPiece = ' ';
+//        Player player;
+//        turn = true;
+//
+//        // Prompt for resume game
+//        resumeFen = tui.showResumeMenu(sc);
+//
+//        // Prompt for gamemode
+//        gameModeSelection = tui.showStartMenu(sc);
+//
+//        switch (gameModeSelection) {
+//            case 1 -> { // Human vs AI
+//                p1 = new Player(true, false);
+//                p2 = new Player(false, true);
+//            }
+//            case 2 -> { // Human vs Human
+//                p1 = new Player(true, false);
+//                p2 = new Player(false, false);
+//            }
+//            case 3 -> { // AI vs AI
+//                p1 = new Player(true, true);
+//                p2 = new Player(false, true);
+//            }
+//            default -> System.out.println("Error in game mode selection: " + gameModeSelection);
+//        }
+//
+//        board = new Board();
+//        game = new Game(board, p1, p2, turn);
+//
+//        // Resume game
+//        if (resumeFen != null) {
+//            turn = resumeFen.getPlayerTurn();
+//            board.setBoard(resumeFen.getBoardLayout());
+//            game.setTurn(turn);
+//            game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
+//            game.setTotalTurns(resumeFen.getTotalTurns());
+//            game.setCastling(resumeFen.getCastling());
+//            game.setEnPassantTarget(resumeFen.getEnPassantTarget());
+//            tui.showResumeGameData(resumeFen);
+//        }
+//
+//        //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
+//
+//        /* Start the main game loop */
+//        while (true) {
+//
+//            // todo check end game conditions (checkmate, 50 moves no kill etc.)
+//            if (game.turnsSinceKill >= 50) {
+//                System.out.println("********** GAME OVER: Draw **********");
+//                break;
+//            }
+//
+//            player = game.getPlayerTurn(turn);
+//
+//            if (player.isWhite()) {
+//                System.out.println("White Players turn");
+//            } else {
+//                System.out.println("Black Players turn");
+//                // Increment after each black player move.
+//                game.setTotalTurns(game.getTotalTurns()+1);
+//            }
+//
+//            tui.printBoard(board.getBoardArray(), !turn);
+//
+//            if (!player.isAi) { // Human player's turn
+//
+//                int[] movePos;
+//
+//                // Get start position and destination
+//                while (true) {
+//
+//                    System.out.println("Please enter your move ex. (a2 a3) ");
+//                    movePos = tui.getMovePosition(sc);
+//
+//                    // Validate piece based on user input
+//                    try {
+//                        startPiece = board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
+//                    } catch (Exception e) {
+//                        System.out.println("Error: Invalid piece");
+//                    }
+//
+//                    try {
+//                        destinationPiece = board.getPiece(movePos[2], movePos[3]);
+//                    } catch (Exception e) {
+//                        System.out.println("Error: Invalid destination selected!");
+//                    }
+//
+//                    /* Check if chosen board position is empty */
+//                    if (startPiece != ' ') {
+//
+//                        boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
+//
+//                        /* Check if chosen destination position is empty or enemy */
+//                        if (destinationPiece == ' ' || isKill) {
+//                            Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
+//                            board.performMove(move);
+//
+//                            if (isKill) {
+//                                /* Reset kill counter */
+//                                game.setTurnsSinceKill(0);
+//                            } else {
+//                                game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
+//                            }
+//
+//                            System.out.println("Move complete!");
+//                            System.out.println("------------------------");
+//                            turn = !turn;
+//
+//                            // Next player's turn
+//                            break;
+//                        }
+//                    }
+//
+//                }
+//
+//            } else { // AI player's turn
+//                // todo finish AI player
+//                tui.printBoard(board.getBoardArray(), false);
+//                turn = !turn;
+//            }
+//        }
+//
+//        // todo check if game is over?
+//        //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
+//        //sc.close();
+    }
 
-        // Prompt for resume game
-        resumeFen = tui.showResumeMenu(sc);
+    public static void arrayPrinter(ArrayList<int[]> input) {
+        String output = "";
 
-        // Prompt for gamemode
-        gameModeSelection = tui.showStartMenu(sc);
-
-        switch (gameModeSelection) {
-            case 1 -> { // Human vs AI
-                p1 = new Player(true, false);
-                p2 = new Player(false, true);
-            }
-            case 2 -> { // Human vs Human
-                p1 = new Player(true, false);
-                p2 = new Player(false, false);
-            }
-            case 3 -> { // AI vs AI
-                p1 = new Player(true, true);
-                p2 = new Player(false, true);
-            }
-            default -> System.out.println("Error in game mode selection: " + gameModeSelection);
+        for (int[] x: input) {
+            output += x[0] + "," + x[1] + " ; ";
         }
 
-        board = new Board();
-        game = new Game(board, p1, p2, turn);
-
-        // Resume game
-        if (resumeFen != null) {
-            turn = resumeFen.getPlayerTurn();
-            board.setBoard(resumeFen.getBoardLayout());
-            game.setTurn(turn);
-            game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
-            game.setTotalTurns(resumeFen.getTotalTurns());
-            game.setCastling(resumeFen.getCastling());
-            game.setEnPassantTarget(resumeFen.getEnPassantTarget());
-            tui.showResumeGameData(resumeFen);
-        }
-
-        //tui.initBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); // Using default test FEN
-
-        /* Start the main game loop */
-        while (true) {
-
-            // todo check end game conditions (checkmate, 50 moves no kill etc.)
-            if (game.turnsSinceKill >= 50) {
-                System.out.println("********** GAME OVER: Draw **********");
-                break;
-            }
-
-            player = game.getPlayerTurn(turn);
-
-            if (player.isWhite()) {
-                System.out.println("White Players turn");
-            } else {
-                System.out.println("Black Players turn");
-                // Increment after each black player move.
-                game.setTotalTurns(game.getTotalTurns()+1);
-            }
-
-            tui.printBoard(board.getBoardArray(), !turn);
-
-            if (!player.isAi) { // Human player's turn
-
-                int[] movePos;
-
-                // Get start position and destination
-                while (true) {
-
-                    System.out.println("Please enter your move ex. (a2 a3) ");
-                    movePos = tui.getMovePosition(sc);
-
-                    // Validate piece based on user input
-                    try {
-                        startPiece = board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
-                    } catch (Exception e) {
-                        System.out.println("Error: Invalid piece");
-                    }
-
-                    try {
-                        destinationPiece = board.getPiece(movePos[2], movePos[3]);
-                    } catch (Exception e) {
-                        System.out.println("Error: Invalid destination selected!");
-                    }
-
-                    /* Check if chosen board position is empty */
-                    if (startPiece != ' ') {
-
-                        boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
-
-                        /* Check if chosen destination position is empty or enemy */
-                        if (destinationPiece == ' ' || isKill) {
-                            Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
-                            board.performMove(move);
-
-                            if (isKill) {
-                                /* Reset kill counter */
-                                game.setTurnsSinceKill(0);
-                            } else {
-                                game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
-                            }
-
-                            System.out.println("Move complete!");
-                            System.out.println("------------------------");
-                            turn = !turn;
-
-                            // Next player's turn
-                            break;
-                        }
-                    }
-
-                }
-
-            } else { // AI player's turn
-                // todo finish AI player
-                tui.printBoard(board.getBoardArray(), false);
-                turn = !turn;
-            }
-        }
-
-        // todo check if game is over?
-        //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
-        //sc.close();
+        System.out.println(output);
     }
 
     public static void testMovesetFunctions()
@@ -418,6 +431,131 @@ public class Main {
         checkList12.add(new int[]{3,3}); checkList12.add(new int[]{5,3});
         checkList12.add(new int[]{4,4}); checkList12.add(new int[]{5,2}); checkList12.add(new int[]{5,4});
         // TODO: king should not be able to go to - 4,2 ; 3,2 ; 5,3 ; 5,4 , since that put it in check mate
+
+        ArrayList<int[]> testValues = new ArrayList<>();
+        Board testBoard = new Board();
+        boolean output = false;
+
+        // test 1 - white q
+        testBoard.setBoard(tBoard1);
+        testValues = Game.pieceMoveset('Q', location1, testBoard, true);
+        output = checkList1.containsAll(testValues);
+        System.out.println("white q test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white q check list : " );
+        Main.arrayPrinter(checkList1);
+        System.out.println("did white q pass the test? : " + output);
+
+        // test 2 - black q
+        testBoard.setBoard(tBoard2);
+        testValues = Game.pieceMoveset('q', location2, testBoard, false);
+        output = checkList2.containsAll(testValues);
+        System.out.println("black q test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black q check list : " );
+        Main.arrayPrinter(checkList2);
+        System.out.println("did black q pass the test? : " + output);
+
+        // test 3 - white r
+        testBoard.setBoard(tBoard3);
+        testValues = Game.pieceMoveset('R', location3, testBoard, true);
+        output = checkList3.containsAll(testValues);
+        System.out.println("white r test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white r check list : " );
+        Main.arrayPrinter(checkList3);
+        System.out.println("did white r pass the test? : " + output);
+
+        // test 4 - black r
+        testBoard.setBoard(tBoard4);
+        testValues = Game.pieceMoveset('r', location4, testBoard, false);
+        output = checkList4.containsAll(testValues);
+        System.out.println("black r test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black r check list : " );
+        Main.arrayPrinter(checkList4);
+        System.out.println("did black r pass the test? : " + output);
+
+        // test 5 - white b
+        testBoard.setBoard(tBoard5);
+        testValues = Game.pieceMoveset('B', location5, testBoard, true);
+        output = checkList5.containsAll(testValues);
+        System.out.println("white b test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white b check list : " );
+        Main.arrayPrinter(checkList5);
+        System.out.println("did white b pass the test? : " + output);
+
+        // test 6 - black b
+        testBoard.setBoard(tBoard6);
+        testValues = Game.pieceMoveset('b', location6, testBoard, false);
+        output = checkList6.containsAll(testValues);
+        System.out.println("black b test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black b check list : " );
+        Main.arrayPrinter(checkList6);
+        System.out.println("did black b pass the test? : " + output);
+
+        // test 7 - white n
+        testBoard.setBoard(tBoard7);
+        testValues = Game.pieceMoveset('N', location7, testBoard, true);
+        output = checkList7.containsAll(testValues);
+        System.out.println("white n test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white n check list : " );
+        Main.arrayPrinter(checkList7);
+        System.out.println("did white n pass the test? : " + output);
+
+        // test 8 - black n
+        testBoard.setBoard(tBoard8);
+        testValues = Game.pieceMoveset('n', location8, testBoard, false);
+        output = checkList8.containsAll(testValues);
+        System.out.println("black n test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black n check list : " );
+        Main.arrayPrinter(checkList8);
+        System.out.println("did black n pass the test? : " + output);
+
+        // test 9 - black p
+        testBoard.setBoard(tBoard9);
+        testValues = Game.pieceMoveset('p', location9, testBoard, false);
+        output = checkList9.containsAll(testValues);
+        System.out.println("black p test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black p check list : " );
+        Main.arrayPrinter(checkList9);
+        System.out.println("did black n pass the test? : " + output);
+
+        // test 10 - white p
+        testBoard.setBoard(tBoard10);
+        testValues = Game.pieceMoveset('P', location10, testBoard, true);
+        output = checkList10.containsAll(testValues);
+        System.out.println("white p test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white p check list : " );
+        Main.arrayPrinter(checkList10);
+        System.out.println("did white p pass the test? : " + output);
+
+        // test 11 - white k
+        testBoard.setBoard(tBoard11);
+        testValues = Game.pieceMoveset('K', location11, testBoard, true);
+        output = checkList11.containsAll(testValues);
+        System.out.println("white k test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("white k check list : " );
+        Main.arrayPrinter(checkList11);
+        System.out.println("did white k pass the test? : " + output);
+
+        // test 12 - black k
+        testBoard.setBoard(tBoard12);
+        testValues = Game.pieceMoveset('k', location12, testBoard, false);
+        output = checkList12.containsAll(testValues);
+        System.out.println("black k test values : ");
+        Main.arrayPrinter(testValues);
+        System.out.println("black k check list : " );
+        Main.arrayPrinter(checkList12);
+        System.out.println("did black k pass the test? : " + output);
+
     }
 
     public static void testBoardCompare() {
