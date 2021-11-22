@@ -2,6 +2,7 @@ import Helper.Fen;
 import Interfaces.I_TUI;
 import TUI.TUI;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -171,6 +172,21 @@ public class Main {
         // 4,4 ; 5,5; 6,6;
         // 4,2 ;
         // 2,2 ; 1,1 ; 0,0
+        ArrayList<int[]> checkList1 = new ArrayList<int[]>();
+        checkList1.add(new int[]{0,3}); checkList1.add(new int[]{1,3});
+        checkList1.add(new int[]{2,3}); checkList1.add(new int[]{4,3});
+        checkList1.add(new int[]{5,3}); checkList1.add(new int[]{6,3});
+        checkList1.add(new int[]{7,3});
+
+        checkList1.add(new int[]{3,0}); checkList1.add(new int[]{3,1});
+        checkList1.add(new int[]{3,2}); checkList1.add(new int[]{3,4});
+        checkList1.add(new int[]{3,5}); checkList1.add(new int[]{3,6});
+        checkList1.add(new int[]{3,7});
+
+        checkList1.add(new int[]{2,4}); checkList1.add(new int[]{4,2});
+        checkList1.add(new int[]{4,4}); checkList1.add(new int[]{5,5}); checkList1.add(new int[]{6,6});
+        checkList1.add(new int[]{2,2}); checkList1.add(new int[]{1,1}); checkList1.add(new int[]{0,0});
+
 
         // black queen test
         int[] location2 = new int[]{5,6};
@@ -190,6 +206,18 @@ public class Main {
         // 6,5 ; 7,4 ;
         // 6,7 ;
         // 4,5 ;
+        ArrayList<int[]> checkList2 = new ArrayList<int[]>();
+        checkList2.add(new int[]{0,6}); checkList2.add(new int[]{2,6});
+        checkList2.add(new int[]{1,6}); checkList2.add(new int[]{3,6});
+        checkList2.add(new int[]{6,6}); checkList2.add(new int[]{4,6});
+
+        checkList2.add(new int[]{5,0}); checkList2.add(new int[]{5,1});
+        checkList2.add(new int[]{5,2}); checkList2.add(new int[]{5,3});
+        checkList2.add(new int[]{5,4}); checkList2.add(new int[]{5,5});
+        checkList2.add(new int[]{5,7});
+
+        checkList2.add(new int[]{4,7}); checkList2.add(new int[]{6,7});
+        checkList2.add(new int[]{6,5}); checkList2.add(new int[]{7,4}); checkList2.add(new int[]{4,5});
 
         // white tower test
         int[] location3 = new int[]{2,2};
@@ -206,6 +234,15 @@ public class Main {
         // 0,2 ; 1,2 ; 3,2 ; 4,2 ;
         // 2,0 ; 2,1 ; 2,3 ; 2,4 ;
 
+        ArrayList<int[]> checkList3 = new ArrayList<int[]>();
+        checkList3.add(new int[]{0,2}); checkList3.add(new int[]{4,2});
+        checkList3.add(new int[]{1,2}); checkList3.add(new int[]{3,2});
+
+
+        checkList3.add(new int[]{2,0}); checkList3.add(new int[]{2,1});
+        checkList3.add(new int[]{2,3}); checkList3.add(new int[]{2,4});
+
+
         // black tower test
         int[] location4 = new int[]{2,2};
         char[][] tBoard4 =
@@ -220,6 +257,13 @@ public class Main {
         // should give -
         // 1,2 ; 3,2 ; 4,2 ; 5,2
         // 2,0 ; 2,1 ; 2,3 ; 2,4 ; 2,5
+        ArrayList<int[]> checkList4 = new ArrayList<int[]>();
+        checkList4.add(new int[]{4,2}); checkList4.add(new int[]{5,2});
+        checkList4.add(new int[]{1,2}); checkList4.add(new int[]{3,2});
+
+
+        checkList4.add(new int[]{2,0}); checkList4.add(new int[]{2,1});
+        checkList4.add(new int[]{2,3}); checkList4.add(new int[]{2,4}); checkList4.add(new int[]{2,5});
 
         // white b test
         int[] location5 = new int[]{3,2};
@@ -235,6 +279,13 @@ public class Main {
         // should give -
         // 5,0 ; 4,1 ; 2,3 ; 1,4 ; 0,5
         // 1,0 ; 2,1 ; 4,3 ; 5,4 ; 6,5
+        ArrayList<int[]> checkList5 = new ArrayList<int[]>();
+        checkList5.add(new int[]{5,0}); checkList5.add(new int[]{4,1});
+        checkList5.add(new int[]{2,3}); checkList5.add(new int[]{1,4}); checkList5.add(new int[]{0,5});
+
+
+        checkList5.add(new int[]{1,0}); checkList5.add(new int[]{2,1});
+        checkList5.add(new int[]{4,3}); checkList5.add(new int[]{5,4}); checkList5.add(new int[]{6,5});
 
         // black b test
         int[] location6 = new int[]{3,2};
@@ -250,6 +301,13 @@ public class Main {
         // should give -
         // 5,0 ; 4,1 ; 2,3 ; 1,4
         // 1,0 ; 2,1 ; 4,3 ; 5,4 ; 6,5 ; 7,6
+        ArrayList<int[]> checkList6 = new ArrayList<int[]>();
+        checkList6.add(new int[]{5,0}); checkList6.add(new int[]{4,1});
+        checkList6.add(new int[]{2,3}); checkList6.add(new int[]{1,4});
+
+
+        checkList6.add(new int[]{1,0}); checkList6.add(new int[]{2,1});
+        checkList6.add(new int[]{4,3}); checkList6.add(new int[]{5,4}); checkList6.add(new int[]{6,5}); checkList6.add(new int[]{7,6});
 
         // white n test
         int[] location7 = new int[]{3,2};
@@ -264,6 +322,11 @@ public class Main {
                         {'R', 'N', 'B', 'Q', ' ', 'B', 'N', 'R'}};
         // should give -
         // 1,3 ; 2,4 ; 4,4 ; 5,3 ; 5,1 ; 4,0 ; 2,0
+        ArrayList<int[]> checkList7 = new ArrayList<int[]>();
+        checkList7.add(new int[]{1,3}); checkList7.add(new int[]{5,3});
+        checkList7.add(new int[]{2,4}); checkList7.add(new int[]{5,1});
+        checkList7.add(new int[]{4,4}); checkList7.add(new int[]{4,0}); checkList7.add(new int[]{2,0});
+
 
 
         // black n test
@@ -279,6 +342,10 @@ public class Main {
                         {'R', 'N', 'B', 'Q', ' ', 'B', 'N', 'R'}};
         // should give -
         // 1,1 ; 1,3 ; 4,4 ; 5,1 ; 4,0 ; 2,0
+        ArrayList<int[]> checkList8 = new ArrayList<int[]>();
+        checkList8.add(new int[]{1,1}); checkList8.add(new int[]{5,1});
+        checkList8.add(new int[]{1,3}); checkList8.add(new int[]{4,0});
+        checkList8.add(new int[]{4,4}); checkList8.add(new int[]{2,0});
 
         // black p test
         int[] location9 = new int[]{1,2};
@@ -293,6 +360,9 @@ public class Main {
                         {'R', 'N', 'B', 'Q', ' ', 'B', ' ', 'R'}};
         // should give -
         // 1,2 ; 2,2 ; 1,3
+        ArrayList<int[]> checkList9 = new ArrayList<int[]>();
+        checkList9.add(new int[]{1,2}); checkList9.add(new int[]{2,2});
+        checkList9.add(new int[]{1,3});
 
         // white p test
         int[] location10 = new int[]{6,2};
@@ -307,6 +377,9 @@ public class Main {
                         {'R', 'N', 'B', 'K', ' ', 'B', ' ', 'R'}};
         // should give -
         // 5,2 ; 4,2 ;  5,1
+        ArrayList<int[]> checkList10 = new ArrayList<int[]>();
+        checkList10.add(new int[]{5,2}); checkList10.add(new int[]{4,2});
+        checkList10.add(new int[]{5,1});
 
         // white k test
         int[] location11 = new int[]{4,3};
@@ -321,6 +394,10 @@ public class Main {
                         {'R', 'N', ' ', ' ', ' ', 'B', ' ', 'R'}};
         // should give -
         // 3,2 ; 3,3 ; 3,4 ; 4,2 ; 4,4 ; 5,3 ; 5,4
+        ArrayList<int[]> checkList11 = new ArrayList<int[]>();
+        checkList11.add(new int[]{3,2}); checkList11.add(new int[]{4,2});
+        checkList11.add(new int[]{3,3}); checkList11.add(new int[]{4,4});
+        checkList11.add(new int[]{3,4}); checkList11.add(new int[]{5,3}); checkList11.add(new int[]{5,4});
         // TODO: king should not be able to go to - 3,2 ; 3,3 ; 4,4 ; 5,4 , since that put it in check mate
 
         // black k test
@@ -336,6 +413,10 @@ public class Main {
                         {'R', 'N', ' ', ' ', ' ', 'B', ' ', 'R'}};
         // should give -
         // 3,2 ; 3,3 ; 4,2 ; 4,4 ; 5,2 ; 5,3 ; 5,4 ;
+        ArrayList<int[]> checkList12 = new ArrayList<int[]>();
+        checkList12.add(new int[]{3,2}); checkList12.add(new int[]{4,2});
+        checkList12.add(new int[]{3,3}); checkList12.add(new int[]{5,3});
+        checkList12.add(new int[]{4,4}); checkList12.add(new int[]{5,2}); checkList12.add(new int[]{5,4});
         // TODO: king should not be able to go to - 4,2 ; 3,2 ; 5,3 ; 5,4 , since that put it in check mate
     }
 
