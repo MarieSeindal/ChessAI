@@ -139,21 +139,15 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(board, false);
-
-//                char[][] testArray = {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
-//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-//                        {' ', ' ', ' ', ' ', 'b', ' ', ' ', ' '},
-//                        {' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '},
-//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-//                        {' ', 'B', ' ', ' ', ' ', ' ', ' ', ' '},
-//                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-//                        {'R', 'N', ' ', ' ', 'K', 'B', 'N', 'R'}};
-//                Board testBoard = new Board(testArray);
+                AI ai = new AI(board, true);
 
                 ChessNode firstNode = new ChessNode(board);
                 ai.runAI(firstNode);
-                //board.performMove(ai.getBestmove());
+
+                //Check two boards and find the piece that moved
+
+
+                board.performMove(board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard()));
                 tui.printBoard(board.getBoardArray(), false);
                 turn = !turn;
             }

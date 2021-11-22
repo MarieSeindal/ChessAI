@@ -5,12 +5,13 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 2;
+    private static int maxDepth = 7;
     protected Board currentBoard;
     private boolean isWhite = false;
     private int alpha = -10000000;
     private int beta = 10000000;
-    public Move bestMove;
+    public Board bestMoveBoard;
+    public int nodeScore = -10000;
 
     public AI(Board currentBoard, boolean isWhite) {
         this.currentBoard = currentBoard;
@@ -22,8 +23,8 @@ public class AI {
         minimax(firstNode, 0,true, alpha, beta);
     }
 
-    public Move getBestmove(){
-        return this.bestMove;
+    public Board getBestMoveBoard(){
+        return this.bestMoveBoard;
     }
 
     public void setCurrentPlayerAI(boolean isWhite){ // todo call this from Game(?) to tell the AI if it is black or white
@@ -81,6 +82,19 @@ public class AI {
             value = minimax(child, depth + 1, true, alpha, beta);
             bestValue = min(bestValue, value);
             beta = min(beta, bestValue);
+
+            //Get best move
+            if (depth == 1){
+                System.out.println("Hurray we made it into if depth = 1 ");
+
+                if ( bestValue > nodeScore){ //if we find a best value that is better than the recorded nodeScore, that move
+                    System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
+                    nodeScore = bestValue;
+
+                    // construct best moveBoard
+                    bestMoveBoard = nodeTosearch.getBoard();
+                }
+            }
 
             if (beta <= alpha) break;
         }

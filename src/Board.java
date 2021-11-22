@@ -65,6 +65,35 @@ public class Board implements Serializable {
         this.boardArray = boardArray;
     }
 
+    public Move moveFromDifferenceIn2Boards(Board newBoard){
+        Move move = new Move();
+        move.setSpecialMove(false); //todo assumed AI makes no special moves
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                if (boardArray[i][j] != newBoard.getBoardArray()[i][j]){ //detect difference
+                    if (newBoard.getBoardArray()[i][j] == ' ') { //detect "space", aka oldField
+                        int[] oldFiled = {i,j};
+                        move.setOldField(oldFiled);
+                    }
+                    else { // newField
+                        int[] newFiled = {i,j};
+                        move.setNewField(newFiled);
+                        move.setPiece(newBoard.getBoardArray()[i][j]);
+                        move.setContent(boardArray[i][j]);
+                    }
+                }
+
+            }
+        }
+
+        return move;
+
+
+
+    }
+
 
     public String getString(){
         StringBuilder output = new StringBuilder();
