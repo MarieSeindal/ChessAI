@@ -53,6 +53,9 @@ public class Main {
 
         /* Start the main game loop */
         while (true) {
+            AI ai = new AI(board, true);
+            ChessNode firstNode = new ChessNode(board);
+            ai.runAI(firstNode);
 
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
@@ -121,6 +124,9 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
+//                AI ai = new AI(board, true);
+//                ChessNode firstNode = new ChessNode(board);
+//                ai.runAI(firstNode);
                 tui.printBoard(board.getBoardArray(), false);
                 turn = !turn;
             }
