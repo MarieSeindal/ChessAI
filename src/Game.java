@@ -527,6 +527,12 @@ public class Game {
                 // black is in the top, so 1 down
                 // (y,x)
 
+                // 00 - check if we go off the board
+                if(location[0] - 1 <= -1)
+                    checkSpot = 1;
+                else
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+
                 // 01 - add one spot forward
                 checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                 if(checkSpot == 0 && location[0] + 1 <= 7)
@@ -562,8 +568,13 @@ public class Game {
 
                 // white is in the bottom, so 1 up
 
+                // 00 - check if we go off the board
+                if(location[0] - 1 <= -1)
+                    checkSpot = 1;
+                else
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
+
                 // 01 - add one spot forward
-                checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
                 if(checkSpot == 0 && location[0] - 1 >= 0)
                     listOfMoves.add(new int[]{location[0] -1, location[1]});
 
