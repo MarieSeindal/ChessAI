@@ -13,10 +13,17 @@ public class AI {
     public Board bestMoveBoard;
     public int nodeScore = -10000;
 
+    public AI(){
+        this.currentBoard = new Board();
+        this.isWhite = true;
+    }
+
     public AI(Board currentBoard, boolean isWhite) {
         this.currentBoard = currentBoard;
         this.isWhite = isWhite;
     }
+
+
 
     public void runAI(ChessNode firstNode) {
         System.out.println("Running AI!");

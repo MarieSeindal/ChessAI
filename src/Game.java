@@ -13,6 +13,14 @@ public class Game {
     ArrayList<String> castling = new ArrayList<>();
     String enPassantTarget;
 
+    public Game() {
+
+        this.board = new Board();
+        this.p1 = new Player();
+        this.p2 = new Player();;
+        this.turn = false;
+    }
+
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
 
         this.board = startingBoard;
@@ -21,13 +29,7 @@ public class Game {
         this.turn = turn;
     }
 
-    public Game() {
 
-        this.board = new Board();
-        this.p1 = new Player();
-        this.p2 = new Player();;
-        this.turn = false;
-    }
 
 //    public void initializeGame() {
 //        // Setup settings for the game before starting the game

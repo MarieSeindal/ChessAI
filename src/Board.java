@@ -4,10 +4,6 @@ public class Board implements Serializable {
 
     char[][] boardArray;
 
-    public Board(char[][] boardArray){
-        this.boardArray = boardArray;
-    }
-
     public Board(){
 //        this.boardArray = new char[][] {
 //                {' ',' ',' ',' ','k',' ',' ',' '},
@@ -18,7 +14,7 @@ public class Board implements Serializable {
 //                {' ',' ',' ',' ',' ',' ',' ',' '},
 //                {' ','P',' ',' ',' ',' ',' ',' '},
 //                {' ',' ',' ',' ','K',' ',' ',' '}};
-        
+
         this.boardArray = new char[][] {
                 {'r','n','b','q','k','b','n','r'},
                 {'p','p','p','p','p','p','p','p'},
@@ -29,6 +25,12 @@ public class Board implements Serializable {
                 {'P','P','P','P','P','P','P','P'},
                 {'R','N','B','Q','K','B','N','R'}};
     }
+
+    public Board(char[][] boardArray){
+        this.boardArray = boardArray;
+    }
+
+
 
     public void performMove(Move move) {
 
