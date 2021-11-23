@@ -130,7 +130,9 @@ public class AI {
                             for (int[] moveFound : tempListOfMoves) {
 
                                 //When a move is found, clone it
-                                ChessNode copy = parent.clone(); //make copy
+                                Board copyOfBoard = parent.getBoard().clone();
+                                //ChessNode copy = parent.clone(); //make copy
+                                ChessNode copy = new ChessNode(copyOfBoard); //make copy
 
                                 //todo Figure out if its a special move. Now assumes that AI cannot make special moves
 
