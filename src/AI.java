@@ -13,8 +13,7 @@ public class AI {
     public Board bestMoveBoard;
     public int nodeScore = -10000;
 
-
-    public AI(){
+    public AI() {
         this.currentBoard = new Board();
         this.isWhite = true;
     }
@@ -24,19 +23,16 @@ public class AI {
         this.isWhite = isWhite;
     }
 
-
-
-
     public void runAI(ChessNode firstNode, boolean white) {
         System.out.println("Running AI!");
-        minimax(firstNode, 0,white, alpha, beta);
+        minimax(firstNode, 0, white, alpha, beta);
     }
 
-    public Board getBestMoveBoard(){
+    public Board getBestMoveBoard() {
         return this.bestMoveBoard;
     }
 
-    public void setCurrentPlayerAI(boolean isWhite){ // todo call this from Game(?) to tell the AI if it is black or white
+    public void setCurrentPlayerAI(boolean isWhite) { // todo call this from Game(?) to tell the AI if it is black or white
         this.isWhite = isWhite;
     }
 
@@ -74,10 +70,10 @@ public class AI {
             alpha = max(alpha, bestValue);
 
             //Get best move
-            if (depth == 1){
+            if (depth == 1) {
                 System.out.println("Hurray we made it into if depth = 1 ");
 
-                if ( bestValue > nodeScore){ //if we find a best value that is better than the recorded nodeScore, that move
+                if (bestValue > nodeScore) { //if we find a best value that is better than the recorded nodeScore, that move
                     System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
                     nodeScore = bestValue;
 
@@ -106,10 +102,10 @@ public class AI {
             beta = min(beta, bestValue);
 
             //Get best move
-            if (depth == 1){
+            if (depth == 1) {
                 System.out.println("Hurray we made it into if depth = 1 ");
 
-                if ( bestValue > nodeScore){ //if we find a best value that is better than the recorded nodeScore, that move
+                if (bestValue > nodeScore) { //if we find a best value that is better than the recorded nodeScore, that move
                     System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
                     nodeScore = bestValue;
 
@@ -125,20 +121,20 @@ public class AI {
     }
 
 
-    public void fillChildren(ChessNode parent, boolean white){
+    public void fillChildren(ChessNode parent, boolean white) {
 
         // get parrent board
         char[][] boardParent = parent.getBoard().getBoardArray();
 
         ArrayList<int[]> tempListOfMoves = new ArrayList<int[]>();
 
-        int rows=0;
+        int rows = 0;
         for (char[] row : boardParent) {
-            int column=0;
+            int column = 0;
             for (char piece : row) {
 
                 // don't do anything, if the piece is an empty spot
-                if(piece != ' ') {
+                if (piece != ' ') {
 
                     //Check each piece for each possible move.
                     if (white && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
@@ -203,7 +199,6 @@ public class AI {
             rows++;
         }
     }
-
 
 
     // - - - - - Evaluate - - - - - //todo exapnd these
