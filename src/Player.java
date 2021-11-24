@@ -9,6 +9,11 @@ public class Player {
         this.white = colorWhite;
     }
 
+    public Player(){
+        this.white = true;
+        this.isAi = true;
+    }
+
     public boolean isWhite() {
         return white;
     }
