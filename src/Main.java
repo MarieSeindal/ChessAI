@@ -10,7 +10,6 @@ public class Main {
 
     private static I_TUI tui;
     private static Game game;
-    private static Board board;
     private static Scanner sc;
     private static boolean whiteTurn; //Initializing variables
     private static Player p1, p2;
@@ -57,13 +56,13 @@ public class Main {
             default -> System.out.println("Error in game mode selection: " + gameModeSelection[0]);
         }
 
-        board = new Board();
-        game = new Game(board, p1, p2, whiteTurn);
+        //board = new Board();
+        game = new Game(new Board(), p1, p2, whiteTurn);
 
         // Resume game
         if (resumeFen != null) {
             whiteTurn = resumeFen.getPlayerTurn();
-            board.setBoardArray(resumeFen.getBoardLayout());
+            game.board.setBoardArray(resumeFen.getBoardLayout());
             if (!whiteTurn) {
                 game.setWhiteTurn(true);
                 whiteTurn = false;
@@ -105,7 +104,7 @@ public class Main {
                 game.setTotalTurns(game.getTotalTurns()+1);
             }
 
-            tui.printBoard(board.getBoardArray(), whiteTurn);
+            tui.printBoard(game.board.getBoardArray(), whiteTurn);
 
             if (!player.isAi) { // Human player's turn
 
@@ -134,7 +133,7 @@ public class Main {
                     // Check if chosen board position is empty
                     if (startPiece != ' ') {
 
-                        boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
+                        boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
                         ArrayList<int[]> possibleMoves;
 
                         /* Check if chosen destination position is empty or enemy */
@@ -146,7 +145,7 @@ public class Main {
                             System.out.println("New move info: Piece: "+ startPiece + " | " + start[0]+","+start[1]+ "->" + destination[0] + "," +destination[1]);
 
                             try {
-                                possibleMoves = game.pieceMoveset(startPiece, start, board, player.isWhite());
+                                possibleMoves = game.pieceMoveset(startPiece, start, game.board, player.isWhite());
 
                                 // Check if destination coordinate is in the list of possible moves
                                 if (possibleMoves.size() > 0) {
@@ -155,7 +154,7 @@ public class Main {
                                         System.out.println("Comparing: " + destination[0] + "," + destination[1] + " with " + temp[0] + "," + temp[1]);
                                         if (Arrays.equals(destination, temp)) {
                                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
-                                            board.performMove(move);
+                                            game.board.performMove(move);
 
                                             if (isKill) {
                                                 /* Reset kill counter */
