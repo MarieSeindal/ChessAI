@@ -3,8 +3,7 @@ import Interfaces.I_TUI;
 import TUI.TUI;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -13,19 +12,24 @@ public class Main {
     private static Game game;
     private static Board board;
     private static Scanner sc;
-    private static boolean turn; //Initializing variables
+    private static boolean whiteTurn; //Initializing variables
     private static Player p1, p2;
+    private static int[] gameModeSelection;
+    private static boolean isP1White;
+    private static char startPiece;
+    private static char destinationPiece;
 
     public static void main(String[] args) {
 
-//        testMovesetFunctions();
+        //testMovesetFunctions();
         tui = new TUI();
         sc = new Scanner(System.in);
-        int gameModeSelection[];
         Fen resumeFen;
-        char startPiece = ' ';
-        char destinationPiece = ' ';
+        startPiece = ' ';
+        destinationPiece = ' ';
         Player player;
+        isP1White = true;
+        whiteTurn = true;
 
         // Prompt for resume game
         resumeFen = tui.showResumeMenu(sc);
@@ -33,47 +37,39 @@ public class Main {
         // Prompt for gamemode
         gameModeSelection = tui.showStartMenu(sc);
 
-        boolean p1White = (gameModeSelection[1] == 1? turn = true : false);
-
-        if (p1White) {
-            turn = true;
-        } else {
-            turn = false;
+        if (gameModeSelection[1] == 1) { // p2 is white
+            isP1White = false;
         }
 
         switch (gameModeSelection[0]) {
             case 1 -> { // Human vs AI
-                p1 = new Player(p1White, false);
-                p2 = new Player(!p1White, true);
+                p1 = new Player(isP1White, false);
+                p2 = new Player(!isP1White, true);
             }
             case 2 -> { // Human vs Human
-                p1 = new Player(p1White, false);
-                p2 = new Player(!p1White, false);
+                p1 = new Player(isP1White, false);
+                p2 = new Player(!isP1White, false);
             }
             case 3 -> { // AI vs AI
-                p1 = new Player(p1White, true);
-                p2 = new Player(!p1White, true);
+                p1 = new Player(isP1White, true);
+                p2 = new Player(!isP1White, true);
             }
             default -> System.out.println("Error in game mode selection: " + gameModeSelection[0]);
         }
 
-        /*System.out.println("p1 is white: "+p1.isWhite());
-        System.out.println("p2 is white: "+p2.isWhite());*/
-
         board = new Board();
-        game = new Game(board, p1, p2, turn);
+        game = new Game(board, p1, p2, whiteTurn);
 
         // Resume game
         if (resumeFen != null) {
-            System.out.println("Fen player turn: "+resumeFen.getPlayerTurn());
-            boolean fTurn = resumeFen.getPlayerTurn();
+            whiteTurn = resumeFen.getPlayerTurn();
             board.setBoard(resumeFen.getBoardLayout());
-            if (fTurn) {
-                game.setTurn(true);
-                turn = false;
+            if (!whiteTurn) {
+                game.setWhiteTurn(true);
+                whiteTurn = false;
             } else {
-                game.setTurn(false);
-                turn = true;
+                game.setWhiteTurn(false);
+                whiteTurn = true;
             }
             game.setTurnsSinceKill(resumeFen.getTurnsSinceKill());
             game.setTotalTurns(resumeFen.getTotalTurns());
@@ -93,7 +89,7 @@ public class Main {
                 break;
             }
 
-            player = game.getPlayerTurn(turn);
+            player = game.getPlayerTurn(whiteTurn);
 
             //System.out.println("P1 is black: "+gameModeSelection[1]+" = "+(gameModeSelection[1] == 1? true : false)+". Is currentplayer P1 "+(player==game.getP1() ? true : false));
 
@@ -109,14 +105,15 @@ public class Main {
                 game.setTotalTurns(game.getTotalTurns()+1);
             }
 
-            tui.printBoard(board.getBoardArray(), turn);
+            tui.printBoard(board.getBoardArray(), whiteTurn);
 
             if (!player.isAi) { // Human player's turn
 
                 int[] movePos;
+                boolean validMove = false;
 
                 // Get start position and destination
-                while (true) {
+                while (!validMove) {
 
                     System.out.println("Please enter your move eg. (a2 a3) ");
                     movePos = tui.getMovePosition(sc);
@@ -134,28 +131,55 @@ public class Main {
                         System.out.println("Error: Invalid destination selected!");
                     }
 
-                    /* Check if chosen board position is empty */
+                    // Check if chosen board position is empty
                     if (startPiece != ' ') {
 
                         boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
+                        ArrayList<int[]> possibleMoves;
 
                         /* Check if chosen destination position is empty or enemy */
                         if (destinationPiece == ' ' || isKill) {
-                            Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
-                            board.performMove(move);
 
-                            if (isKill) {
-                                /* Reset kill counter */
-                                game.setTurnsSinceKill(0);
-                            } else {
-                                game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
+                            // Check if move is legal
+                            int[] start = new int[] {movePos[0], movePos[1]};
+                            int[] destination = new int[] {movePos[2], movePos[3]};
+                            System.out.println("New move info: Piece: "+ startPiece + " | " + start[0]+","+start[1]+ "->" + destination[0] + "," +destination[1]);
+
+                            try {
+                                possibleMoves = game.pieceMoveset(startPiece, start, board, player.isWhite());
+
+                                // Check if destination coordinate is in the list of possible moves
+                                if (possibleMoves.size() > 0) {
+                                    for (int[] temp : possibleMoves) {
+                                        // Check for match
+                                        System.out.println("Comparing: " + destination[0] + "," + destination[1] + " with " + temp[0] + "," + temp[1]);
+                                        if (Arrays.equals(destination, temp)) {
+                                            Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
+                                            board.performMove(move);
+
+                                            if (isKill) {
+                                                /* Reset kill counter */
+                                                game.setTurnsSinceKill(0);
+                                            } else {
+                                                game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
+                                            }
+
+                                            System.out.println("Move complete!");
+                                            System.out.println("------------------------");
+                                            // Next player's turn
+                                            whiteTurn = !whiteTurn;
+                                            validMove = true;
+                                        }
+                                    }
+                                    if (!validMove) {
+                                        System.out.println("Move is not legal!");
+                                    }
+                                } else {
+                                        System.out.println("Move is not legal!");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Move is not legal!");
                             }
-
-                            System.out.println("Move complete!");
-                            System.out.println("------------------------");
-                            turn = !turn;
-                            // Next player's turn
-                            break;
                         }
                     }
                 }
@@ -163,7 +187,7 @@ public class Main {
             } else { // AI player's turn
                 // todo finish AI player
                 tui.printBoard(board.getBoardArray(), false);
-                turn = !turn;
+                whiteTurn = !whiteTurn;
             }
         }
 
@@ -220,7 +244,6 @@ public class Main {
         checkList1.add(new int[]{2,4}); checkList1.add(new int[]{4,2});
         checkList1.add(new int[]{4,4}); checkList1.add(new int[]{5,5}); checkList1.add(new int[]{6,6});
         checkList1.add(new int[]{2,2}); checkList1.add(new int[]{1,1}); checkList1.add(new int[]{0,0});
-
 
         // black queen test
         int[] location2 = new int[]{5,6};

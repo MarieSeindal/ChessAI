@@ -1,6 +1,6 @@
 public class Player {
 
-    boolean white;
+    private boolean white;
     boolean doneCastling = false; //Dansk: doneRokade
     boolean isAi;
 

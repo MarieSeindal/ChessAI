@@ -792,20 +792,21 @@ public class Game {
         this.p2 = p2;
     }
 
-    public Player getPlayerTurn(boolean turn) {
+    public Player getPlayerTurn(boolean whiteTurn) {
 
-        if (turn) {
-            return p1;
+        if (whiteTurn) {
+             return p1.isWhite()? p1 : p2;
+        } else {
+            return !p1.isWhite()? p1 : p2;
         }
-        return p2;
     }
 
     public boolean getTurn() {
         return turn;
     }
 
-    public void setTurn(boolean turn) {
-        this.turn = turn;
+    public void setWhiteTurn(boolean whiteTurn) {
+        this.turn = whiteTurn;
     }
 
     public int getTurnsSinceKill() {
