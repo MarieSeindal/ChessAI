@@ -20,6 +20,10 @@ public class Game {
         this.turn = turn;
     }
 
+    public void addUsedBoard(Board newBoard){
+        usedBoards.add(board);
+    }
+
 //    public void initializeGame() {
 //        // Setup settings for the game before starting the game
 //    }
@@ -156,7 +160,7 @@ public class Game {
                 break;
             }
             // check next spot
-            int checkNextSport = Game.checkLocation(white, currentBoard.board[ location[0] ][ (location[1] - counter) ]);
+            int checkNextSport = Game.checkLocation(white, currentBoard.boardArray[ location[0] ][ (location[1] - counter) ]);
 
             // 01 - enemy
             if (checkNextSport == -1){
@@ -198,7 +202,7 @@ public class Game {
                 break;
             }
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] ][ (location[1] + counter) ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] ][ (location[1] + counter) ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -249,7 +253,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ (location[0] - counter) ][ location[1] ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ (location[0] - counter) ][ location[1] ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -292,7 +296,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ (location[0] + counter) ][ location[1] ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ (location[0] + counter) ][ location[1] ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -343,7 +347,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] + counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] - counter ][ location[1] + counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -385,7 +389,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] - counter ][ location[1] - counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] - counter ][ location[1] - counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -428,7 +432,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] + counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] + counter ][ location[1] + counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){
@@ -471,7 +475,7 @@ public class Game {
             }
 
             // check next spot
-            int checkNextSpot = Game.checkLocation(white, currentBoard.board[ location[0] + counter ][ location[1] - counter ]);
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] + counter ][ location[1] - counter ]);
 
             // 01 - enemy
             if (checkNextSpot == -1){

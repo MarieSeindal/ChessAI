@@ -63,7 +63,7 @@ public class Main {
         // Resume game
         if (resumeFen != null) {
             whiteTurn = resumeFen.getPlayerTurn();
-            board.setBoard(resumeFen.getBoardLayout());
+            board.setBoardArray(resumeFen.getBoardLayout());
             if (!whiteTurn) {
                 game.setWhiteTurn(true);
                 whiteTurn = false;
@@ -186,7 +186,18 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                tui.printBoard(board.getBoardArray(), false);
+                AI ai = new AI(game.board, false);
+
+                ChessNode firstNode = new ChessNode(game.board);
+                ai.runAI(firstNode, false);
+
+                //Check two boards and find the piece that moved
+
+                Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
+                // TODO: maybe we need to rethink this
+                game.addUsedBoard(game.board);
+                game.board.performMove(tempMove);
+                tui.printBoard(game.board.getBoardArray(), false);
                 whiteTurn = !whiteTurn;
             }
         }
@@ -216,13 +227,13 @@ public class Main {
         int[] location1 = new int[]{3,3};
         char[][] tBoard1 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', 'b', ' ', ' ', ' '},
-                {' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', 'B', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {'R', 'N', ' ', ' ', 'K', 'B', 'N', 'R'}};
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', 'b', ' ', ' ', ' '},
+                        {' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', 'B', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {'R', 'N', ' ', ' ', 'K', 'B', 'N', 'R'}};
         // should give -
         // 0,3 ; 1,3 ; 2,3 ; 4,3 ; 5,3 ; 6,3 ; 7,3
         // 3,0 ; 3,1 ; 3,2 ; 3,4 ; 3,5 ; 3,6 ; 3,7
@@ -245,17 +256,18 @@ public class Main {
         checkList1.add(new int[]{4,4}); checkList1.add(new int[]{5,5}); checkList1.add(new int[]{6,6});
         checkList1.add(new int[]{2,2}); checkList1.add(new int[]{1,1}); checkList1.add(new int[]{0,0});
 
+
         // black queen test
         int[] location2 = new int[]{5,6};
         char[][] tBoard2 =
                 {{'r', 'n', 'b', ' ', ' ', 'b', 'n', 'r'},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', 'k', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', 'q', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', 'k', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', 'q', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
         // should give -
         // 1,6 ; 2,6 ; 3,6 ; 4,6 ; 6,6 ; 7,6
         // 5,0 ; 5,1 ; 5,2 ; 5,3 ; 5,4 ; 5,5 ; 5,7
@@ -280,13 +292,13 @@ public class Main {
         int[] location3 = new int[]{2,2};
         char[][] tBoard3 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', 'R', ' ', ' ', 'B', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', 'N', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', 'K', 'B', 'N', 'R'}};
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', 'R', ' ', ' ', 'B', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', 'N', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' ', 'K', 'B', 'N', 'R'}};
         // should give -
         // 0,2 ; 1,2 ; 3,2 ; 4,2 ;
         // 2,0 ; 2,1 ; 2,3 ; 2,4 ;
@@ -303,7 +315,7 @@ public class Main {
         // black tower test
         int[] location4 = new int[]{2,2};
         char[][] tBoard4 =
-                        {{' ', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
+                {{' ', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', 'r', ' ', ' ', 'B', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -325,7 +337,7 @@ public class Main {
         // white b test
         int[] location5 = new int[]{3,2};
         char[][] tBoard5 =
-                        {{'r', 'n', 'b', ' ', 'k', 'b', 'n', 'r'},
+                {{'r', 'n', 'b', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', 'B', ' ', ' ', ' ', ' ', ' '},
@@ -347,7 +359,7 @@ public class Main {
         // black b test
         int[] location6 = new int[]{3,2};
         char[][] tBoard6 =
-                        {{'r', 'n', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{'r', 'n', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', 'b', ' ', ' ', ' ', ' ', ' '},
@@ -369,7 +381,7 @@ public class Main {
         // white n test
         int[] location7 = new int[]{3,2};
         char[][] tBoard7 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '},
                         {' ', ' ', 'N', ' ', ' ', ' ', ' ', ' '},
@@ -388,7 +400,7 @@ public class Main {
         // black n test
         int[] location8 = new int[]{3,2};
         char[][] tBoard8 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '},
                         {' ', ' ', 'n', ' ', ' ', ' ', ' ', ' '},
@@ -406,7 +418,7 @@ public class Main {
         // black p test
         int[] location9 = new int[]{1,2};
         char[][] tBoard9 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', 'p', ' ', ' ', ' ', ' ', ' '},
                         {' ', 'r', ' ', 'N', 'Q', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -423,7 +435,7 @@ public class Main {
         // white p test
         int[] location10 = new int[]{6,2};
         char[][] tBoard10 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'Q', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -440,7 +452,7 @@ public class Main {
         // white k test
         int[] location11 = new int[]{4,3};
         char[][] tBoard11 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'r', ' ', ' ', ' '},
@@ -459,7 +471,7 @@ public class Main {
         // black k test
         int[] location12 = new int[]{4,3};
         char[][] tBoard12 =
-                        {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
+                {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                         {' ', ' ', ' ', ' ', 'b', ' ', ' ', ' '},
@@ -480,7 +492,7 @@ public class Main {
         boolean output = false;
 
         // test 1 - white q
-        testBoard.setBoard(tBoard1);
+        testBoard.setBoardArray(tBoard1);
         testValues = Game.pieceMoveset('Q', location1, testBoard, true);
         output = checkList1.containsAll(testValues);
         System.out.println("white q test values : ");
@@ -490,7 +502,7 @@ public class Main {
         System.out.println("did white q pass the test? : " + output);
 
         // test 2 - black q
-        testBoard.setBoard(tBoard2);
+        testBoard.setBoardArray(tBoard2);
         testValues = Game.pieceMoveset('q', location2, testBoard, false);
         output = checkList2.containsAll(testValues);
         System.out.println("black q test values : ");
@@ -500,7 +512,7 @@ public class Main {
         System.out.println("did black q pass the test? : " + output);
 
         // test 3 - white r
-        testBoard.setBoard(tBoard3);
+        testBoard.setBoardArray(tBoard3);
         testValues = Game.pieceMoveset('R', location3, testBoard, true);
         output = checkList3.containsAll(testValues);
         System.out.println("white r test values : ");
@@ -510,7 +522,7 @@ public class Main {
         System.out.println("did white r pass the test? : " + output);
 
         // test 4 - black r
-        testBoard.setBoard(tBoard4);
+        testBoard.setBoardArray(tBoard4);
         testValues = Game.pieceMoveset('r', location4, testBoard, false);
         output = checkList4.containsAll(testValues);
         System.out.println("black r test values : ");
@@ -520,7 +532,7 @@ public class Main {
         System.out.println("did black r pass the test? : " + output);
 
         // test 5 - white b
-        testBoard.setBoard(tBoard5);
+        testBoard.setBoardArray(tBoard5);
         testValues = Game.pieceMoveset('B', location5, testBoard, true);
         output = checkList5.containsAll(testValues);
         System.out.println("white b test values : ");
@@ -530,7 +542,7 @@ public class Main {
         System.out.println("did white b pass the test? : " + output);
 
         // test 6 - black b
-        testBoard.setBoard(tBoard6);
+        testBoard.setBoardArray(tBoard6);
         testValues = Game.pieceMoveset('b', location6, testBoard, false);
         output = checkList6.containsAll(testValues);
         System.out.println("black b test values : ");
@@ -540,7 +552,7 @@ public class Main {
         System.out.println("did black b pass the test? : " + output);
 
         // test 7 - white n
-        testBoard.setBoard(tBoard7);
+        testBoard.setBoardArray(tBoard7);
         testValues = Game.pieceMoveset('N', location7, testBoard, true);
         output = checkList7.containsAll(testValues);
         System.out.println("white n test values : ");
@@ -550,7 +562,7 @@ public class Main {
         System.out.println("did white n pass the test? : " + output);
 
         // test 8 - black n
-        testBoard.setBoard(tBoard8);
+        testBoard.setBoardArray(tBoard8);
         testValues = Game.pieceMoveset('n', location8, testBoard, false);
         output = checkList8.containsAll(testValues);
         System.out.println("black n test values : ");
@@ -560,7 +572,7 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 9 - black p
-        testBoard.setBoard(tBoard9);
+        testBoard.setBoardArray(tBoard9);
         testValues = Game.pieceMoveset('p', location9, testBoard, false);
         output = checkList9.containsAll(testValues);
         System.out.println("black p test values : ");
@@ -570,7 +582,7 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 10 - white p
-        testBoard.setBoard(tBoard10);
+        testBoard.setBoardArray(tBoard10);
         testValues = Game.pieceMoveset('P', location10, testBoard, true);
         output = checkList10.containsAll(testValues);
         System.out.println("white p test values : ");
@@ -580,7 +592,7 @@ public class Main {
         System.out.println("did white p pass the test? : " + output);
 
         // test 11 - white k
-        testBoard.setBoard(tBoard11);
+        testBoard.setBoardArray(tBoard11);
         testValues = Game.pieceMoveset('K', location11, testBoard, true);
         output = checkList11.containsAll(testValues);
         System.out.println("white k test values : ");
@@ -590,7 +602,7 @@ public class Main {
         System.out.println("did white k pass the test? : " + output);
 
         // test 12 - black k
-        testBoard.setBoard(tBoard12);
+        testBoard.setBoardArray(tBoard12);
         testValues = Game.pieceMoveset('k', location12, testBoard, false);
         output = checkList12.containsAll(testValues);
         System.out.println("black k test values : ");
@@ -605,7 +617,7 @@ public class Main {
         Player p1 = new Player(true, false);
         Player p2 = new Player(false, false);
 
-        Game testGame = new Game(new Board(), p1, p2,false);
+        Game testGame = new Game(new Board(), p1, p2, false);
 
         // temp, will be deleted after testing
         char[][] tBoard = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
