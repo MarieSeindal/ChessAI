@@ -13,6 +13,7 @@ public class AI {
     public Board bestMoveBoard;
     public int nodeScore = -10000;
 
+
     public AI(){
         this.currentBoard = new Board();
         this.isWhite = true;
@@ -25,9 +26,10 @@ public class AI {
 
 
 
-    public void runAI(ChessNode firstNode) {
+
+    public void runAI(ChessNode firstNode, boolean white) {
         System.out.println("Running AI!");
-        minimax(firstNode, 0,true, alpha, beta);
+        minimax(firstNode, 0,white, alpha, beta);
     }
 
     public Board getBestMoveBoard(){
@@ -64,12 +66,25 @@ public class AI {
         System.out.println("Max beta " + beta); //todo debug print
 
         //todo Fill children to list //Ad children to the parents arraylist
-        fillChildren(nodeToSearch);
+        fillChildren(nodeToSearch, true);
 
         for (ChessNode child : nodeToSearch.getChildren()) {
             value = minimax(child, depth + 1, false, alpha, beta);
             bestValue = max(bestValue, value);
             alpha = max(alpha, bestValue);
+
+            //Get best move
+            if (depth == 1){
+                System.out.println("Hurray we made it into if depth = 1 ");
+
+                if ( bestValue > nodeScore){ //if we find a best value that is better than the recorded nodeScore, that move
+                    System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
+                    nodeScore = bestValue;
+
+                    // construct best moveBoard
+                    bestMoveBoard = nodeToSearch.getBoard();
+                }
+            }
 
             if (beta <= alpha) break;
         }
@@ -83,7 +98,7 @@ public class AI {
         System.out.println("Min beta " + beta);
 
         //todo Fill children to list //Ad children to the parents arraylist
-        fillChildren(nodeTosearch);
+        fillChildren(nodeTosearch, false);
 
         for (ChessNode child : nodeTosearch.getChildren()) {
             value = minimax(child, depth + 1, true, alpha, beta);
@@ -110,7 +125,7 @@ public class AI {
     }
 
 
-    public void fillChildren(ChessNode parent){
+    public void fillChildren(ChessNode parent, boolean white){
 
         // get parrent board
         char[][] boardParent = parent.getBoard().getBoardArray();
@@ -126,10 +141,10 @@ public class AI {
                 if(piece != ' ') {
 
                     //Check each piece for each possible move.
-                    if (isWhite && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
+                    if (white && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, isWhite);
+                        tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, true);
 
                         // we don't add anything to the parent, if there is no moves to make
                         if (tempListOfMoves.size() >= 1) {
@@ -137,8 +152,8 @@ public class AI {
                             for (int[] moveFound : tempListOfMoves) {
 
                                 //When a move is found, clone it
-                                Board copyOfBoard = parent.getBoard().clone();
-                                //ChessNode copy = parent.clone(); //make copy
+                                Board copyOfBoard = parent.getBoard().cloning();
+                                //ChessNode copy = parent.cloning(); //make copy
                                 ChessNode copy = new ChessNode(copyOfBoard); //make copy
 
                                 //todo Figure out if its a special move. Now assumes that AI cannot make special moves
@@ -154,27 +169,33 @@ public class AI {
                             }
                         }
                         //isWhite = !isWhite;
-                    } else if (!isWhite && Character.isLowerCase(piece)) { //black
+                    } else if (!white && Character.isLowerCase(piece)) { //black
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, isWhite);
-                        for (int[] moveFound : tempListOfMoves) {
+                        tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, false);
 
-                            //When a move is found, clone it
-                            ChessNode copy = parent.clone(); //make copy
+                        // we don't add anything to the parent, if there is no moves to make
+                        if (tempListOfMoves.size() >= 1) {
 
-                            //todo Figure out if its a special move. Now assumes that AI cannot make special moves
+                            for (int[] moveFound : tempListOfMoves) {
 
-                            //Create the move
-                            Move makeMove = new Move(moveFound, coords, false, piece, currentBoard.getPiece(rows, column));
+                                //When a move is found, clone it
+                                Board copyOfBoard = parent.getBoard().cloning();
+                                //ChessNode copy = parent.cloning(); //make copy
+                                ChessNode copy = new ChessNode(copyOfBoard); //make copy
 
-                            //Then execute the move on the clone
-                            copy.getBoard().performMove(makeMove); // Make move
+                                //todo Figure out if its a special move. Now assumes that AI cannot make special moves
 
-                            //Add copy to list
-                            parent.addChildren(copy); //add child to the arraylist
+                                //Create the move
+                                Move makeMove = new Move(moveFound, coords, false, piece, currentBoard.getPiece(rows, column));
+
+                                //Then execute the move on the clone
+                                copy.getBoard().performMove(makeMove); // Make move
+
+                                //Add copy to list
+                                parent.addChildren(copy); //add child to the arraylist
+                            }
                         }
-                        //isWhite = !isWhite;
                     }
                 }
                 column++;

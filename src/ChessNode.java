@@ -36,7 +36,7 @@ public class ChessNode implements Serializable {
         this.children.add(child);
     }
 
-    public ChessNode clone() { //todo tjek op på hvilke klasser der skal være serialisable
+    public ChessNode cloning() { //todo tjek op på hvilke klasser der skal være serialisable
         //todo husk kilde: http://javatechniques.com/public/java/docs/basics/faster-deep-copy.html
         ChessNode obj = null;
         try {

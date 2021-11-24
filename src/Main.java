@@ -84,7 +84,7 @@ public class Main {
                 game.setTotalTurns(game.getTotalTurns()+1);
             }
 
-            tui.printBoard(board.getBoardArray(), !turn);
+            tui.printBoard(game.board.getBoardArray(), !turn);
 
             if (!player.isAi) { // Human player's turn
 
@@ -98,13 +98,13 @@ public class Main {
 
                     // Validate piece based on user input
                     try {
-                        startPiece = board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
+                        startPiece = game.board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid piece");
                     }
 
                     try {
-                        destinationPiece = board.getPiece(movePos[2], movePos[3]);
+                        destinationPiece = game.board.getPiece(movePos[2], movePos[3]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid destination selected!");
                     }
@@ -112,12 +112,14 @@ public class Main {
                     /* Check if chosen board position is empty */
                     if (startPiece != ' ') {
 
-                        boolean isKill = board.isEnemyPiece(player.isWhite(), destinationPiece);
+                        boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
 
                         /* Check if chosen destination position is empty or enemy */
                         if (destinationPiece == ' ' || isKill) {
                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
-                            board.performMove(move);
+                            game.board.performMove(move);
+                            // TODO: maybe we need to rethink this
+                            game.usedBoards.add(game.board);
 
                             if (isKill) {
                                 /* Reset kill counter */
@@ -139,16 +141,18 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(board, true);
+                AI ai = new AI(game.board, false);
 
-                ChessNode firstNode = new ChessNode(board);
-                ai.runAI(firstNode);
+                ChessNode firstNode = new ChessNode(game.board);
+                ai.runAI(firstNode, false);
 
                 //Check two boards and find the piece that moved
 
-
-                board.performMove(board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard()));
-                tui.printBoard(board.getBoardArray(), false);
+                Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
+                // TODO: maybe we need to rethink this
+                game.addUsedBoard(game.board);
+                game.board.performMove(tempMove);
+                tui.printBoard(game.board.getBoardArray(), false);
                 turn = !turn;
             }
         }

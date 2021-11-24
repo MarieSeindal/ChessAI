@@ -16,6 +16,7 @@ public class Game {
     public Game() {
 
         this.board = new Board();
+        usedBoards.add(board);
         this.p1 = new Player();
         this.p2 = new Player();;
         this.turn = false;
@@ -24,12 +25,15 @@ public class Game {
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
 
         this.board = startingBoard;
+        usedBoards.add(board);
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
     }
 
-
+    public void addUsedBoard(Board newBoard){
+        usedBoards.add(board);
+    }
 
 //    public void initializeGame() {
 //        // Setup settings for the game before starting the game

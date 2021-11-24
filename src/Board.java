@@ -4,16 +4,22 @@ public class Board implements Serializable {
 
     char[][] boardArray;
 
+
+
+    public Board(char[][] boardArray){
+        this.boardArray = boardArray;
+    }
+
     public Board(){
-//        this.boardArray = new char[][] {
-//                {' ',' ',' ',' ','k',' ',' ',' '},
-//                {' ','p',' ',' ',' ',' ',' ',' '},
-//                {' ',' ',' ',' ',' ',' ',' ',' '},
-//                {' ',' ',' ',' ',' ',' ',' ',' '},
-//                {' ',' ',' ',' ',' ',' ',' ',' '},
-//                {' ',' ',' ',' ',' ',' ',' ',' '},
-//                {' ','P',' ',' ',' ',' ',' ',' '},
-//                {' ',' ',' ',' ','K',' ',' ',' '}};
+        //        this.boardArray = new char[][] {
+        //                {' ',' ',' ',' ','k',' ',' ',' '},
+        //                {' ','p',' ',' ',' ',' ',' ',' '},
+        //                {' ',' ',' ',' ',' ',' ',' ',' '},
+        //                {' ',' ',' ',' ',' ',' ',' ',' '},
+        //                {' ',' ',' ',' ',' ',' ',' ',' '},
+        //                {' ',' ',' ',' ',' ',' ',' ',' '},
+        //                {' ','P',' ',' ',' ',' ',' ',' '},
+        //                {' ',' ',' ',' ','K',' ',' ',' '}};
 
         this.boardArray = new char[][] {
                 {'r','n','b','q','k','b','n','r'},
@@ -25,12 +31,6 @@ public class Board implements Serializable {
                 {'P','P','P','P','P','P','P','P'},
                 {'R','N','B','Q','K','B','N','R'}};
     }
-
-    public Board(char[][] boardArray){
-        this.boardArray = boardArray;
-    }
-
-
 
     public void performMove(Move move) {
 
@@ -119,7 +119,7 @@ public class Board implements Serializable {
         return output.toString();
     }
 
-    public Board clone() { //todo tjek op på hvilke klasser der skal være serialisable
+    public Board cloning() { //todo tjek op på hvilke klasser der skal være serialisable
         //todo husk kilde: http://javatechniques.com/public/java/docs/basics/faster-deep-copy.html
         Board obj = null;
         try {
