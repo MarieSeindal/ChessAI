@@ -4,11 +4,19 @@ public class AIPlayer {
     boolean doneCastling = false; //Dansk: doneRokade
     boolean isAi;
 
+    public AIPlayer(){
+        this.isAi = true;
+        this.white = true;
+
+    }
+
     public AIPlayer(boolean colorWhite, boolean isAi){
         this.isAi = isAi;
         this.white = colorWhite;
 
     }
+
+
 
     public boolean isWhite() {
         return white;

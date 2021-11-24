@@ -3,6 +3,9 @@ import java.util.ArrayList;
 
 public class ChessNode implements Serializable {
 
+    Board board;
+    ArrayList<ChessNode> children;
+
     public Board getBoard() {
         return board;
     }
@@ -19,18 +22,21 @@ public class ChessNode implements Serializable {
         this.children = children;
     }
 
-    Board board;
-    ArrayList<ChessNode> children;
+    public ChessNode(){
+        children = new ArrayList<>();
+        this.board = new Board();
+    }
 
     public ChessNode(Board boardInNode){
-
+        children = new ArrayList<>();
+        this.board = boardInNode;
     }
 
     public void addChildren(ChessNode child) {
         this.children.add(child);
     }
 
-    public ChessNode clone() { //todo tjek op på hvilke klasser der skal være serialisable
+    public ChessNode cloning() { //todo tjek op på hvilke klasser der skal være serialisable
         //todo husk kilde: http://javatechniques.com/public/java/docs/basics/faster-deep-copy.html
         ChessNode obj = null;
         try {

@@ -13,8 +13,18 @@ public class Game {
     ArrayList<String> castling = new ArrayList<>();
     String enPassantTarget;
 
+    public Game() {
+
+        this.board = new Board();
+        usedBoards.add(board);
+        this.p1 = new Player();
+        this.p2 = new Player();;
+        this.turn = false;
+    }
+
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
         this.board = startingBoard;
+        usedBoards.add(board);
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
@@ -530,6 +540,12 @@ public class Game {
                 // black is in the top, so 1 down
                 // (y,x)
 
+                // 00 - check if we go off the board
+                if(location[0] - 1 <= -1)
+                    checkSpot = 1;
+                else
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+
                 // 01 - add one spot forward
                 checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                 if(checkSpot == 0 && location[0] + 1 <= 7)
@@ -565,8 +581,13 @@ public class Game {
 
                 // white is in the bottom, so 1 up
 
+                // 00 - check if we go off the board
+                if(location[0] - 1 <= -1)
+                    checkSpot = 1;
+                else
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
+
                 // 01 - add one spot forward
-                checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
                 if(checkSpot == 0 && location[0] - 1 >= 0)
                     listOfMoves.add(new int[]{location[0] -1, location[1]});
 
@@ -615,8 +636,6 @@ public class Game {
 
                 // Diagonal
                 listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
-
-                System.out.println("Queen moves calculated");
                 break;
             // endregion
             case 'r':
@@ -627,7 +646,6 @@ public class Game {
             case 'b':
             case 'B':
                 listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
-                System.out.println("Bishop moves calculated");
                 break;
             case 'n':
             case 'N':

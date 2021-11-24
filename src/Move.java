@@ -26,6 +26,8 @@ public class Move {
 
     }
 
+
+
     // check if the value from "pieceGeneralMoveset", can be used
     // or if there is anything in it's way
     // TODO: write this function

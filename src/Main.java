@@ -120,13 +120,13 @@ public class Main {
 
                     // Validate piece based on user input
                     try {
-                        startPiece = board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
+                        startPiece = game.board.checkStartPosition(player.isWhite(), movePos[0], movePos[1]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid piece");
                     }
 
                     try {
-                        destinationPiece = board.getPiece(movePos[2], movePos[3]);
+                        destinationPiece = game.board.getPiece(movePos[2], movePos[3]);
                     } catch (Exception e) {
                         System.out.println("Error: Invalid destination selected!");
                     }
