@@ -4,20 +4,15 @@ public class Player {
     boolean doneCastling = false; //Dansk: doneRokade
     boolean isAi;
 
-
-
     public Player(){
         this.white = true;
         this.isAi = true;
     }
 
-
     public Player(boolean colorWhite, boolean isAi) {
         this.isAi = isAi;
         this.white = colorWhite;
     }
-
-
 
     public boolean isWhite() {
         return white;

@@ -24,14 +24,14 @@ public class Game {
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
         this.board = startingBoard;
-        usedBoards.add(board);
+        this.usedBoards.add(board);
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
     }
 
     public void addUsedBoard(Board newBoard){
-        usedBoards.add(board);
+        usedBoards.add(newBoard);
     }
 
 //    public void initializeGame() {
@@ -58,13 +58,16 @@ public class Game {
                 // 002 - set the locations of the kings, when we see them
 
                 // set the black king location, if we see it
-                if( currentBoard.getPiece(j,i) == 'k' )
+                if( currentBoard.getPiece(i,j) == 'k' )
                     blackKingLocation = new int[]{i,j};
+
                 // set the white king location, if we see it
-                if( currentBoard.getPiece(j,i) == 'K' )
+                if( currentBoard.getPiece(i,j) == 'K' )
                     whiteKingLocation = new int[]{i,j};
 
-                if( checkLocation(!whiteTurnNow, currentBoard.getPiece(j,i)) == -1)
+                // get all locations of the Pieces
+
+                if( checkLocation(!whiteTurnNow, currentBoard.getPiece(i,j)) == -1)
                     listOfPieces.add(new int[]{i, j});
             }
         }
@@ -78,7 +81,7 @@ public class Game {
             // 004 - get all the spots the enemy can go to
             for (int[] x : listOfPieces) {
                 // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
-                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[1],x[0]), x, currentBoard, false) ) ;
+                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[0], x[1]), x, currentBoard, false) ) ;
             }
 
             // 005 - get our white king's moveset
@@ -108,7 +111,7 @@ public class Game {
             // 004 - get all the spots the enemy can go to
             for (int[] x : listOfPieces) {
                 // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
-                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[1],x[0]), x, currentBoard, true) ) ;
+                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[0], x[1]), x, currentBoard, true) ) ;
             }
 
             // 005 - get our black king's moveset
@@ -134,6 +137,7 @@ public class Game {
 
         return output;
     }
+
 
     /// boolean isYourPieceWhite - is the checker white ?
     /// char target - the char value of the spot, that we want to check
@@ -777,9 +781,9 @@ public class Game {
         return counter >= 3;
     }
 
-//    public boolean isMoveLegal() {
-//        return false;
-//    }
+    //    public boolean isMoveLegal() {
+    //        return false;
+    //    }
 
     // - - - - - Getters and setters - - - - - //
 
@@ -791,12 +795,12 @@ public class Game {
         this.board = board;
     }
 
-//    public Board[] getUsedBoards() {
-//        return usedBoards;
-//    }
-//    public void setUsedBoards(Board[] usedBoards) {
-//        this.usedBoards = usedBoards;
-//    }
+    //    public Board[] getUsedBoards() {
+    //        return usedBoards;
+    //    }
+    //    public void setUsedBoards(Board[] usedBoards) {
+    //        this.usedBoards = usedBoards;
+    //    }
 
     public Player getP1() {
         return p1;

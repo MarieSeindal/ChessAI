@@ -22,10 +22,12 @@ public class ChessNode implements Serializable {
         this.children = children;
     }
 
+
     public ChessNode(){
         children = new ArrayList<>();
         this.board = new Board();
     }
+
 
     public ChessNode(Board boardInNode){
         children = new ArrayList<>();
