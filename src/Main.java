@@ -20,6 +20,9 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // region everything we have
+
+
         //testMovesetFunctions();
         tui = new TUI();
         sc = new Scanner(System.in);
@@ -205,6 +208,8 @@ public class Main {
         // todo check if game is over?
         //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
         //sc.close();
+        // endregion
+
     }
 
     public static void arrayPrinter(ArrayList<int[]> input) {

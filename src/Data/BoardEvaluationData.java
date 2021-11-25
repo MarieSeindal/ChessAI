@@ -26,8 +26,30 @@ public class BoardEvaluationData {
         return kingTable[i][j];
     }
 
+    public static int[][] rotateTheTable180(int[][] input) {
+
+        int[][] output = new int[8][8];
+
+        int countY = 0;
+        int countX = 0;
+
+        for (int y = 7; y > -1; y--) {
+            int[] row = new int[8];
+            for (int x = 7; x > -1; x--) {
+                output[countY][countX] = input[y][x];
+
+                countX++;
+            }
+
+            countX = 0;
+            countY++;
+        }
+
+        return output;
+    }
+
     // Pawn position score
-    private static final int[][] pawnTable = {
+    public static final int[][] pawnTable = {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {7, 7, 13, 23, 26, 13, 7, 7},
             {-2, -2, 4, 12, 15, 4, -2, -2},
@@ -39,7 +61,7 @@ public class BoardEvaluationData {
     };
 
     // Rook position score
-    private static final int[][] rookTable = {
+    public static final int[][] rookTable = {
             {9, 9, 11, 10, 11, 9, 9, 9},
             {4, 6, 7, 9, 9, 7, 6, 4},
             {9, 10, 10, 11, 11, 10, 10, 9},
@@ -51,7 +73,7 @@ public class BoardEvaluationData {
     };
 
     // Bishop position score
-    private static final int[][] bishopTable = {
+    public static final int[][] bishopTable = {
             {2, 3, 4, 4, 4, 4, 3, 2},
             {4, 7, 7, 7, 7, 7, 7, 4},
             {3, 5, 6, 6, 6, 6, 5, 3},
@@ -63,7 +85,7 @@ public class BoardEvaluationData {
     };
 
     // Knight position score
-    private static final int[][] knightTable = {
+    public static final int[][] knightTable = {
             {-2, 2, 7, 9, 9, 7, 2, -2},
             {1, 4, 12, 13, 13, 12, 4, 1},
             {5, 11, 18, 19, 19, 18, 11, 5},
@@ -75,7 +97,7 @@ public class BoardEvaluationData {
     };
 
     // Queen position score
-    private static final int[][] queenTable = {
+    public static final int[][] queenTable = {
             {2, 3, 4, 3, 4, 3, 3, 2},
             {2, 3, 4, 4, 4, 4, 3, 2},
             {3, 4, 4, 4, 4, 4, 4, 3},
@@ -87,7 +109,7 @@ public class BoardEvaluationData {
     };
 
     // King position score
-    private static final int[][] kingTable = {
+    public static final int[][] kingTable = {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
