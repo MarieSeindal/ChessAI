@@ -40,6 +40,7 @@ public class Main {
             isP1White = false;
         }
 
+
         switch (gameModeSelection[0]) {
             case 1 -> { // Human vs AI
                 p1 = new Player(isP1White, false);

@@ -3,9 +3,6 @@ import Data.BoardEvaluationData;
 import java.lang.*;
 import java.util.ArrayList;
 
-import static java.lang.Integer.MAX_VALUE;
-import static java.lang.Integer.MIN_VALUE;
-
 public class AI {
 
     private static int maxDepth = 2;

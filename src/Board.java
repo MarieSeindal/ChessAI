@@ -54,8 +54,8 @@ public class Board implements Serializable {
 
     }
 
-    public char checkStartPosition(boolean isWhite, int x, int y) {
-        char piece = boardArray[x][y];
+    public char checkStartPosition(boolean isWhite, int y, int x) {
+        char piece = boardArray[y][x];
         if (isWhite && Character.isUpperCase(piece)) {
             return piece;
         } else if (!isWhite && Character.isLowerCase(piece)) {
@@ -64,8 +64,8 @@ public class Board implements Serializable {
         return ' ';
     }
 
-    public char getPiece(int x, int y) {
-        return boardArray[x][y];
+    public char getPiece(int y, int x) {
+        return boardArray[y][x];
     }
 
     // - - - - - Getters and setters - - - - - //
@@ -102,31 +102,6 @@ public class Board implements Serializable {
 
         return move;
 
-    }
-
-    public HashMap<Character, int[]> getPlayerPieces(boolean isWhite) {
-
-        HashMap<Character, int[]> pieceList = new HashMap<>();
-
-        for (int j = 0; j < boardArray.length-1; j++) {
-            for (int k = 0; k < boardArray[j].length-1; k++) {
-                if (!(boardArray[j][k] == ' ')) {
-                    if (Character.isUpperCase(boardArray[j][k]) && isWhite) { // White piece
-                        pieceList.put(Character.valueOf(boardArray[j][k]), new int[]{j, k});
-                    } else if (Character.isLowerCase(boardArray[j][k]) && !isWhite) { // Black piece
-                        pieceList.put(Character.valueOf(boardArray[j][k]), new int[]{j, k});
-                    }
-                }
-                /*if (Character.isUpperCase(boardArray[i][j])) {
-                    whitePieces++;
-                } else {
-                    blackPieces++;
-                }*/
-
-            }
-        }
-
-        return pieceList;
     }
 
     public String getString() {
