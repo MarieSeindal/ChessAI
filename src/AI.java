@@ -224,6 +224,44 @@ public class AI {
         return value;
     }
 
+
+    public int killEvaluation(char p) {
+
+        int evalScore = 0;
+
+        switch (p) {
+            case 'P': //White pawn
+            case 'p': //Black pawn
+                evalScore = 100;
+                break;
+            case 'R': //White rook
+            case 'r': //Black rook
+                evalScore = 500;
+                break;
+            case 'B': //White bishop
+            case 'b': //Black bishop
+                evalScore = 300;
+                break;
+            case 'N': //White knight
+            case 'n': //Black knight
+                evalScore = 300;
+                break;
+            case 'Q': //White queen
+            case 'q': //Black queen
+                evalScore = 900;
+                break;
+            case 'K': //White king
+            case 'k': //Black king
+                evalScore = 10000;
+                break;
+        }
+        return evalScore;
+    }
+
+
+    // region static Evaluation
+
+
     public int staticEvaluation(char p, int[] c) { // so far based on slide 11 in pptx week 6.
 
         int evalScore = 0;
@@ -294,6 +332,8 @@ public class AI {
     private int evaluateKing(int i, int j) {
         return 10000 + BoardEvaluationData.getKingValue(i, j);
     }
+
+    // endregion
 
 //- - - - - - - - - - - - - - - - - - - - //
 

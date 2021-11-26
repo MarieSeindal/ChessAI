@@ -519,6 +519,22 @@ public class Game {
         return listOfMoves;
     }
 
+    // return - only the moves that give kills
+    // currentBoard - a board obj, where we will check for kills
+    // moveset - all the moves that can be made
+    // white - are the player that is checking for kills white ?
+    public static ArrayList<int[]> killsFromMoveset(ArrayList<int[]> moveset, Board currentBoard, boolean white)
+    {
+        ArrayList<int[]> listOfKills = new ArrayList<int[]>();
+
+        for (int[] x: moveset) {
+            if(Game.checkLocation(white, currentBoard.boardArray[x[0]][x[1]]) == -1)
+                listOfKills.add(x);
+        }
+
+        return listOfKills;
+    }
+
     // gets the list of moves, that one piece can make (here we check the other pieces on the board too)
     // the piece can not go off of the board
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
