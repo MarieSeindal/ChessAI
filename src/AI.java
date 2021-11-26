@@ -3,29 +3,31 @@ import Data.BoardEvaluationData;
 import java.lang.*;
 import java.util.ArrayList;
 
+import static java.lang.Integer.MAX_VALUE;
+import static java.lang.Integer.MIN_VALUE;
+
 public class AI {
 
     private static int maxDepth = 2;
     protected Board currentBoard;
     private boolean isWhite = false;
-    private int alpha = -10000000;
-    private int beta = 10000000;
+    private int alpha = MIN_VALUE;
+    private int beta = MAX_VALUE;
     public Board bestMoveBoard;
-    public int nodeScore = -10000;
-
-    public AI() {
-        this.currentBoard = new Board();
-        this.isWhite = true;
-    }
 
     public AI(Board currentBoard, boolean isWhite) {
         this.currentBoard = currentBoard;
         this.isWhite = isWhite;
+        bestMoveBoard = currentBoard;
     }
 
-    public void runAI(ChessNode firstNode, boolean white) {
-        System.out.println("Running AI!");
-        minimax(firstNode, 0, white, alpha, beta);
+    public AI() {
+        this.currentBoard = new Board();
+    }
+
+    public void runAI(ChessNode firstNode) {
+        System.out.println("Running AI as " + (isWhite ? "white" : "black") + " player!");
+        minimax(firstNode, 0, isWhite, alpha, beta);
     }
 
     public Board getBestMoveBoard() {
@@ -36,90 +38,90 @@ public class AI {
         this.isWhite = isWhite;
     }
 
-    public int minimax(ChessNode nodeToSearch, int depth, boolean isMax, int alpha, int beta) {
+    public int minimax(ChessNode nodeToSearch, int depth, boolean isWhite, int alpha, int beta) {
 
-        System.out.println("Depth in minimax " + depth); //todo delete after use
+        //System.out.println("Depth in minimax " + depth); //todo delete after use
 
         // If leaf node, return static value of the board
         if (depth == maxDepth) {
-            System.out.println("Leaf return in depth " + depth);
-            return evaluateLeaf(); //todo. expand evaluateLeaf()
+            //System.out.println("Leaf return in depth " + depth);
+            return evaluateLeaf(bestMoveBoard, isWhite); //todo. expand evaluateLeaf()
         }
 
         // node in depth 0,2 ... straight numbers is max, as the algorithm runs the AI's turn.
-        else if (isMax) {
+        else if (isWhite) {
             return maximizer(nodeToSearch, depth, alpha, beta);
-        } else if (!isMax) { // node in depth 1,3 ... unequal numbers is min, as the algorithm runs the opponents turn.
+        } else if (!isWhite) { // node in depth 1,3 ... unequal numbers is min, as the algorithm runs the opponents turn.
             return minimizer(nodeToSearch, depth, alpha, beta);
         }
         return 0;
     }
 
     private int maximizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
-        int bestValue = alpha;
-        int value;
-        System.out.println("Max alpha " + alpha); //todo debug print
-        System.out.println("Max beta " + beta); //todo debug print
+        System.out.println("Hello from max with depth "+depth);
+        int bestValue;
+        int newValue;
+        bestValue = MIN_VALUE;
+        /*System.out.println("Max alpha " + alpha); //todo debug print
+        System.out.println("Max beta " + beta); //todo debug print*/
 
         //todo Fill children to list //Ad children to the parents arraylist
         fillChildren(nodeToSearch, true);
 
         for (ChessNode child : nodeToSearch.getChildren()) {
-            value = minimax(child, depth + 1, false, alpha, beta);
-            bestValue = max(bestValue, value);
-            alpha = max(alpha, bestValue);
+            newValue = minimax(child, depth + 1, false, alpha, beta);
 
-            //Get best move
-            if (depth == 1) {
-                System.out.println("Hurray we made it into if depth = 1 ");
+            if (newValue > bestValue) { //if we find a new best value that is better than the recorded nodeScore, that move
+                System.out.println("New max bestValue: " + newValue);
+                bestValue = newValue;
 
-                if (bestValue > nodeScore) { //if we find a best value that is better than the recorded nodeScore, that move
-                    System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
-                    nodeScore = bestValue;
-
+                if (depth == 1) {
                     // construct best moveBoard
                     bestMoveBoard = nodeToSearch.getBoard();
                 }
             }
 
-            if (beta <= alpha) break;
+            alpha = Math.max(alpha, bestValue);
+            if (beta <= alpha) {
+                return bestValue;
+            }
         }
         return bestValue;
     }
 
-    private int minimizer(ChessNode nodeTosearch, int depth, int alpha, int beta) {
-        int bestValue = beta;
-        int value;
-        System.out.println("Min alpha " + alpha);
-        System.out.println("Min beta " + beta);
+    private int minimizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
+        System.out.println("Hello from min with depth "+depth);
+        int bestValue;
+        int newValue;
+        bestValue = MAX_VALUE;
+        /*System.out.println("Min alpha " + alpha);
+        System.out.println("Min beta " + beta);*/
 
         //todo Fill children to list //Ad children to the parents arraylist
-        fillChildren(nodeTosearch, false);
+        fillChildren(nodeToSearch, false);
 
-        for (ChessNode child : nodeTosearch.getChildren()) {
-            value = minimax(child, depth + 1, true, alpha, beta);
-            bestValue = min(bestValue, value);
-            beta = min(beta, bestValue);
+        for (ChessNode child : nodeToSearch.getChildren()) {
+            newValue = minimax(child, depth + 1, true, alpha, beta);
+            if (newValue < bestValue) { //Check if we have a new min
+                System.out.println("New min bestValue: " + newValue);
+                bestValue = newValue;
 
-            //Get best move
-            if (depth == 1) {
-                System.out.println("Hurray we made it into if depth = 1 ");
-
-                if (bestValue > nodeScore) { //if we find a best value that is better than the recorded nodeScore, that move
-                    System.out.println("Hurray we made it into if nodeScore score " + nodeScore);
-                    nodeScore = bestValue;
-
+                if (depth == 1) {
+                    //System.out.println("Hurray we made it into if depth = 1 ");
                     // construct best moveBoard
-                    bestMoveBoard = nodeTosearch.getBoard();
+                    bestMoveBoard = nodeToSearch.getBoard();
                 }
             }
 
-            if (beta <= alpha) break;
+            beta = Math.min(beta, bestValue);
+            if (beta <= alpha) { //Useless branch - don't explore
+                return bestValue;
+            }
+
         }
-        System.out.println("Returning in AI, best val: " + bestValue);
+        //System.out.println("Returning in AI, best val: " + bestValue);
         return bestValue;
     }
-
 
     public void fillChildren(ChessNode parent, boolean white) {
 
@@ -200,18 +202,71 @@ public class AI {
         }
     }
 
+    // - - - - - Evaluate - - - - - //todo expand these
+    public int evaluateLeaf(Board b, boolean isWhite) {
 
-    // - - - - - Evaluate - - - - - //todo exapnd these
-    public int evaluateLeaf() { // so far based on slide 11 in pptx week 6.
-        int sum = 0;
+        char[][] boardArray = b.getBoardArray();
 
-        sum += evaluatePawn(0, 0);
-        sum += evaluateRook(0, 0);
-        sum += evaluateBishop(0, 0);
-        sum += evaluateKnight(0, 0);
-        sum += evaluateQueen(0, 0);
-        sum += evaluateKing(0, 0);
-        return sum;
+        int value = 0;
+
+        for (int i = 0; i < boardArray.length; i++) {
+            for (int j = 0; j < boardArray[i].length; j++) {
+                char c = boardArray[i][j];
+                if (!(c == ' ')) {
+                    value += staticEvaluation(c, new int[]{i, j});
+                }
+            }
+        }
+        if (!isWhite) {
+            value *= -1;
+        }
+        //System.out.println("board evaluation value is: " + value);
+        return value;
+    }
+
+    public int staticEvaluation(char p, int[] c) { // so far based on slide 11 in pptx week 6.
+
+        int evalScore = 0;
+
+        switch (p) {
+            case 'P': //White pawn
+                evalScore += evaluatePawn(c[0], c[1]);
+                break;
+            case 'R': //White rook
+                evalScore += evaluateRook(c[0], c[1]);
+                break;
+            case 'B': //White bishop
+                evalScore += evaluateBishop(c[0], c[1]);
+                break;
+            case 'N': //White knight
+                evalScore += evaluateKnight(c[0], c[1]);
+                break;
+            case 'Q': //White queen
+                evalScore += evaluateQueen(c[0], c[1]);
+                break;
+            case 'K': //White king
+                evalScore += evaluateKing(c[0], c[1]);
+                break;
+            case 'p': //Black pawn
+                evalScore += evaluatePawn(7 - c[0], 7 - c[1]);
+                break;
+            case 'r': //Black rook
+                evalScore += evaluateRook(7 - c[0], 7 - c[1]);
+                break;
+            case 'b': //Black bishop
+                evalScore += evaluateBishop(7 - c[0], 7 - c[1]);
+                break;
+            case 'n': //Black knight
+                evalScore += evaluateKnight(7 - c[0], 7 - c[1]);
+                break;
+            case 'q': //Black queen
+                evalScore += evaluateQueen(7 - c[0], 7 - c[1]);
+                break;
+            case 'k': //Black king
+                evalScore += evaluateKing(7 - c[0], 7 - c[1]);
+                break;
+        }
+        return evalScore;
     }
 
     // todo should differentiate between min/max, white/black

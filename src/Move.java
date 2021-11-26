@@ -10,44 +10,42 @@ public class Move {
     char content; //What lies on the destination field
 
     public Move() {
-        this.newField = new int[]{404,404};
-        this.oldField = new int[]{404,404};
+        this.newField = new int[]{404, 404};
+        this.oldField = new int[]{404, 404};
         this.specialMove = true;
         this.piece = 'o';
         this.content = 'o';
     }
 
-    public Move(int[] newField, int[] oldField, boolean specialMove, char piece, char content){ //What lies on the destination field)
+    public Move(int[] newField, int[] oldField, boolean specialMove, char piece, char content) { //What lies on the destination field)
         this.newField = newField;
         this.oldField = oldField;
         this.specialMove = specialMove;
         this.piece = piece; //The piece you move
         this.content = content; //What lies on the destination field
-
     }
-
-
 
     // check if the value from "pieceGeneralMoveset", can be used
     // or if there is anything in it's way
     // TODO: write this function
-    public void pathChecker(){}
+    public void pathChecker() {
+    }
 
-    public int[] convertIndexTo2D(int location){
+    public int[] convertIndexTo2D(int location) {
         int[] array = new int[2];
 
         //Get the x-coordinate
-        if (0 <= location && location <= 7)                   array[1] = 0;
-        else if (8 <= location && location <= 15)             array[1] = 1;
-        else if (16 <= location && location <= 23)            array[1] = 2;
-        else if (24 <= location && location <= 31)            array[1] = 3;
-        else if (32 <= location && location <= 39)            array[1] = 4;
-        else if (40 <= location && location <= 47)            array[1] = 5;
-        else if (48 <= location && location <= 55)            array[1] = 6;
-        else if (56 <= location && location <= 63)            array[1] = 7;
+        if (0 <= location && location <= 7) array[1] = 0;
+        else if (8 <= location && location <= 15) array[1] = 1;
+        else if (16 <= location && location <= 23) array[1] = 2;
+        else if (24 <= location && location <= 31) array[1] = 3;
+        else if (32 <= location && location <= 39) array[1] = 4;
+        else if (40 <= location && location <= 47) array[1] = 5;
+        else if (48 <= location && location <= 55) array[1] = 6;
+        else if (56 <= location && location <= 63) array[1] = 7;
 
 
-        switch (location % 8){ //Get the y-coordinate
+        switch (location % 8) { //Get the y-coordinate
             case 0:
                 array[0] = 0;
                 break;
@@ -86,12 +84,12 @@ public class Move {
         // 56,57,58,59,60,61,62,63
     }
 
-
     // - - - - - Getters and setters - - - - - //
 
     public int[] getNewField() {
         return newField;
     }
+
     public void setNewField(int[] newField) {
         this.newField = newField;
     }
@@ -99,6 +97,7 @@ public class Move {
     public int[] getOldField() {
         return oldField;
     }
+
     public void setOldField(int[] oldField) {
         this.oldField = oldField;
     }
@@ -106,6 +105,7 @@ public class Move {
     public boolean isSpecialMove() {
         return specialMove;
     }
+
     public void setSpecialMove(boolean specialMove) {
         this.specialMove = specialMove;
     }
@@ -113,6 +113,7 @@ public class Move {
     public char getPiece() {
         return piece;
     }
+
     public void setPiece(char piece) {
         this.piece = piece;
     }
@@ -120,6 +121,7 @@ public class Move {
     public char getContent() {
         return content;
     }
+
     public void setContent(char content) {
         this.content = content;
     }
