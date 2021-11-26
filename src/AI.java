@@ -168,7 +168,7 @@ public class AI {
                     } else if (!white && Character.isLowerCase(piece)) { //black
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
+                        System.out.println("black - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
 
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, false);
 
