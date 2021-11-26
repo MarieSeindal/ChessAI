@@ -2,9 +2,7 @@ package Data;
 
 public class BoardEvaluationData {
 
-    public static int getWhitePawnValue(int i, int j) {
-        return pawnTable[i][j];
-    }
+    public static int getWhitePawnValue(int i, int j) {return pawnTable[i][j];}
 
     public static int getRookValue(int i, int j) {
         return rookTable[i][j];

@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Player {
 
     private boolean white;
+    private ArrayList<Character> pieces;
     boolean doneCastling = false; //Dansk: doneRokade
     boolean isAi;
 

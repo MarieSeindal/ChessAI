@@ -189,14 +189,13 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(game.board, false);
-
+                AI ai = new AI(game.board, player.isWhite());
                 ChessNode firstNode = new ChessNode(game.board);
-                ai.runAI(firstNode, false);
-
-                //Check two boards and find the piece that moved
+                ai.runAI(firstNode);
+                //ChessNode firstNode = new ChessNode(game.board);
 
                 Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
+                System.out.println("AI Moving: "+tempMove.getOldField()[0]+","+tempMove.getOldField()[1]+" -> "+tempMove.getNewField()[0]+","+tempMove.getNewField()[1]);
                 // TODO: maybe we need to rethink this
                 game.addUsedBoard(game.board);
                 game.board.performMove(tempMove);

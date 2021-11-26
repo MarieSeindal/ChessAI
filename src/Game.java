@@ -14,17 +14,16 @@ public class Game {
     String enPassantTarget;
 
     public Game() {
-
         this.board = new Board();
         usedBoards.add(board);
         this.p1 = new Player();
-        this.p2 = new Player();;
+        this.p2 = new Player();
         this.turn = false;
     }
 
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
         this.board = startingBoard;
-        this.usedBoards.add(board);
+        usedBoards.add(board);
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
@@ -66,7 +65,6 @@ public class Game {
                     whiteKingLocation = new int[]{i,j};
 
                 // get all locations of the Pieces
-
                 if( checkLocation(!whiteTurnNow, currentBoard.getPiece(i,j)) == -1)
                     listOfPieces.add(new int[]{i, j});
             }
@@ -75,7 +73,7 @@ public class Game {
         // 003 - check white or black
 
         // when it is white's turn, we will be looking for black pieces
-        if(whiteTurnNow){
+        if (whiteTurnNow) {
             ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
 
             // 004 - get all the spots the enemy can go to
@@ -137,7 +135,6 @@ public class Game {
 
         return output;
     }
-
 
     /// boolean isYourPieceWhite - is the checker white ?
     /// char target - the char value of the spot, that we want to check
@@ -539,84 +536,99 @@ public class Game {
 
         switch (piece){
             case 'p':
-                // region black p case
+                if(location[0] != 7)
+                {
 
-                // black is in the top, so 1 down
-                // (y,x)
+                    // region black p case
 
-                // 00 - check if we go off the board
-                if(location[0] - 1 <= -1)
-                    checkSpot = 1;
-                else
+                    // black is in the top, so 1 down
+                    // (y,x)
+
+                    // 00 - check if we go off the board
+                    if(location[0] + 1 >= 8)
+                        checkSpot = 1;
+                    else {
+                        System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                    }
+
+
+                    // 01 - add one spot forward
                     checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                    if(checkSpot == 0 && location[0] + 1 <= 7)
+                        listOfMoves.add(new int[]{location[0] +1, location[1]});
 
-                // 01 - add one spot forward
-                checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
-                if(checkSpot == 0 && location[0] + 1 <= 7)
-                    listOfMoves.add(new int[]{location[0] +1, location[1]});
+                    // 02 - add 2 spot forward, if this is the first move for that piece
+                    if(location[0] == 1)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
+                        if(checkSpot == 0)
+                            listOfMoves.add(new int[]{location[0] +2, location[1]});
+                    }
 
-                // 02 - add 2 spot forward, if this is the first move for that piece
-                if(location[0] == 1)
-                {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
-                    if(checkSpot == 0)
-                        listOfMoves.add(new int[]{location[0] +2, location[1]});
+                    // 03 - check left kills (+1, -1)
+                    if(location[0]+1 <= 7 && location[1]-1 >= 0)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
+                        if(checkSpot == -1)
+                            listOfMoves.add(new int[]{location[0] +1, location[1]-1});
+                    }
+
+                    // 04 - check right kills (+1, +1)
+                    if(location[0]+1 <= 7 && location[1]+1 <= 7)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
+                        if(checkSpot == -1)
+                            listOfMoves.add(new int[]{location[0] +1, location[1]+1});
+                    }
                 }
 
-                // 03 - check left kills (+1, -1)
-                if(location[0]+1 <= 7 && location[1]-1 >= 0)
-                {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
-                    if(checkSpot == -1)
-                        listOfMoves.add(new int[]{location[0] +1, location[1]-1});
-                }
-
-                // 04 - check right kills (+1, +1)
-                if(location[0]+1 <= 7 && location[1]+1 <= 7)
-                {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
-                    if(checkSpot == -1)
-                        listOfMoves.add(new int[]{location[0] +1, location[1]+1});
-                }
                 break;
             // endregion
             case 'P':
                 // region white p case
 
-                // white is in the bottom, so 1 up
-
-                // 00 - check if we go off the board
-                if(location[0] - 1 <= -1)
-                    checkSpot = 1;
-                else
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
-
-                // 01 - add one spot forward
-                if(checkSpot == 0 && location[0] - 1 >= 0)
-                    listOfMoves.add(new int[]{location[0] -1, location[1]});
-
-                // 02 - add 2 spot forward, if this is the first move for that piece
-                if(location[0] == 6)
+                if(location[0] != 0)
                 {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
-                    if(checkSpot == 0)
-                        listOfMoves.add(new int[]{location[0] -2, location[1]});
-                }
 
-                // 03 - check left kills (-1, -1)
-                if(location[0]-1 >= 0 && location[1]-1 >= 0)
-                {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]-1));
-                    if(checkSpot == -1)
-                        listOfMoves.add(new int[]{location[0] -1, location[1]-1});
-                }
+                    // white is in the bottom, so 1 up
 
-                // 04 - check right kills (-1, +1)
-                if(location[0]-1 >= 0 && location[1]+1 <= 7)
-                {
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]+1));
-                    if(checkSpot == -1)
-                        listOfMoves.add(new int[]{location[0] -1, location[1]+1});
+                    // 00 - check if we go off the board
+                    if(location[0] - 1 <= -1)
+                        checkSpot = 1;
+                    else {
+                        System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
+                    }
+
+
+                    // 01 - add one spot forward
+                    if(checkSpot == 0 && location[0] - 1 >= 0)
+                        listOfMoves.add(new int[]{location[0] -1, location[1]});
+
+                    // 02 - add 2 spot forward, if this is the first move for that piece
+                    if(location[0] == 6)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 2, location[1]));
+                        if(checkSpot == 0)
+                            listOfMoves.add(new int[]{location[0] -2, location[1]});
+                    }
+
+                    // 03 - check left kills (-1, -1)
+                    if(location[0]-1 >= 0 && location[1]-1 >= 0)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]-1));
+                        if(checkSpot == -1)
+                            listOfMoves.add(new int[]{location[0] -1, location[1]-1});
+                    }
+
+                    // 04 - check right kills (-1, +1)
+                    if(location[0]-1 >= 0 && location[1]+1 <= 7)
+                    {
+                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]-1, location[1]+1));
+                        if(checkSpot == -1)
+                            listOfMoves.add(new int[]{location[0] -1, location[1]+1});
+                    }
                 }
                 break;
             // endregion
@@ -781,9 +793,9 @@ public class Game {
         return counter >= 3;
     }
 
-    //    public boolean isMoveLegal() {
-    //        return false;
-    //    }
+//    public boolean isMoveLegal() {
+//        return false;
+//    }
 
     // - - - - - Getters and setters - - - - - //
 
@@ -795,12 +807,12 @@ public class Game {
         this.board = board;
     }
 
-    //    public Board[] getUsedBoards() {
-    //        return usedBoards;
-    //    }
-    //    public void setUsedBoards(Board[] usedBoards) {
-    //        this.usedBoards = usedBoards;
-    //    }
+//    public Board[] getUsedBoards() {
+//        return usedBoards;
+//    }
+//    public void setUsedBoards(Board[] usedBoards) {
+//        this.usedBoards = usedBoards;
+//    }
 
     public Player getP1() {
         return p1;

@@ -23,25 +23,39 @@ public class Fen {
         return castling;
     }
 
-    public void setCastling(ArrayList<String> castling) {this.castling = castling;}
+    public void setCastling(ArrayList<String> castling) {
+        this.castling = castling;
+    }
 
-    public boolean getPlayerTurn() {return playerTurn;}
+    public boolean getPlayerTurn() {
+        return playerTurn;
+    }
 
-    public void setPlayerTurn(boolean playerTurn) {this.playerTurn = playerTurn;}
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
 
-    public int getTurnsSinceKill() {return movesKill;}
+    public int getTurnsSinceKill() {
+        return movesKill;
+    }
 
     public void setMovesKill(int movesKill) {
         this.movesKill = movesKill;
     }
 
-    public int getTotalTurns() {return totalMoves;}
+    public int getTotalTurns() {
+        return totalMoves;
+    }
 
     public void setTotalMoves(int totalMoves) {
         this.totalMoves = totalMoves;
     }
 
-    public String getEnPassantTarget() {return enPassantTarget;}
+    public String getEnPassantTarget() {
+        return enPassantTarget;
+    }
 
-    public void setEnPassantTarget(String enPassantTarget) {this.enPassantTarget = enPassantTarget;}
+    public void setEnPassantTarget(String enPassantTarget) {
+        this.enPassantTarget = enPassantTarget;
+    }
 }
