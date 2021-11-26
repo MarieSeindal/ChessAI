@@ -8,8 +8,8 @@ public class AI {
     private static int maxDepth = 2;
     protected Board currentBoard;
     private boolean isWhite = false;
-    private int alpha = MIN_VALUE;
-    private int beta = MAX_VALUE;
+    private int alpha = Integer.MIN_VALUE;
+    private int beta = Integer.MAX_VALUE;
     public Board bestMoveBoard;
 
     public AI(Board currentBoard, boolean isWhite) {
@@ -58,7 +58,7 @@ public class AI {
         System.out.println("Hello from max with depth "+depth);
         int bestValue;
         int newValue;
-        bestValue = MIN_VALUE;
+        bestValue = Integer.MIN_VALUE;
         /*System.out.println("Max alpha " + alpha); //todo debug print
         System.out.println("Max beta " + beta); //todo debug print*/
 
@@ -90,7 +90,7 @@ public class AI {
         System.out.println("Hello from min with depth "+depth);
         int bestValue;
         int newValue;
-        bestValue = MAX_VALUE;
+        bestValue = Integer.MAX_VALUE;
         /*System.out.println("Min alpha " + alpha);
         System.out.println("Min beta " + beta);*/
 
@@ -206,8 +206,8 @@ public class AI {
 
         int value = 0;
 
-        for (int i = 0; i < boardArray.length; i++) {
-            for (int j = 0; j < boardArray[i].length; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 char c = boardArray[i][j];
                 if (!(c == ' ')) {
                     value += staticEvaluation(c, new int[]{i, j});
