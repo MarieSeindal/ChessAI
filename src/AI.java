@@ -22,18 +22,14 @@ public class AI {
         this.currentBoard = new Board();
     }
 
+    // this is the master function, that runs everything
     public void runAI(ChessNode firstNode) {
         System.out.println("Running AI as " + (isWhite ? "white" : "black") + " player!");
         minimax(firstNode, 0, isWhite, alpha, beta);
     }
 
-    public Board getBestMoveBoard() {
-        return this.bestMoveBoard;
-    }
+    // region minimax, maximizer and minimizer
 
-    public void setCurrentPlayerAI(boolean isWhite) { // todo call this from Game(?) to tell the AI if it is black or white
-        this.isWhite = isWhite;
-    }
 
     public int minimax(ChessNode nodeToSearch, int depth, boolean isWhite, int alpha, int beta) {
 
@@ -74,6 +70,7 @@ public class AI {
 
                 if (depth == 1) {
                     // construct best moveBoard
+                    // TODO: look into this - this is just a note
                     bestMoveBoard = nodeToSearch.getBoard();
                 }
             }
@@ -106,6 +103,7 @@ public class AI {
                 if (depth == 1) {
                     //System.out.println("Hurray we made it into if depth = 1 ");
                     // construct best moveBoard
+                    // TODO: look into this - this is just a note
                     bestMoveBoard = nodeToSearch.getBoard();
                 }
             }
@@ -119,6 +117,8 @@ public class AI {
         //System.out.println("Returning in AI, best val: " + bestValue);
         return bestValue;
     }
+
+    // endregion
 
     public void fillChildren(ChessNode parent, boolean white) {
 
@@ -139,11 +139,11 @@ public class AI {
                     if (white && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, true);
 
                         // we don't add anything to the parent, if there is no moves to make
                         if (tempListOfMoves.size() >= 1) {
+
 
                             for (int[] moveFound : tempListOfMoves) {
 
@@ -168,8 +168,6 @@ public class AI {
                     } else if (!white && Character.isLowerCase(piece)) { //black
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        System.out.println("black - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
-
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, false);
 
                         // we don't add anything to the parent, if there is no moves to make
@@ -225,6 +223,11 @@ public class AI {
     }
 
 
+
+
+    // region all our static evaluations functions
+
+    // returns a static kill value, based on the char type
     public int killEvaluation(char p) {
 
         int evalScore = 0;
@@ -257,10 +260,6 @@ public class AI {
         }
         return evalScore;
     }
-
-
-    // region static Evaluation
-
 
     public int staticEvaluation(char p, int[] c) { // so far based on slide 11 in pptx week 6.
 
@@ -331,6 +330,19 @@ public class AI {
 
     private int evaluateKing(int i, int j) {
         return 10000 + BoardEvaluationData.getKingValue(i, j);
+    }
+
+    // endregion
+
+    // region setters and getters
+
+
+    public Board getBestMoveBoard() {
+        return this.bestMoveBoard;
+    }
+
+    public void setCurrentPlayerAI(boolean isWhite) { // todo call this from Game(?) to tell the AI if it is black or white
+        this.isWhite = isWhite;
     }
 
     // endregion

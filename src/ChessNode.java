@@ -4,38 +4,23 @@ import java.util.ArrayList;
 public class ChessNode implements Serializable {
 
     Board board;
+    ArrayList<Move> moves;
     ArrayList<ChessNode> children;
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public ArrayList<ChessNode> getChildren() {
-        return children;
-    }
-
-    public void setChildren(ArrayList<ChessNode> children) {
-        this.children = children;
-    }
-
 
     public ChessNode(){
         children = new ArrayList<>();
         this.board = new Board();
     }
 
+    public ChessNode(ArrayList<Move> allTheMovse){
+        children = new ArrayList<>();
+        moves = allTheMovse;
+        this.board = null;
+    }
 
     public ChessNode(Board boardInNode){
         children = new ArrayList<>();
         this.board = boardInNode;
-    }
-
-    public void addChildren(ChessNode child) {
-        this.children.add(child);
     }
 
     public ChessNode cloning() { //todo tjek op på hvilke klasser der skal være serialisable
@@ -60,6 +45,33 @@ public class ChessNode implements Serializable {
         return obj;
     }
 
+    // region getters and setters
 
+    public ArrayList<Move> getMoves() { return moves; }
+    public void setMoves(ArrayList<Move> inputMoves) { this.moves = inputMoves; }
+    public void addMove(Move oneMove) { this.moves.add(oneMove); }
+    public void addMoves(ArrayList<Move> allMoves) { this.moves.addAll(allMoves); }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public ArrayList<ChessNode> getChildren() {
+        return children;
+    }
+
+    public void setChildren(ArrayList<ChessNode> children) {
+        this.children = children;
+    }
+
+    public void addChildren(ChessNode child) {
+        this.children.add(child);
+    }
+
+    // endregion
 
 }
