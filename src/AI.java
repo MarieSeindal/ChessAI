@@ -139,6 +139,7 @@ public class AI {
                     if (white && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
+                        System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, true);
 
                         // we don't add anything to the parent, if there is no moves to make
@@ -167,6 +168,8 @@ public class AI {
                     } else if (!white && Character.isLowerCase(piece)) { //black
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
+                        System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
+
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, false);
 
                         // we don't add anything to the parent, if there is no moves to make
