@@ -186,16 +186,24 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(game.board, player.isWhite());
+                AI ai = new AI(game.board, player.isWhite(), 10);
                 ChessNode firstNode = new ChessNode(game.board);
+                // Record starting time
+                long timeLimit = System.currentTimeMillis() / 1000;
                 ai.runAI(firstNode);
-                //ChessNode firstNode = new ChessNode(game.board);
+                // Output finishing time
+                long time = ((System.currentTimeMillis() / 1000) - timeLimit);
+                System.out.println("Evaluation took: "+time+"s");
 
-                Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
-                System.out.println("AI Moving: "+tempMove.getOldField()[0]+","+tempMove.getOldField()[1]+" -> "+tempMove.getNewField()[0]+","+tempMove.getNewField()[1]);
-                // TODO: maybe we need to rethink this
-                game.addUsedBoard(game.board);
-                game.board.performMove(tempMove);
+                // Safety check
+                if (ai.getBestMoveBoard() != null) {
+                    Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
+                    System.out.println("AI Moving: " + tempMove.getOldField()[0] + "," + tempMove.getOldField()[1] + " -> " + tempMove.getNewField()[0] + "," + tempMove.getNewField()[1]);
+                    // TODO: maybe we need to rethink this
+                    game.addUsedBoard(game.board);
+                    game.board.performMove(tempMove);
+                }
+
                 tui.printBoard(game.board.getBoardArray(), false);
                 whiteTurn = !whiteTurn;
             }

@@ -548,7 +548,7 @@ public class Game {
                     if(location[0] + 1 >= 8)
                         checkSpot = 1;
                     else {
-                        System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        //System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                     }
 
@@ -597,7 +597,7 @@ public class Game {
                     if(location[0] - 1 <= -1)
                         checkSpot = 1;
                     else {
-                        System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        //System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
                     }
 

@@ -5,14 +5,17 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 2;
+    static int timeLimitSeconds = 10;
+    private static long timeLimit;
+    private static int maxDepth = 8;
     protected Board currentBoard;
     private boolean isWhite = false;
     private int alpha = Integer.MIN_VALUE;
     private int beta = Integer.MAX_VALUE;
     public Board bestMoveBoard;
 
-    public AI(Board currentBoard, boolean isWhite) {
+    public AI(Board currentBoard, boolean isWhite, int timeLimitSeconds) {
+        this.timeLimitSeconds = timeLimitSeconds;
         this.currentBoard = currentBoard;
         this.isWhite = isWhite;
         bestMoveBoard = currentBoard;
@@ -24,7 +27,8 @@ public class AI {
 
     public void runAI(ChessNode firstNode) {
         System.out.println("Running AI as " + (isWhite ? "white" : "black") + " player!");
-        minimax(firstNode, 0, isWhite, alpha, beta);
+        timeLimit = System.currentTimeMillis() / 1000;
+        minimax(firstNode, 0, isWhite, alpha, beta, false);
     }
 
     public Board getBestMoveBoard() {
@@ -35,13 +39,10 @@ public class AI {
         this.isWhite = isWhite;
     }
 
-    public int minimax(ChessNode nodeToSearch, int depth, boolean isWhite, int alpha, int beta) {
-
-        //System.out.println("Depth in minimax " + depth); //todo delete after use
+    public int minimax(ChessNode nodeToSearch, int depth, boolean isWhite, int alpha, int beta, boolean stop) {
 
         // If leaf node, return static value of the board
-        if (depth == maxDepth) {
-            //System.out.println("Leaf return in depth " + depth);
+        if (depth == maxDepth || stop) {
             return evaluateLeaf(bestMoveBoard, isWhite); //todo. expand evaluateLeaf()
         }
 
@@ -51,25 +52,27 @@ public class AI {
         } else if (!isWhite) { // node in depth 1,3 ... unequal numbers is min, as the algorithm runs the opponents turn.
             return minimizer(nodeToSearch, depth, alpha, beta);
         }
+
         return 0;
     }
 
     private int maximizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
-        System.out.println("Hello from max with depth "+depth);
         int bestValue;
         int newValue;
         bestValue = Integer.MIN_VALUE;
-        /*System.out.println("Max alpha " + alpha); //todo debug print
-        System.out.println("Max beta " + beta); //todo debug print*/
 
         //todo Fill children to list //Ad children to the parents arraylist
         fillChildren(nodeToSearch, true);
 
         for (ChessNode child : nodeToSearch.getChildren()) {
-            newValue = minimax(child, depth + 1, false, alpha, beta);
+            // Check for timelimit and make minimax return bestBoard
+            if (((System.currentTimeMillis() / 1000) - timeLimit) >= timeLimitSeconds) {
+                minimax(child, depth + 1, false, alpha, beta, true);
+                break;
+            }
+            newValue = minimax(child, depth + 1, false, alpha, beta, false);
 
             if (newValue > bestValue) { //if we find a new best value that is better than the recorded nodeScore, that move
-                System.out.println("New max bestValue: " + newValue);
                 bestValue = newValue;
 
                 if (depth == 1) {
@@ -83,28 +86,29 @@ public class AI {
                 return bestValue;
             }
         }
+
         return bestValue;
     }
 
     private int minimizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
-        System.out.println("Hello from min with depth "+depth);
         int bestValue;
         int newValue;
         bestValue = Integer.MAX_VALUE;
-        /*System.out.println("Min alpha " + alpha);
-        System.out.println("Min beta " + beta);*/
 
         //todo Fill children to list //Ad children to the parents arraylist
         fillChildren(nodeToSearch, false);
 
         for (ChessNode child : nodeToSearch.getChildren()) {
-            newValue = minimax(child, depth + 1, true, alpha, beta);
+            // Check for timelimit and make minimax return bestBoard
+            if (((System.currentTimeMillis() / 1000) - timeLimit) >= timeLimitSeconds) {
+                minimax(child, depth + 1, true, alpha, beta, true);
+                break;
+            }
+            newValue = minimax(child, depth + 1, true, alpha, beta, false);
             if (newValue < bestValue) { //Check if we have a new min
-                System.out.println("New min bestValue: " + newValue);
                 bestValue = newValue;
 
                 if (depth == 1) {
-                    //System.out.println("Hurray we made it into if depth = 1 ");
                     // construct best moveBoard
                     bestMoveBoard = nodeToSearch.getBoard();
                 }
@@ -116,7 +120,6 @@ public class AI {
             }
 
         }
-        //System.out.println("Returning in AI, best val: " + bestValue);
         return bestValue;
     }
 
@@ -139,7 +142,10 @@ public class AI {
                     if (white && Character.isUpperCase(piece)) { //If it's the current player, and It's that players pieces.
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
+                        if (rows > 7 || column > 7) {
+                            System.out.println(rows + "," + column);
+                        }
+                        //System.out.println("white - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, true);
 
                         // we don't add anything to the parent, if there is no moves to make
@@ -168,8 +174,6 @@ public class AI {
                     } else if (!white && Character.isLowerCase(piece)) { //black
                         //Get possible moves for that piece
                         int[] coords = {rows, column};
-                        System.out.println("black - fillChildren - cords - y :" + coords[0] + " | x : " + coords[1]);
-
                         tempListOfMoves = Game.pieceMoveset(piece, coords, currentBoard, false);
 
                         // we don't add anything to the parent, if there is no moves to make
@@ -183,7 +187,6 @@ public class AI {
                                 ChessNode copy = new ChessNode(copyOfBoard); //make copy
 
                                 //todo Figure out if its a special move. Now assumes that AI cannot make special moves
-
                                 //Create the move
                                 Move makeMove = new Move(moveFound, coords, false, piece, currentBoard.getPiece(rows, column));
 
