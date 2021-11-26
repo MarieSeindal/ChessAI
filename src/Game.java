@@ -150,6 +150,8 @@ public class Game {
             return -1;
     }
 
+    // region returns int[]
+
     /// horizontalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
     /// int[] location - values from 0,0 to 7,7
     /// Board currentBoard - the current board
@@ -519,6 +521,381 @@ public class Game {
         return listOfMoves;
     }
 
+    // endregion
+
+    // region returns Move
+
+    /// horizontalCheck will return a arrayList of Moves, that the checker can move to (kills will be add to the list too)
+    /// int[] location - values from 0,0 to 7,7
+    /// Board currentBoard - the current board
+    /// boolean white - is this piece white?
+    /// int limit - there is no limit, if the value is 0, you can use it for more than 1, but it will only be 0 or 1 (1 is the king)
+    public static ArrayList<Move> horizontalMoveCheck(int[] location, Board currentBoard, char piece, boolean white, int limit)
+    {
+        ArrayList<Move> listOfMoves = new ArrayList<Move>();
+
+        boolean end = false;
+        int counter = 1;
+
+        // left
+        while (!end){
+            // 00 - end the while loop
+            if (location[1] - counter <= -1)
+            {
+                end = true;
+                break;
+            }
+            // check next spot
+            int checkNextSport = Game.checkLocation(white, currentBoard.boardArray[ location[0] ][ (location[1] - counter) ]);
+
+            // 01 - enemy
+            if (checkNextSport == -1){
+                Move _move = new Move(new int[]{location[0], (location[1] - counter)}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSport == 1)
+            {
+                end = true;
+            }
+            // 03 - empty spot
+            else if (checkNextSport == 0)
+            {
+                Move _move = new Move(new int[]{location[0], (location[1] - counter)}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        // resetting values
+        counter = 1;
+        end = false;
+
+        // right
+        while(!end){
+            // 00 - end the while loop
+            if (location[1] + counter >= 8)
+            {
+                end = true;
+                break;
+            }
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] ][ (location[1] + counter) ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{location[0], (location[1] + counter)}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if(checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{location[0], (location[1] + counter)}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+
+        return listOfMoves;
+    }
+
+    /// verticalCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
+    public static ArrayList<Move> verticalMoveCheck(int[] location, Board currentBoard, char piece, boolean white, int limit)
+    {
+        ArrayList<Move> listOfMoves = new ArrayList<Move> ();
+
+        boolean end = false;
+        int counter = 1;
+
+        // up
+        while (end == false){
+            // 00 - end the while loop
+            if (location[0] - counter <= -1) {
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ (location[0] - counter) ][ location[1] ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{(location[0] - counter), location[1]}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{(location[0] - counter), location[1]}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        // resets
+        end = false;
+        counter = 1;
+
+        // down
+        while(end == false){
+            // 00 - end the while loop
+            if (location[0] + counter >= 8){
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ (location[0] + counter) ][ location[1] ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{(location[0] + counter), location[1] }, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{(location[0] + counter), location[1] }, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+
+        return listOfMoves;
+    }
+
+    /// crossCheck will return a arrayList of locations, that the checker can move to (kills will be add to the list too)
+    public static ArrayList<Move>  crossMoveCheck(int[] location, Board currentBoard, char piece, boolean white, int limit)
+    {
+        ArrayList<Move> listOfMoves = new ArrayList<Move>();
+
+        boolean end = false;
+        int counter = 1;
+
+        // up and right (-1,+1)
+        while (end == false){
+            // 00 - end the while loop
+            if (location[0] - counter <= -1 || location[1] + counter >= 8) {
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] - counter ][ location[1] + counter ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{location[0] - counter, location[1] + counter}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0){
+                Move _move = new Move(new int[]{location[0] - counter, location[1] + counter}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        // resets
+        end = false;
+        counter = 1;
+
+        // up and left (-1,-1)
+        while (end == false){
+            // 00 - end the while loop
+            if (location[0] - counter <= -1 || location[1] - counter <= -1) {
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] - counter ][ location[1] - counter ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{location[0] - counter, location[1] - counter}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{location[0] - counter, location[1] - counter}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        // resets
+        end = false;
+        counter = 1;
+
+        // down and right (+1, +1)
+        while (end == false){
+            // 00 - end the while loop
+            if (location[0] + counter >= 8 || location[1] + counter >= 8) {
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] + counter ][ location[1] + counter ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{location[0] + counter, location[1] + counter}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{location[0] + counter, location[1] + counter}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        // resets
+        end = false;
+        counter = 1;
+
+        // down and left (+1, -1)
+        while (end == false){
+            // 00 - end the while loop
+            if (location[0] + counter >= 8 || location[1] - counter <= -1) {
+                end = true;
+                break;
+            }
+
+            // check next spot
+            int checkNextSpot = Game.checkLocation(white, currentBoard.boardArray[ location[0] + counter ][ location[1] - counter ]);
+
+            // 01 - enemy
+            if (checkNextSpot == -1){
+                Move _move = new Move(new int[]{location[0] + counter, location[1] - counter}, location, false, piece, 'k');
+                listOfMoves.add(_move);
+                end = true;
+            }
+            // 02 - same color
+            else if (checkNextSpot == 1)
+            {
+                end = true;
+            }
+
+            // 03 - empty spot
+            else if (checkNextSpot == 0)
+            {
+                Move _move = new Move(new int[]{location[0] + counter, location[1] - counter}, location, false, piece, 'm');
+                listOfMoves.add(_move);
+            }
+
+            // 04 - limit for the counter
+            if (counter >= limit && limit != 0)
+            {
+                end = true;
+            }
+
+            counter++;
+        }
+
+        return listOfMoves;
+    }
+
+    // endregion
+
     // return - only the moves that give kills
     // currentBoard - a board obj, where we will check for kills
     // moveset - all the moves that can be made
@@ -806,10 +1183,11 @@ public class Game {
 
         switch (piece){
             case 'p':
+                // region black p case
                 if(location[0] != 7)
                 {
 
-                    // region black p case
+
 
                     // black is in the top, so 1 down
                     // (y,x)
@@ -851,10 +1229,11 @@ public class Game {
                         if(checkSpot == -1)
                             listOfMoves.add(new Move(new int[]{location[0] +1, location[1]+1}, location, false, piece, 'k'));
                     }
-                }
 
+                }
+                // endregion
                 break;
-            // endregion
+
             case 'P':
                 // region white p case
 
@@ -907,9 +1286,9 @@ public class Game {
                 // region white and black k case
 
                 // here we are setting the limit to 1
-                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 1));
-                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 1));
-                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 1));
+                listOfMoves.addAll(Game.horizontalMoveCheck(location, currentBoard, piece, areWeWhite, 1));
+                listOfMoves.addAll(Game.verticalMoveCheck(location, currentBoard, piece, areWeWhite, 1));
+                listOfMoves.addAll(Game.crossMoveCheck(location, currentBoard, piece, areWeWhite, 1));
                 break;
             // endregion
             case 'q':
@@ -917,21 +1296,21 @@ public class Game {
                 // region black and white q case
 
                 // Straight
-                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 0));
-                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.horizontalMoveCheck(location, currentBoard, piece, areWeWhite, 0));
+                listOfMoves.addAll(Game.verticalMoveCheck(location, currentBoard, piece, areWeWhite, 0));
 
                 // Diagonal
-                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.crossMoveCheck(location, currentBoard, piece, areWeWhite, 0));
                 break;
             // endregion
             case 'r':
             case 'R':
-                listOfMoves.addAll(Game.horizontalCheck(location, currentBoard, areWeWhite, 0));
-                listOfMoves.addAll(Game.verticalCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.horizontalMoveCheck(location, currentBoard, piece, areWeWhite, 0));
+                listOfMoves.addAll(Game.verticalMoveCheck(location, currentBoard, piece, areWeWhite, 0));
                 break;
             case 'b':
             case 'B':
-                listOfMoves.addAll(Game.crossCheck(location, currentBoard, areWeWhite, 0));
+                listOfMoves.addAll(Game.crossMoveCheck(location, currentBoard, piece, areWeWhite, 0));
                 break;
             case 'n':
             case 'N':
