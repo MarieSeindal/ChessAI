@@ -40,7 +40,6 @@ public class Main {
             isP1White = false;
         }
 
-
         switch (gameModeSelection[0]) {
             case 1 -> { // Human vs AI
                 p1 = new Player(isP1White, false);
@@ -199,9 +198,26 @@ public class Main {
                 if (ai.getBestMoveBoard() != null) {
                     Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
                     System.out.println("AI Moving: " + tempMove.getOldField()[0] + "," + tempMove.getOldField()[1] + " -> " + tempMove.getNewField()[0] + "," + tempMove.getNewField()[1]);
+
+                    // TODO: fix invalid pieces being printed/moved?
+                    System.out.println("AI Moving Piece (start): "+  + game.board.getPiece(tempMove.getOldField()[0], tempMove.getOldField()[1]));
+                    //System.out.println("AI Moving Piece (destination): "+game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
+                    System.out.println("AI Moving Piece (destination): "+tempMove.getContent());
+
                     // TODO: maybe we need to rethink this
                     game.addUsedBoard(game.board);
                     game.board.performMove(tempMove);
+
+                    // Check if kill TODO: not working yet (isKill is never true)
+                    boolean isKill = game.board.isEnemyPiece(player.isWhite(), game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
+                    if (isKill) {
+                        /* Reset kill counter */
+                        game.setTurnsSinceKill(0);
+                    } else {
+                        game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
+                    }
+
+                    System.out.println("Turns since kill: "+game.getTurnsSinceKill());
                 }
 
                 tui.printBoard(game.board.getBoardArray(), false);
