@@ -7,7 +7,7 @@ public class AI {
 
     static int timeLimitSeconds = 10;
     private static long timeLimit;
-    private static int maxDepth = 8;
+    private static int maxDepth = 4;
     protected Board currentBoard;
     private boolean isWhite = false;
     private int alpha = Integer.MIN_VALUE;
@@ -105,6 +105,7 @@ public class AI {
                 break;
             }
             newValue = minimax(child, depth + 1, true, alpha, beta, false);
+
             if (newValue < bestValue) { //Check if we have a new min
                 bestValue = newValue;
 

@@ -279,7 +279,7 @@ public class TUI implements I_TUI {
                 if (fen != null) {
                     return fen;
                 } else {
-                    break;
+                    continue;
                 }
             }
         }
@@ -399,6 +399,9 @@ public class TUI implements I_TUI {
              * Board Positions
              */
 
+            if (str_spaces[0] == null) {
+                return null;
+            }
             /* Convert FEN string to rows with "/" as the delimiter */
             String[] str_board = str_spaces[0].split("/");
 
@@ -451,6 +454,8 @@ public class TUI implements I_TUI {
             if (str_spaces[1] != null) {
                 String turn = str_spaces[1];
                 f.setPlayerTurn(turn.charAt(0) == 'w' ? true : false);
+            } else {
+                return null;
             }
 
             /**
@@ -463,6 +468,8 @@ public class TUI implements I_TUI {
                 ArrayList<String> c = new ArrayList();
                 Collections.addAll(c, castlingArr);
                 f.setCastling(c);
+            } else {
+                return null;
             }
 
             /**
@@ -471,6 +478,8 @@ public class TUI implements I_TUI {
 
             if (str_spaces[3] != null) {
                 f.setEnPassantTarget(str_spaces[3]);
+            } else {
+                return null;
             }
 
             /**
@@ -479,6 +488,8 @@ public class TUI implements I_TUI {
 
             if (str_spaces[4] != null) {
                 f.setMovesKill(Integer.parseInt(str_spaces[4]));
+            } else {
+                return null;
             }
 
             /**
@@ -487,10 +498,13 @@ public class TUI implements I_TUI {
 
             if (str_spaces[5] != null) {
                 f.setTotalMoves(Integer.parseInt(str_spaces[5]));
+            } else {
+                return null;
             }
 
         } catch (Exception e) {
             System.out.println("Invalid FEN: " + e);
+            return null;
         }
         return f;
     }
