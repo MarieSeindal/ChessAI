@@ -275,28 +275,26 @@ public class AI {
 
     // todo should differentiate between min/max, white/black
     // Takes position as argument and performs lookup of position value in value table
-    private int evaluatePawn(int i, int j) {
-        return 100 + BoardEvaluationData.getWhitePawnValue(i, j);
-    }
+    private int evaluatePawn(int i, int j) { return 10 + BoardEvaluationData.getWhitePawnValue(i, j); }
 
     private int evaluateRook(int i, int j) {
-        return 500 + BoardEvaluationData.getRookValue(i, j);
+        return 50 + BoardEvaluationData.getRookValue(i, j);
     }
 
     private int evaluateBishop(int i, int j) {
-        return 300 + BoardEvaluationData.getBishopValue(i, j);
+        return 30 + BoardEvaluationData.getBishopValue(i, j);
     }
 
     private int evaluateKnight(int i, int j) {
-        return 300 + BoardEvaluationData.getKnightValue(i, j);
+        return 30 + BoardEvaluationData.getKnightValue(i, j);
     }
 
     private int evaluateQueen(int i, int j) {
-        return 900 + BoardEvaluationData.getQueenValue(i, j);
+        return 90 + BoardEvaluationData.getQueenValue(i, j);
     }
 
     private int evaluateKing(int i, int j) {
-        return 10000 + BoardEvaluationData.getKingValue(i, j);
+        return 900 + BoardEvaluationData.getKingValue(i, j);
     }
 
 //- - - - - - - - - - - - - - - - - - - - //
