@@ -221,7 +221,7 @@ public class AI {
         // region their king
         if(ourKing == 1) // check
         {
-            System.out.println("***___*** the our King is in check");
+            System.out.println("***___*** our King is in check");
             if(isWhite)
                 newBoardValue -= 500;
             else
@@ -230,7 +230,7 @@ public class AI {
         }
         else if(ourKing == 2) // check mate
         {
-            System.out.println("***___*** the our King is in check mate");
+            System.out.println("***___*** our King is in check mate");
             if(isWhite)
                 newBoardValue -= 2000;
             else
@@ -238,7 +238,7 @@ public class AI {
         }
         else if(ourKing == 3) // remis
         {
-            System.out.println("***___*** the our King is in remis");
+            System.out.println("***___*** our King is in remis");
             if(isWhite)
                 newBoardValue -= 1000;
             else
@@ -252,7 +252,7 @@ public class AI {
         // region their king
         if(enemyKing == 1) // check
         {
-            System.out.println("***___*** the enemy King is in check");
+            // System.out.println("***___*** the enemy King is in check");
             if(isWhite)
                 newBoardValue -= 500;
             else
