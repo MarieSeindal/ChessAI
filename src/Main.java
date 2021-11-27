@@ -133,11 +133,12 @@ public class Main {
                     // Check if chosen board position is empty
                     if (startPiece != ' ') {
 
-                        boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
+                        int isKill = Game.checkLocation(player.isWhite(), game.board.getPiece(movePos[2], movePos[3]));
+                        // boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
                         ArrayList<int[]> possibleMoves;
 
                         /* Check if chosen destination position is empty or enemy */
-                        if (destinationPiece == ' ' || isKill) {
+                        if (destinationPiece == ' ' || isKill == -1) {
 
                             // Check if move is legal
                             int[] start = new int[]{movePos[0], movePos[1]};
@@ -156,7 +157,7 @@ public class Main {
                                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
                                             game.board.performMove(move);
 
-                                            if (isKill) {
+                                            if (isKill == -1) {
                                                 /* Reset kill counter */
                                                 game.setTurnsSinceKill(0);
                                             } else {
@@ -209,8 +210,10 @@ public class Main {
                     game.board.performMove(tempMove);
 
                     // Check if kill TODO: not working yet (isKill is never true)
-                    boolean isKill = game.board.isEnemyPiece(player.isWhite(), game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
-                    if (isKill) {
+                    int isKill = Game.checkLocation(player.isWhite(), game.board.getPiece(tempMove.newField[0], tempMove.newField[1]));
+
+                    //boolean isKill = game.board.isEnemyPiece(player.isWhite(), game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
+                    if (isKill == -1) {
                         /* Reset kill counter */
                         game.setTurnsSinceKill(0);
                     } else {
