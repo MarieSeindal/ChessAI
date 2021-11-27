@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 2;
+    private static int maxDepth = 4;
     protected Board currentBoard;
     private boolean isWhite = false;
     private int alpha = Integer.MIN_VALUE;
@@ -51,7 +51,7 @@ public class AI {
     }
 
     private int maximizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
-        System.out.println("Hello from max with depth "+depth);
+        // System.out.println("Hello from max with depth "+depth);
         int bestValue;
         int newValue;
         bestValue = Integer.MIN_VALUE;
@@ -80,11 +80,12 @@ public class AI {
                 return bestValue;
             }
         }
+        //System.out.println("Returning in AI, (**** maximizer ****) best val: " + bestValue);
         return bestValue;
     }
 
     private int minimizer(ChessNode nodeToSearch, int depth, int alpha, int beta) {
-        System.out.println("Hello from min with depth "+depth);
+        // System.out.println("Hello from min with depth "+depth);
         int bestValue;
         int newValue;
         bestValue = Integer.MAX_VALUE;
@@ -114,7 +115,7 @@ public class AI {
             }
 
         }
-        //System.out.println("Returning in AI, best val: " + bestValue);
+        System.out.println("Returning in AI, (**** minimizer ****) best val: " + bestValue);
         return bestValue;
     }
 
@@ -201,25 +202,75 @@ public class AI {
     }
 
     // - - - - - Evaluate - - - - - //todo expand these
-    public int evaluateLeaf(Board b, boolean isWhite) {
+    public int evaluateLeaf(Board newBoard, boolean isWhite) {
 
-        char[][] boardArray = b.getBoardArray();
+        // int oldBoardValue = 0;
+        int newBoardValue = 0;
 
-        int value = 0;
+        // 00 - check if the kings are in check, check mate or remis
+        // int ourKing = Game.checkTheKing(newBoard, isWhite);
+        // int enemyKing = Game.checkTheKing(newBoard, !isWhite);
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                char c = boardArray[i][j];
-                if (!(c == ' ')) {
-                    value += staticEvaluation(c, new int[]{i, j});
-                }
+        // get all locations
+        // ArrayList<int[]> oldLocations = this.currentBoard.getAllPiece();
+        ArrayList<int[]> newLocations = newBoard.getAllPiece();
+
+//        // old board
+//        for (int[] location : oldLocations) {
+//            char tempPiece = this.currentBoard.boardArray[location[0]][location[1]];
+//
+//            // black
+//            if( Character.isLowerCase(tempPiece) &&  tempPiece != ' ')
+//            {
+//                if(isWhite)
+//                    oldBoardValue -= staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+//                else
+//                    oldBoardValue += staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+//            }
+//
+//            // white
+//            if( Character.isUpperCase(tempPiece) &&  tempPiece != ' ')
+//            {
+//                if(isWhite)
+//                    oldBoardValue += staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+//                else
+//                    oldBoardValue -= staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+//            }
+//        }
+
+
+
+
+        // new board
+        for (int[] location : newLocations) {
+            char tempPiece = newBoard.boardArray[location[0]][location[1]];
+
+            // black
+            if( Character.isLowerCase(tempPiece) &&  tempPiece != ' ')
+            {
+                if(isWhite)
+                    newBoardValue -= staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+                else
+                    newBoardValue += staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+            }
+
+            // white
+            if( Character.isUpperCase(tempPiece) &&  tempPiece != ' ')
+            {
+                if(isWhite)
+                    newBoardValue += staticEvaluation(tempPiece, new int[]{location[0],location[1]});
+                else
+                    newBoardValue -= staticEvaluation(tempPiece, new int[]{location[0],location[1]});
             }
         }
-        if (!isWhite) {
-            value *= -1;
+
+        // TODO: check with the debugger, if this makes bugs
+        if(isWhite == false) {
+            newBoardValue *= -1;
         }
+
         //System.out.println("board evaluation value is: " + value);
-        return value;
+        return newBoardValue;
     }
 
 

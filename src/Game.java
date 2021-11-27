@@ -31,7 +31,6 @@ public class Game {
 
     // region logic
 
-
     // TODO: this function need to be tested
     public boolean threefoldRepetition() {
         List<String> checkBoards = new ArrayList<>();
@@ -162,9 +161,7 @@ public class Game {
 
     // endregion
 
-
     // region all move functions that return or uses int[] values
-
 
     // region returns int[]
 
@@ -569,7 +566,7 @@ public class Game {
                     if(location[0] + 1 >= 8)
                         checkSpot = 1;
                     else {
-                        System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        // System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                     }
 
@@ -618,7 +615,7 @@ public class Game {
                     if(location[0] - 1 <= -1)
                         checkSpot = 1;
                     else {
-                        System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        // System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
                     }
 
@@ -815,7 +812,6 @@ public class Game {
     // endregion
 
     // region all move functions that return or uses 'Move' values
-
 
     // region returns Move
 
@@ -1218,7 +1214,7 @@ public class Game {
                     if(location[0] + 1 >= 8)
                         checkSpot = 1;
                     else {
-                        System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        // System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
                     }
 
@@ -1268,7 +1264,7 @@ public class Game {
                     if(location[0] - 1 <= -1)
                         checkSpot = 1;
                     else {
-                        System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
+                        // System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
                         checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
                     }
 
@@ -1452,7 +1448,6 @@ public class Game {
     // - - - - - Getters and setters - - - - - //
 
     // region getters and setters
-
 
     public void addUsedBoard(Board newBoard){
         usedBoards.add(newBoard);

@@ -70,6 +70,19 @@ public class Board implements Serializable {
 
     // - - - - - Getters and setters - - - - - //
 
+    public ArrayList<int[]> getAllPiece() {
+        ArrayList<int[]> output = new ArrayList<int[]>();
+
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                if(this.boardArray[y][x] != ' ')
+                    output.add(new int[] {y,x} );
+            }
+        }
+
+        return output;
+    }
+
     public char[][] getBoardArray() {
         return boardArray;
     }
