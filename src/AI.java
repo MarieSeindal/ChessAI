@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 4;
+    private static int maxDepth = 3;
     protected Board currentBoard;
     private boolean isWhite = false;
     private int alpha = Integer.MIN_VALUE;
@@ -42,9 +42,9 @@ public class AI {
         }
 
         // node in depth 0,2 ... straight numbers is max, as the algorithm runs the AI's turn.
-        else if (isWhite) {
+        else if (isWhite == true) {
             return maximizer(nodeToSearch, depth, alpha, beta);
-        } else if (!isWhite) { // node in depth 1,3 ... unequal numbers is min, as the algorithm runs the opponents turn.
+        } else if (isWhite == false) { // node in depth 1,3 ... unequal numbers is min, as the algorithm runs the opponents turn.
             return minimizer(nodeToSearch, depth, alpha, beta);
         }
         return 0;
@@ -65,7 +65,7 @@ public class AI {
             newValue = minimax(child, depth + 1, false, alpha, beta);
 
             if (newValue > bestValue) { //if we find a new best value that is better than the recorded nodeScore, that move
-                System.out.println("New max bestValue: " + newValue);
+                // System.out.println("New max bestValue: " + newValue);
                 bestValue = newValue;
 
                 if (depth == 1) {
@@ -80,7 +80,7 @@ public class AI {
                 return bestValue;
             }
         }
-        //System.out.println("Returning in AI, (**** maximizer ****) best val: " + bestValue);
+        // System.out.println("Returning in AI, (**** maximizer ****) best val: " + bestValue);
         return bestValue;
     }
 
@@ -98,7 +98,7 @@ public class AI {
         for (ChessNode child : nodeToSearch.getChildren()) {
             newValue = minimax(child, depth + 1, true, alpha, beta);
             if (newValue < bestValue) { //Check if we have a new min
-                System.out.println("New min bestValue: " + newValue);
+                // System.out.println("New min bestValue: " + newValue);
                 bestValue = newValue;
 
                 if (depth == 1) {
@@ -115,7 +115,7 @@ public class AI {
             }
 
         }
-        System.out.println("Returning in AI, (**** minimizer ****) best val: " + bestValue);
+        // System.out.println("Returning in AI, (**** minimizer ****) best val: " + bestValue);
         return bestValue;
     }
 
@@ -208,12 +208,74 @@ public class AI {
         int newBoardValue = 0;
 
         // 00 - check if the kings are in check, check mate or remis
-        // int ourKing = Game.checkTheKing(newBoard, isWhite);
-        // int enemyKing = Game.checkTheKing(newBoard, !isWhite);
+        int ourKing = Game.checkTheKing(newBoard, isWhite);
+        int enemyKing = Game.checkTheKing(newBoard, !isWhite);
 
         // get all locations
         // ArrayList<int[]> oldLocations = this.currentBoard.getAllPiece();
         ArrayList<int[]> newLocations = newBoard.getAllPiece();
+
+        // TODO: check if this works and change the values, so that it works
+        // our king
+
+        // region their king
+        if(ourKing == 1) // check
+        {
+            System.out.println("***___*** the our King is in check");
+            if(isWhite)
+                newBoardValue -= 500;
+            else
+                newBoardValue += 500;
+
+        }
+        else if(ourKing == 2) // check mate
+        {
+            System.out.println("***___*** the our King is in check mate");
+            if(isWhite)
+                newBoardValue -= 2000;
+            else
+                newBoardValue += 2000;
+        }
+        else if(ourKing == 3) // remis
+        {
+            System.out.println("***___*** the our King is in remis");
+            if(isWhite)
+                newBoardValue -= 1000;
+            else
+                newBoardValue += 1000;
+        }
+        // endregion
+
+        // TODO: check if this works and change the values, so that it works
+        // their king
+
+        // region their king
+        if(enemyKing == 1) // check
+        {
+            System.out.println("***___*** the enemy King is in check");
+            if(isWhite)
+                newBoardValue -= 500;
+            else
+                newBoardValue += 500;
+
+        }
+        else if(enemyKing == 2) // check mate
+        {
+            System.out.println("***___*** the enemy King is in check mate");
+            if(isWhite)
+                newBoardValue -= 2000;
+            else
+                newBoardValue += 2000;
+        }
+        else if(enemyKing == 3) // remis
+        {
+            System.out.println("***___*** the enemy King is in remis");
+            if(isWhite)
+                newBoardValue -= 1000;
+            else
+                newBoardValue += 1000;
+        }
+        // endregion
 
 //        // old board
 //        for (int[] location : oldLocations) {
@@ -273,13 +335,10 @@ public class AI {
         return newBoardValue;
     }
 
-
-
-
     // region all our static evaluations functions
 
     // returns a static kill value, based on the char type
-    public int killEvaluation(char p) {
+    public int pieceEvaluation(char p) {
 
         int evalScore = 0;
 
