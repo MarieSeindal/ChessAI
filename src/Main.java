@@ -86,6 +86,8 @@ public class Main {
         /* Start the main game loop */
         while (true) {
 
+
+
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
                 System.out.println("********** GAME OVER: Draw **********");
@@ -93,6 +95,33 @@ public class Main {
             }
 
             player = game.getPlayerTurn(whiteTurn);
+
+            int whiteKing = Game.checkTheKing(game.board, player.isWhite());
+            int blackKing = Game.checkTheKing(game.board, player.isWhite());
+
+            if(whiteKing == 3 ||blackKing == 3)
+            {
+                System.out.println("********** GAME OVER: Draw (remis) **********");
+                break;
+            }
+            if(whiteKing == 2)
+            {
+                System.out.println("********** GAME OVER: black wins - white is in 'check mate' **********");
+                break;
+            }
+            if(blackKing == 2)
+            {
+                System.out.println("********** GAME OVER: white wins - black is in 'check mate' **********");
+                break;
+            }
+            if(whiteKing == 1)
+            {
+                System.out.println("---------- black have put white in 'check' ----------");
+            }
+            if(blackKing == 1)
+            {
+                System.out.println("---------- black have put white in 'check' ----------");
+            }
 
             //System.out.println("P1 is black: "+gameModeSelection[1]+" = "+(gameModeSelection[1] == 1? true : false)+". Is currentplayer P1 "+(player==game.getP1() ? true : false));
 
