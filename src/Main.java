@@ -99,6 +99,12 @@ public class Main {
             int whiteKing = Game.checkTheKing(game.board, !player.isWhite());
             int blackKing = Game.checkTheKing(game.board, !player.isWhite());
 
+            if(whiteKing == 404 || blackKing == 404)
+            {
+                System.out.println("********** GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
+                break;
+            }
+
             if(whiteKing == 3 ||blackKing == 3)
             {
                 System.out.println("********** GAME OVER: Draw (remis) **********");

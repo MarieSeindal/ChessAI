@@ -1,3 +1,5 @@
+import TUI.TUI;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,9 +87,11 @@ public class Game {
             return false;
     }
 
-    // int return - 0 is nothing, 1 is "check", 2 is "check mate", 3 is "remis"
+    // int return - 0 is nothing, 1 is "check", 2 is "check mate", 3 is "remis", 404 is "error"
     // TODO: test this function
     public static int checkTheKing(Board currentBoard, boolean whiteTurnNow){
+        Board tempBoard = currentBoard.cloning();
+
         ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
         int[] blackKingLocation = new int []{404, 404};
         int[] whiteKingLocation = new int []{404, 404};
@@ -101,7 +105,7 @@ public class Game {
                 // 002 - set the locations of the kings, when we see them
 
                 // set the black king location, if we see it
-                if( currentBoard.getPiece(y,x) == 'k' )
+                if( tempBoard.getPiece(y,x) == 'k' )
                 {
                     blackKingLocation[0] = y;
                     blackKingLocation[1] = x;
@@ -109,102 +113,138 @@ public class Game {
 
 
                 // set the white king location, if we see it
-                if( currentBoard.getPiece(y,x) == 'K' )
+                if( tempBoard.getPiece(y,x) == 'K' )
                 {
                     whiteKingLocation[0] = y;
                     whiteKingLocation[1] = x;
                 }
 
                 // get all locations of the Pieces
-                if( checkLocation(whiteTurnNow, currentBoard.getPiece(y,x)) == -1)
+                if( checkLocation(whiteTurnNow, tempBoard.getPiece(y,x)) == -1)
                     listOfPieces.add(new int[]{y, x});
             }
         }
 
-        // 003 - check white or black
-
-        ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
-
-        // when it is white's turn, we will be looking for black pieces
-        if (whiteTurnNow) {
-
-            // 004 - get all the spots the enemy can go to
-            for (int[] x : listOfPieces) {
-                // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
-                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[0], x[1]), x, currentBoard, false) ) ;
-            }
-
-            // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
-            LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
-            allSpotsTheEnemyCanMoveToo.clear();
-            allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
-
-            // 005 - get our white king's moveset
-            ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
-            kingMoveset.addAll(pieceMoveset('K', whiteKingLocation, currentBoard, true));
-
-            // 006 - check if king is in "check", "check mate" or "remis"
-
-//            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
-//            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
-
-            boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
-            boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, whiteKingLocation);
-
-            // here we need to check the other team, before the next turn
-            // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
-            if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
-            {
-                output = 3;
-            }
-            // TODO: this needs to be checked, since I don't believe this will do it for all cases
-            else if(containsAllOfKingMoveset && (containsKingLocation && kingMoveset.size() > 0) ) // "check mate"
-                output = 2;
-            else if(containsKingLocation) // "check"
-                output = 1;
-            else
-                output = 0;
-        }
-        else // when it is black's turn, we will be looking for white pieces
+        if(whiteKingLocation[0] == 404 || blackKingLocation[0] == 404)
         {
-            // 004 - get all the spots the enemy can go to
-            for (int[] x : listOfPieces) {
-                // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
-                allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( currentBoard.getPiece(x[0], x[1]), x, currentBoard, true) ) ;
-            }
-
-            // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
-            LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
-            allSpotsTheEnemyCanMoveToo.clear();
-            allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
-
-            // 005 - get our black king's moveset
-            ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
-            kingMoveset.addAll(pieceMoveset('k', blackKingLocation, currentBoard, false));
-
-            // 006 - check if king is in "check", "check mate" or "remis"
-
-//            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
-//            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
-
-            boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
-            boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, blackKingLocation);
-
-            // here we need to check the other team, before the next turn
-            // so based on black's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
-            //       does every move turn into check mate new turn?                       is it not in check mate or check right now ?
-            if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
-            {
-                output = 3;
-            }
-            // TODO: this needs to be checked, since I don't believe this will do it for all cases
-            else if(containsAllOfKingMoveset && (containsKingLocation && kingMoveset.size() > 0) ) // "check mate"
-                output = 2;
-            else if(containsKingLocation) // "check"
-                output = 1;
-            else
-                output = 0;
+            return 404;
         }
+        else
+        {
+
+
+            // 003 - check white or black
+
+            ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
+
+            // when it is white's turn, we will be looking for black pieces
+            if (whiteTurnNow) {
+
+                // 004 - get all the spots the enemy can go to
+                for (int[] x : listOfPieces) {
+                    // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
+                    allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, false) ) ;
+                }
+
+                // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
+                LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
+                allSpotsTheEnemyCanMoveToo.clear();
+                allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
+
+                // 005 - get our white king's moveset
+                ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
+                kingMoveset.addAll(pieceMoveset('K', whiteKingLocation, tempBoard, true));
+
+                // 006 - check if king is in "check", "check mate" or "remis"
+
+    //            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
+    //            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
+
+                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
+                boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, whiteKingLocation);
+
+                // here we need to check the other team, before the next turn
+                // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
+                if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
+                {
+                    output = 3;
+                }
+                // TODO: this needs to be checked, since I don't believe this will do it for all cases
+                else if(containsAllOfKingMoveset && (containsKingLocation && kingMoveset.size() > 0) ) // "check mate"
+                    output = 2;
+                else if(containsKingLocation) // "check"
+                    output = 1;
+                else
+                    output = 0;
+            }
+            else // when it is black's turn, we will be looking for white pieces
+            {
+                // 004 - get all the spots the enemy can go to
+                for (int[] x : listOfPieces) {
+                    // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
+                    allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, true) ) ;
+                }
+
+                // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
+                LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
+                allSpotsTheEnemyCanMoveToo.clear();
+                allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
+
+                // 005 - get our black king's moveset
+                ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
+                kingMoveset.addAll(pieceMoveset('k', blackKingLocation, tempBoard, false));
+
+                // 006 - check if king is in "check", "check mate" or "remis"
+
+    //            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
+    //            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
+
+                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
+                boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, blackKingLocation);
+
+                // here we need to check the other team, before the next turn
+                // so based on black's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
+                //       does every move turn into check mate new turn?                       is it not in check mate or check right now ?
+                if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
+                {
+                    output = 3;
+                }
+                // TODO: this needs to be checked, since I don't believe this will do it for all cases
+                else if(containsAllOfKingMoveset && (containsKingLocation && kingMoveset.size() > 0) ) // "check mate"
+                    output = 2;
+                else if(containsKingLocation) // "check"
+                    output = 1;
+                else
+                    output = 0;
+            }
+        }
+
+        return output;
+    }
+
+    public static ArrayList<int[]> filterMoveset(Board currentBoard, char piece, int[] location, ArrayList<int[]> input, boolean whiteTurnNow){
+        ArrayList<int[]> output = new ArrayList<>();
+        ArrayList<int[]> elementsToDelete = new ArrayList<>();
+
+
+
+        for (int[] moveLocation: input) {
+            Board tempBoard = currentBoard.cloning();
+            tempBoard.performMove(new Move(moveLocation, location, false, piece, 'o'));
+            int ourKing = Game.checkTheKing(tempBoard, whiteTurnNow);
+            if(ourKing != 0)
+            {
+                elementsToDelete.add(moveLocation);
+            }
+        }
+
+        TUI test = new TUI() ;
+        test.printBoard(currentBoard.boardArray, whiteTurnNow);
+
+        System.out.println("*-* filterMoveset *-* - input size: " + input.size() + " - the piece is: " + piece);
+        output.addAll(input);
+        output.removeAll(elementsToDelete);
+        System.out.println("*-* filterMoveset *-* - output size: " + output.size() + " - the piece is: " + piece);
 
         return output;
     }
@@ -606,6 +646,11 @@ public class Game {
     // char piece - is a character for the piece, can be lower or upper case, based on what color it is
     // int location - is the index value of the board, it needs to be converted to a 2D char array
     public static ArrayList<int[]> pieceMoveset(char piece, int[] location, Board currentBoard, boolean white){
+
+        // System.out.println("pieceMoveset - printing the board --------------------------- !!!!!!!!! -_______________");
+
+//        TUI test = new TUI() ;
+//        test.printBoard(currentBoard.boardArray, white);
 
         // this will be the 2D array, that which ever piece we have, will need
         // int[] location2d = convertIndexTo2D(1);
