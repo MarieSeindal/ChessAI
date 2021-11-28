@@ -37,7 +37,9 @@ public class AI {
 
         // If leaf node, return static value of the board
         if (depth == maxDepth) {
-            //System.out.println("Leaf return in depth " + depth);
+            System.out.println("Leaf return in maxDepth " + depth);
+            System.out.println("alpha " + alpha);
+            System.out.println("beta " + beta);
             return evaluateLeaf(bestMoveBoard, isWhite); //todo. expand evaluateLeaf()
         }
 
@@ -65,14 +67,14 @@ public class AI {
         if(whiteKing == 404)
         {
             System.out.println("********** AI - maximizer - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
-            return 20000000;
+            newValue = 20000000;
         }
 
-        if(whiteKing != 0)
+        if(whiteKing != 0 && whiteKing != 404)
         {
             fillChildrenKingInCheck(nodeToSearch, true);
         }
-        else
+        else if(whiteKing == 0)
         {
             fillChildren(nodeToSearch, true);
         }
@@ -115,14 +117,14 @@ public class AI {
         if(whiteKing == 404)
         {
             System.out.println("********** AI - minimizer - GAME OVER: their king is dead, WHAT DID WE DO !!!! **********");
-            return -20000000;
+            bestValue = -20000000;
         }
 
-        if(whiteKing != 0)
+        if(whiteKing != 0 && whiteKing != 404)
         {
             fillChildrenKingInCheck(nodeToSearch, false);
         }
-        else
+        else if(whiteKing == 0)
         {
             fillChildren(nodeToSearch, false);
         }
@@ -312,10 +314,15 @@ public class AI {
         int ourKing = Game.checkTheKing(newBoard, isWhite);
         int enemyKing = Game.checkTheKing(newBoard, !isWhite);
 
-        if(ourKing == 404 || enemyKing == 404)
+        if(ourKing == 404)
+        {
+            System.out.println("********** AI - GAME OVER: our king is dead, WHAT DID YOU DO !!!! **********");
+            return -5000000;
+        }
+        if(enemyKing == 404)
         {
             System.out.println("********** AI - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
-            return 0;
+            return 5000000;
         }
 
         // get all locations
@@ -434,9 +441,9 @@ public class AI {
         }
 
         // TODO: check with the debugger, if this makes bugs
-        if(isWhite == false) {
-            newBoardValue *= -1;
-        }
+//        if(isWhite == false) {
+//            newBoardValue *= -1;
+//        }
 
         //System.out.println("board evaluation value is: " + value);
         return newBoardValue;

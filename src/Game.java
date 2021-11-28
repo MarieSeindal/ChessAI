@@ -126,7 +126,7 @@ public class Game {
 
     // int return - 0 is nothing, 1 is "check", 2 is "check mate", 3 is "remis", 404 is "error"
     // TODO: test this function
-    public static int checkTheKing(Board currentBoard, boolean whiteTurnNow){
+    public static int checkTheKing(Board currentBoard, boolean colorOfKingToCheck){
         Board tempBoard = currentBoard.cloning();
 
         ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
@@ -157,7 +157,7 @@ public class Game {
                 }
 
                 // get all locations of the Pieces
-                if( checkLocation(whiteTurnNow, tempBoard.getPiece(y,x)) == -1)
+                if( checkLocation(colorOfKingToCheck, tempBoard.getPiece(y,x)) == -1)
                     listOfPieces.add(new int[]{y, x});
             }
         }
@@ -175,7 +175,7 @@ public class Game {
             ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
 
             // when it is white's turn, we will be looking for black pieces
-            if (whiteTurnNow) {
+            if (colorOfKingToCheck) {
 
                 // 004 - get all the spots the enemy can go to
                 for (int[] x : listOfPieces) {
@@ -267,8 +267,8 @@ public class Game {
             }
         }
 
-        TUI test = new TUI() ;
-        test.printBoard(currentBoard.boardArray, whiteTurnNow);
+//        TUI test = new TUI() ;
+//        test.printBoard(currentBoard.boardArray, whiteTurnNow);
 
         System.out.println("*-* filterMoveset *-* - input size: " + input.size() + " - the piece is: " + piece);
         output.addAll(input);
