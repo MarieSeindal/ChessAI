@@ -43,7 +43,6 @@ public class Main {
             isP1White = false;
         }
 
-
         switch (gameModeSelection[0]) {
             case 1 -> { // Human vs AI
                 p1 = new Player(isP1White, false);
@@ -136,11 +135,11 @@ public class Main {
             //System.out.println("is current player white? "+player.isWhite());
 
             if (player.isWhite()) {
-                System.out.println("White Players turn ("+(player == p1? "p1" : "p2")+")");
+                System.out.println("White Players turn (" + (player == p1 ? "p1" : "p2") + ")");
             } else {
-                System.out.println("Black Players turn ("+(player == p1? "p1" : "p2")+")");
+                System.out.println("Black Players turn (" + (player == p1 ? "p1" : "p2") + ")");
                 // Increment after each black player move.
-                game.setTotalTurns(game.getTotalTurns()+1);
+                game.setTotalTurns(game.getTotalTurns() + 1);
             }
 
             tui.printBoard(game.board.getBoardArray(), whiteTurn);
@@ -172,16 +171,17 @@ public class Main {
                     // Check if chosen board position is empty
                     if (startPiece != ' ') {
 
-                        boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
+                        int isKill = Game.checkLocation(player.isWhite(), game.board.getPiece(movePos[2], movePos[3]));
+                        // boolean isKill = game.board.isEnemyPiece(player.isWhite(), destinationPiece);
                         ArrayList<int[]> possibleMoves;
 
                         /* Check if chosen destination position is empty or enemy */
-                        if (destinationPiece == ' ' || isKill) {
+                        if (destinationPiece == ' ' || isKill == -1) {
 
                             // Check if move is legal
-                            int[] start = new int[] {movePos[0], movePos[1]};
-                            int[] destination = new int[] {movePos[2], movePos[3]};
-                            System.out.println("New move info: Piece: "+ startPiece + " | " + start[0]+","+start[1]+ "->" + destination[0] + "," +destination[1]);
+                            int[] start = new int[]{movePos[0], movePos[1]};
+                            int[] destination = new int[]{movePos[2], movePos[3]};
+                            System.out.println("New move info: Piece: " + startPiece + " | " + start[0] + "," + start[1] + "->" + destination[0] + "," + destination[1]);
 
                             try {
                                 possibleMoves = game.pieceMoveset(startPiece, start, game.board, player.isWhite());
@@ -195,7 +195,7 @@ public class Main {
                                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
                                             game.board.performMove(move);
 
-                                            if (isKill) {
+                                            if (isKill == -1) {
                                                 /* Reset kill counter */
                                                 game.setTurnsSinceKill(0);
                                             } else {
@@ -213,7 +213,7 @@ public class Main {
                                         System.out.println("Move is not legal!");
                                     }
                                 } else {
-                                        System.out.println("Move is not legal!");
+                                    System.out.println("Move is not legal!");
                                 }
                             } catch (Exception e) {
                                 System.out.println("Move is not legal!");
@@ -224,16 +224,43 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(game.board, player.isWhite());
+                AI ai = new AI(game.board, player.isWhite(), 10);
                 ChessNode firstNode = new ChessNode(game.board);
+                // Record starting time
+                long timeLimit = System.currentTimeMillis() / 1000;
                 ai.runAI(firstNode);
-                //ChessNode firstNode = new ChessNode(game.board);
+                // Output finishing time
+                long time = ((System.currentTimeMillis() / 1000) - timeLimit);
+                System.out.println("Evaluation took: " + time + "s");
 
-                Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
-                System.out.println("AI Moving: "+tempMove.getOldField()[0]+","+tempMove.getOldField()[1]+" -> "+tempMove.getNewField()[0]+","+tempMove.getNewField()[1]);
-                // TODO: maybe we need to rethink this
-                game.addUsedBoard(game.board);
-                game.board.performMove(tempMove);
+                // Safety check
+                if (ai.getBestMoveBoard() != null) {
+                    Move tempMove = game.board.moveFromDifferenceIn2Boards(ai.getBestMoveBoard());
+                    System.out.println("AI Moving: " + tempMove.getOldField()[0] + "," + tempMove.getOldField()[1] + " -> " + tempMove.getNewField()[0] + "," + tempMove.getNewField()[1]);
+
+                    // TODO: fix invalid pieces being printed/moved?
+                    System.out.println("AI Moving Piece (start): "+  + game.board.getPiece(tempMove.getOldField()[0], tempMove.getOldField()[1]));
+                    //System.out.println("AI Moving Piece (destination): "+game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
+                    System.out.println("AI Moving Piece (destination): "+tempMove.getContent());
+
+                    // TODO: maybe we need to rethink this
+                    game.addUsedBoard(game.board);
+                    game.board.performMove(tempMove);
+
+                    // Check if kill TODO: not working yet (isKill is never true)
+                    int isKill = Game.checkLocation(player.isWhite(), game.board.getPiece(tempMove.newField[0], tempMove.newField[1]));
+
+                    //boolean isKill = game.board.isEnemyPiece(player.isWhite(), game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
+                    if (isKill == -1) {
+                        /* Reset kill counter */
+                        game.setTurnsSinceKill(0);
+                    } else {
+                        game.setTurnsSinceKill(game.getTurnsSinceKill() + 1);
+                    }
+
+                    System.out.println("Turns since kill: "+game.getTurnsSinceKill());
+                }
+
                 tui.printBoard(game.board.getBoardArray(), false);
                 whiteTurn = !whiteTurn;
             }
@@ -249,21 +276,20 @@ public class Main {
     public static void arrayPrinter(ArrayList<int[]> input) {
         String output = "";
 
-        for (int[] x: input) {
+        for (int[] x : input) {
             output += x[0] + "," + x[1] + " ; ";
         }
 
         System.out.println(output);
     }
 
-    public static void testMovesetFunctions()
-    {
+    public static void testMovesetFunctions() {
         //  region test
 
         // endregion
 
         // white queen test
-        int[] location1 = new int[]{3,3};
+        int[] location1 = new int[]{3, 3};
         char[][] tBoard1 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -281,23 +307,34 @@ public class Main {
         // 4,2 ;
         // 2,2 ; 1,1 ; 0,0
         ArrayList<int[]> checkList1 = new ArrayList<int[]>();
-        checkList1.add(new int[]{0,3}); checkList1.add(new int[]{1,3});
-        checkList1.add(new int[]{2,3}); checkList1.add(new int[]{4,3});
-        checkList1.add(new int[]{5,3}); checkList1.add(new int[]{6,3});
-        checkList1.add(new int[]{7,3});
+        checkList1.add(new int[]{0, 3});
+        checkList1.add(new int[]{1, 3});
+        checkList1.add(new int[]{2, 3});
+        checkList1.add(new int[]{4, 3});
+        checkList1.add(new int[]{5, 3});
+        checkList1.add(new int[]{6, 3});
+        checkList1.add(new int[]{7, 3});
 
-        checkList1.add(new int[]{3,0}); checkList1.add(new int[]{3,1});
-        checkList1.add(new int[]{3,2}); checkList1.add(new int[]{3,4});
-        checkList1.add(new int[]{3,5}); checkList1.add(new int[]{3,6});
-        checkList1.add(new int[]{3,7});
+        checkList1.add(new int[]{3, 0});
+        checkList1.add(new int[]{3, 1});
+        checkList1.add(new int[]{3, 2});
+        checkList1.add(new int[]{3, 4});
+        checkList1.add(new int[]{3, 5});
+        checkList1.add(new int[]{3, 6});
+        checkList1.add(new int[]{3, 7});
 
-        checkList1.add(new int[]{2,4}); checkList1.add(new int[]{4,2});
-        checkList1.add(new int[]{4,4}); checkList1.add(new int[]{5,5}); checkList1.add(new int[]{6,6});
-        checkList1.add(new int[]{2,2}); checkList1.add(new int[]{1,1}); checkList1.add(new int[]{0,0});
+        checkList1.add(new int[]{2, 4});
+        checkList1.add(new int[]{4, 2});
+        checkList1.add(new int[]{4, 4});
+        checkList1.add(new int[]{5, 5});
+        checkList1.add(new int[]{6, 6});
+        checkList1.add(new int[]{2, 2});
+        checkList1.add(new int[]{1, 1});
+        checkList1.add(new int[]{0, 0});
 
 
         // black queen test
-        int[] location2 = new int[]{5,6};
+        int[] location2 = new int[]{5, 6};
         char[][] tBoard2 =
                 {{'r', 'n', 'b', ' ', ' ', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -315,20 +352,29 @@ public class Main {
         // 6,7 ;
         // 4,5 ;
         ArrayList<int[]> checkList2 = new ArrayList<int[]>();
-        checkList2.add(new int[]{7,6}); checkList2.add(new int[]{2,6});
-        checkList2.add(new int[]{1,6}); checkList2.add(new int[]{3,6});
-        checkList2.add(new int[]{6,6}); checkList2.add(new int[]{4,6});
+        checkList2.add(new int[]{7, 6});
+        checkList2.add(new int[]{2, 6});
+        checkList2.add(new int[]{1, 6});
+        checkList2.add(new int[]{3, 6});
+        checkList2.add(new int[]{6, 6});
+        checkList2.add(new int[]{4, 6});
 
-        checkList2.add(new int[]{5,0}); checkList2.add(new int[]{5,1});
-        checkList2.add(new int[]{5,2}); checkList2.add(new int[]{5,3});
-        checkList2.add(new int[]{5,4}); checkList2.add(new int[]{5,5});
-        checkList2.add(new int[]{5,7});
+        checkList2.add(new int[]{5, 0});
+        checkList2.add(new int[]{5, 1});
+        checkList2.add(new int[]{5, 2});
+        checkList2.add(new int[]{5, 3});
+        checkList2.add(new int[]{5, 4});
+        checkList2.add(new int[]{5, 5});
+        checkList2.add(new int[]{5, 7});
 
-        checkList2.add(new int[]{4,7}); checkList2.add(new int[]{6,7});
-        checkList2.add(new int[]{6,5}); checkList2.add(new int[]{7,4}); checkList2.add(new int[]{4,5});
+        checkList2.add(new int[]{4, 7});
+        checkList2.add(new int[]{6, 7});
+        checkList2.add(new int[]{6, 5});
+        checkList2.add(new int[]{7, 4});
+        checkList2.add(new int[]{4, 5});
 
         // white tower test
-        int[] location3 = new int[]{2,2};
+        int[] location3 = new int[]{2, 2};
         char[][] tBoard3 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -343,16 +389,20 @@ public class Main {
         // 2,0 ; 2,1 ; 2,3 ; 2,4 ;
 
         ArrayList<int[]> checkList3 = new ArrayList<int[]>();
-        checkList3.add(new int[]{0,2}); checkList3.add(new int[]{4,2});
-        checkList3.add(new int[]{1,2}); checkList3.add(new int[]{3,2});
+        checkList3.add(new int[]{0, 2});
+        checkList3.add(new int[]{4, 2});
+        checkList3.add(new int[]{1, 2});
+        checkList3.add(new int[]{3, 2});
 
 
-        checkList3.add(new int[]{2,0}); checkList3.add(new int[]{2,1});
-        checkList3.add(new int[]{2,3}); checkList3.add(new int[]{2,4});
+        checkList3.add(new int[]{2, 0});
+        checkList3.add(new int[]{2, 1});
+        checkList3.add(new int[]{2, 3});
+        checkList3.add(new int[]{2, 4});
 
 
         // black tower test
-        int[] location4 = new int[]{2,2};
+        int[] location4 = new int[]{2, 2};
         char[][] tBoard4 =
                 {{' ', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -366,15 +416,20 @@ public class Main {
         // 1,2 ; 3,2 ; 4,2 ; 5,2
         // 2,0 ; 2,1 ; 2,3 ; 2,4 ; 2,5
         ArrayList<int[]> checkList4 = new ArrayList<int[]>();
-        checkList4.add(new int[]{4,2}); checkList4.add(new int[]{5,2});
-        checkList4.add(new int[]{1,2}); checkList4.add(new int[]{3,2});
+        checkList4.add(new int[]{4, 2});
+        checkList4.add(new int[]{5, 2});
+        checkList4.add(new int[]{1, 2});
+        checkList4.add(new int[]{3, 2});
 
 
-        checkList4.add(new int[]{2,0}); checkList4.add(new int[]{2,1});
-        checkList4.add(new int[]{2,3}); checkList4.add(new int[]{2,4}); checkList4.add(new int[]{2,5});
+        checkList4.add(new int[]{2, 0});
+        checkList4.add(new int[]{2, 1});
+        checkList4.add(new int[]{2, 3});
+        checkList4.add(new int[]{2, 4});
+        checkList4.add(new int[]{2, 5});
 
         // white b test
-        int[] location5 = new int[]{3,2};
+        int[] location5 = new int[]{3, 2};
         char[][] tBoard5 =
                 {{'r', 'n', 'b', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -388,15 +443,21 @@ public class Main {
         // 5,0 ; 4,1 ; 2,3 ; 1,4 ; 0,5
         // 1,0 ; 2,1 ; 4,3 ; 5,4 ; 6,5
         ArrayList<int[]> checkList5 = new ArrayList<int[]>();
-        checkList5.add(new int[]{5,0}); checkList5.add(new int[]{4,1});
-        checkList5.add(new int[]{2,3}); checkList5.add(new int[]{1,4}); checkList5.add(new int[]{0,5});
+        checkList5.add(new int[]{5, 0});
+        checkList5.add(new int[]{4, 1});
+        checkList5.add(new int[]{2, 3});
+        checkList5.add(new int[]{1, 4});
+        checkList5.add(new int[]{0, 5});
 
 
-        checkList5.add(new int[]{1,0}); checkList5.add(new int[]{2,1});
-        checkList5.add(new int[]{4,3}); checkList5.add(new int[]{5,4}); checkList5.add(new int[]{6,5});
+        checkList5.add(new int[]{1, 0});
+        checkList5.add(new int[]{2, 1});
+        checkList5.add(new int[]{4, 3});
+        checkList5.add(new int[]{5, 4});
+        checkList5.add(new int[]{6, 5});
 
         // black b test
-        int[] location6 = new int[]{3,2};
+        int[] location6 = new int[]{3, 2};
         char[][] tBoard6 =
                 {{'r', 'n', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -410,15 +471,21 @@ public class Main {
         // 5,0 ; 4,1 ; 2,3 ; 1,4
         // 1,0 ; 2,1 ; 4,3 ; 5,4 ; 6,5 ; 7,6
         ArrayList<int[]> checkList6 = new ArrayList<int[]>();
-        checkList6.add(new int[]{5,0}); checkList6.add(new int[]{4,1});
-        checkList6.add(new int[]{2,3}); checkList6.add(new int[]{1,4});
+        checkList6.add(new int[]{5, 0});
+        checkList6.add(new int[]{4, 1});
+        checkList6.add(new int[]{2, 3});
+        checkList6.add(new int[]{1, 4});
 
 
-        checkList6.add(new int[]{1,0}); checkList6.add(new int[]{2,1});
-        checkList6.add(new int[]{4,3}); checkList6.add(new int[]{5,4}); checkList6.add(new int[]{6,5}); checkList6.add(new int[]{7,6});
+        checkList6.add(new int[]{1, 0});
+        checkList6.add(new int[]{2, 1});
+        checkList6.add(new int[]{4, 3});
+        checkList6.add(new int[]{5, 4});
+        checkList6.add(new int[]{6, 5});
+        checkList6.add(new int[]{7, 6});
 
         // white n test
-        int[] location7 = new int[]{3,2};
+        int[] location7 = new int[]{3, 2};
         char[][] tBoard7 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -431,13 +498,16 @@ public class Main {
         // should give -
         // 1,1 ; 1,3 ; 4,4 ; 5,1 ; 4,0 ; 2,0
         ArrayList<int[]> checkList7 = new ArrayList<int[]>();
-        checkList7.add(new int[]{1,3}); checkList7.add(new int[]{5,1}); checkList7.add(new int[]{1,1});
-        checkList7.add(new int[]{4,4}); checkList7.add(new int[]{4,0}); checkList7.add(new int[]{2,0});
-
+        checkList7.add(new int[]{1, 3});
+        checkList7.add(new int[]{5, 1});
+        checkList7.add(new int[]{1, 1});
+        checkList7.add(new int[]{4, 4});
+        checkList7.add(new int[]{4, 0});
+        checkList7.add(new int[]{2, 0});
 
 
         // black n test
-        int[] location8 = new int[]{3,2};
+        int[] location8 = new int[]{3, 2};
         char[][] tBoard8 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -450,12 +520,16 @@ public class Main {
         // should give -
         // 1,3 ; 2,4 ; 4,4 ; 5,1 ; 5,3 ; 4,0 ; 2,0
         ArrayList<int[]> checkList8 = new ArrayList<int[]>();
-        checkList8.add(new int[]{5,1}); checkList8.add(new int[]{5,3});
-        checkList8.add(new int[]{1,3}); checkList8.add(new int[]{4,0});
-        checkList8.add(new int[]{4,4}); checkList8.add(new int[]{2,0}); checkList8.add(new int[]{2,4});
+        checkList8.add(new int[]{5, 1});
+        checkList8.add(new int[]{5, 3});
+        checkList8.add(new int[]{1, 3});
+        checkList8.add(new int[]{4, 0});
+        checkList8.add(new int[]{4, 4});
+        checkList8.add(new int[]{2, 0});
+        checkList8.add(new int[]{2, 4});
 
         // black p test
-        int[] location9 = new int[]{1,2};
+        int[] location9 = new int[]{1, 2};
         char[][] tBoard9 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', 'p', ' ', ' ', ' ', ' ', ' '},
@@ -468,11 +542,12 @@ public class Main {
         // should give -
         // 2,3 ; 2,2 ; 3,2
         ArrayList<int[]> checkList9 = new ArrayList<int[]>();
-        checkList9.add(new int[]{3,2}); checkList9.add(new int[]{2,2});
-        checkList9.add(new int[]{2,3});
+        checkList9.add(new int[]{3, 2});
+        checkList9.add(new int[]{2, 2});
+        checkList9.add(new int[]{2, 3});
 
         // white p test
-        int[] location10 = new int[]{6,2};
+        int[] location10 = new int[]{6, 2};
         char[][] tBoard10 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -485,11 +560,12 @@ public class Main {
         // should give -
         // 5,2 ; 4,2 ; 5,1
         ArrayList<int[]> checkList10 = new ArrayList<int[]>();
-        checkList10.add(new int[]{5,2}); checkList10.add(new int[]{4,2});
-        checkList10.add(new int[]{5,1});
+        checkList10.add(new int[]{5, 2});
+        checkList10.add(new int[]{4, 2});
+        checkList10.add(new int[]{5, 1});
 
         // white k test
-        int[] location11 = new int[]{4,3};
+        int[] location11 = new int[]{4, 3};
         char[][] tBoard11 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -502,13 +578,17 @@ public class Main {
         // should give -
         // 3,2 ; 3,3 ; 3,4 ; 4,2 ; 4,4 ; 5,3 ; 5,4
         ArrayList<int[]> checkList11 = new ArrayList<int[]>();
-        checkList11.add(new int[]{3,2}); checkList11.add(new int[]{4,2});
-        checkList11.add(new int[]{3,3}); checkList11.add(new int[]{4,4});
-        checkList11.add(new int[]{3,4}); checkList11.add(new int[]{5,3}); checkList11.add(new int[]{5,4});
+        checkList11.add(new int[]{3, 2});
+        checkList11.add(new int[]{4, 2});
+        checkList11.add(new int[]{3, 3});
+        checkList11.add(new int[]{4, 4});
+        checkList11.add(new int[]{3, 4});
+        checkList11.add(new int[]{5, 3});
+        checkList11.add(new int[]{5, 4});
         // TODO: king should not be able to go to - 3,2 ; 3,3 ; 4,4 ; 5,4 , since that put it in check mate
 
         // black k test
-        int[] location12 = new int[]{4,3};
+        int[] location12 = new int[]{4, 3};
         char[][] tBoard12 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
                         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -521,9 +601,13 @@ public class Main {
         // should give -
         // 3,2 ; 3,3 ; 4,2 ; 4,4 ; 5,2 ; 5,3 ; 5,4 ;
         ArrayList<int[]> checkList12 = new ArrayList<int[]>();
-        checkList12.add(new int[]{3,2}); checkList12.add(new int[]{4,2});
-        checkList12.add(new int[]{3,3}); checkList12.add(new int[]{5,3});
-        checkList12.add(new int[]{4,4}); checkList12.add(new int[]{5,2}); checkList12.add(new int[]{5,4});
+        checkList12.add(new int[]{3, 2});
+        checkList12.add(new int[]{4, 2});
+        checkList12.add(new int[]{3, 3});
+        checkList12.add(new int[]{5, 3});
+        checkList12.add(new int[]{4, 4});
+        checkList12.add(new int[]{5, 2});
+        checkList12.add(new int[]{5, 4});
         // TODO: king should not be able to go to - 4,2 ; 3,2 ; 5,3 ; 5,4 , since that put it in check mate
 
         ArrayList<int[]> testValues = new ArrayList<>();
@@ -536,7 +620,7 @@ public class Main {
         output = checkList1.containsAll(testValues);
         System.out.println("white q test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white q check list : " );
+        System.out.println("white q check list : ");
         Main.arrayPrinter(checkList1);
         System.out.println("did white q pass the test? : " + output);
 
@@ -546,7 +630,7 @@ public class Main {
         output = checkList2.containsAll(testValues);
         System.out.println("black q test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black q check list : " );
+        System.out.println("black q check list : ");
         Main.arrayPrinter(checkList2);
         System.out.println("did black q pass the test? : " + output);
 
@@ -556,7 +640,7 @@ public class Main {
         output = checkList3.containsAll(testValues);
         System.out.println("white r test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white r check list : " );
+        System.out.println("white r check list : ");
         Main.arrayPrinter(checkList3);
         System.out.println("did white r pass the test? : " + output);
 
@@ -566,7 +650,7 @@ public class Main {
         output = checkList4.containsAll(testValues);
         System.out.println("black r test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black r check list : " );
+        System.out.println("black r check list : ");
         Main.arrayPrinter(checkList4);
         System.out.println("did black r pass the test? : " + output);
 
@@ -576,7 +660,7 @@ public class Main {
         output = checkList5.containsAll(testValues);
         System.out.println("white b test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white b check list : " );
+        System.out.println("white b check list : ");
         Main.arrayPrinter(checkList5);
         System.out.println("did white b pass the test? : " + output);
 
@@ -586,7 +670,7 @@ public class Main {
         output = checkList6.containsAll(testValues);
         System.out.println("black b test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black b check list : " );
+        System.out.println("black b check list : ");
         Main.arrayPrinter(checkList6);
         System.out.println("did black b pass the test? : " + output);
 
@@ -596,7 +680,7 @@ public class Main {
         output = checkList7.containsAll(testValues);
         System.out.println("white n test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white n check list : " );
+        System.out.println("white n check list : ");
         Main.arrayPrinter(checkList7);
         System.out.println("did white n pass the test? : " + output);
 
@@ -606,7 +690,7 @@ public class Main {
         output = checkList8.containsAll(testValues);
         System.out.println("black n test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black n check list : " );
+        System.out.println("black n check list : ");
         Main.arrayPrinter(checkList8);
         System.out.println("did black n pass the test? : " + output);
 
@@ -616,7 +700,7 @@ public class Main {
         output = checkList9.containsAll(testValues);
         System.out.println("black p test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black p check list : " );
+        System.out.println("black p check list : ");
         Main.arrayPrinter(checkList9);
         System.out.println("did black n pass the test? : " + output);
 
@@ -626,7 +710,7 @@ public class Main {
         output = checkList10.containsAll(testValues);
         System.out.println("white p test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white p check list : " );
+        System.out.println("white p check list : ");
         Main.arrayPrinter(checkList10);
         System.out.println("did white p pass the test? : " + output);
 
@@ -636,7 +720,7 @@ public class Main {
         output = checkList11.containsAll(testValues);
         System.out.println("white k test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("white k check list : " );
+        System.out.println("white k check list : ");
         Main.arrayPrinter(checkList11);
         System.out.println("did white k pass the test? : " + output);
 
@@ -646,7 +730,7 @@ public class Main {
         output = checkList12.containsAll(testValues);
         System.out.println("black k test values : ");
         Main.arrayPrinter(testValues);
-        System.out.println("black k check list : " );
+        System.out.println("black k check list : ");
         Main.arrayPrinter(checkList12);
         System.out.println("did black k pass the test? : " + output);
 
