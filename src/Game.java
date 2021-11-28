@@ -5,6 +5,7 @@ import java.util.List;
 
 import java.util.LinkedHashSet;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 
 public class Game {
@@ -70,9 +71,45 @@ public class Game {
             return false;
     }
 
+    public static ArrayList<int[]> arrayListRemoveDuplicates (ArrayList<int[]> theList) {
+        // used code from - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
+
+
+        ArrayList<String> _theStringList = new ArrayList<>();
+        ArrayList<String> _output = new ArrayList<>();
+        ArrayList<Integer> _outputIndex = new ArrayList<>();
+
+        // converter
+        for (int[] x: theList) {
+            _theStringList.add(x[0]  + "," + x[1]);
+        }
+
+        int counter = 0;
+        for (String item: _theStringList) {
+
+            if(!_output.contains(item))
+            {
+                _output.add(item);
+                _outputIndex.add(counter);
+            }
+            counter++;
+        }
+
+        ArrayList<int[]> returnOutput = new ArrayList<>();
+        for (int index : _outputIndex) {
+            returnOutput.add(theList.get(index));
+        }
+
+        return returnOutput;
+    }
+
+
     public static boolean arrayListContainsAll (ArrayList<int[]> theList, ArrayList<int[]> checkContent) {
+
         ArrayList<String> _theList = new ArrayList<>();
         ArrayList<String> _checkContent = new ArrayList<>();
+
+
 
         for (int[] x: theList) {
             _theList.add(x[0]  + "," + x[1]);
@@ -146,22 +183,16 @@ public class Game {
                     allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, false) ) ;
                 }
 
-                // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
-                LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
-                allSpotsTheEnemyCanMoveToo.clear();
-                allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
+                // remove duplicate elements - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
+                ArrayList<int[]> removedDuplicates = Game.arrayListRemoveDuplicates(allSpotsTheEnemyCanMoveToo);
 
                 // 005 - get our white king's moveset
                 ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
                 kingMoveset.addAll(pieceMoveset('K', whiteKingLocation, tempBoard, true));
 
-                // 006 - check if king is in "check", "check mate" or "remis"
 
-    //            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
-    //            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
-
-                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
-                boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, whiteKingLocation);
+                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(removedDuplicates, kingMoveset);
+                boolean containsKingLocation = Game.arrayListContains(removedDuplicates, whiteKingLocation);
 
                 // here we need to check the other team, before the next turn
                 // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
@@ -185,10 +216,8 @@ public class Game {
                     allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, true) ) ;
                 }
 
-                // remove duplicate elements - https://howtodoinjava.com/java/collections/arraylist/remove-duplicate-elements/
-                LinkedHashSet<int[]> hashSet = new LinkedHashSet<>(allSpotsTheEnemyCanMoveToo);
-                allSpotsTheEnemyCanMoveToo.clear();
-                allSpotsTheEnemyCanMoveToo.addAll(new ArrayList<>(hashSet));
+                // remove duplicate elements - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
+                ArrayList<int[]> removedDuplicates = Game.arrayListRemoveDuplicates(allSpotsTheEnemyCanMoveToo);
 
                 // 005 - get our black king's moveset
                 ArrayList<int[]> kingMoveset = new ArrayList<int[]>();
@@ -199,8 +228,8 @@ public class Game {
     //            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
     //            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
 
-                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(allSpotsTheEnemyCanMoveToo, kingMoveset);
-                boolean containsKingLocation = Game.arrayListContains(allSpotsTheEnemyCanMoveToo, blackKingLocation);
+                boolean containsAllOfKingMoveset = Game.arrayListContainsAll(removedDuplicates, kingMoveset);
+                boolean containsKingLocation = Game.arrayListContains(removedDuplicates, blackKingLocation);
 
                 // here we need to check the other team, before the next turn
                 // so based on black's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?

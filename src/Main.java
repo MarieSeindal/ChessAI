@@ -96,8 +96,8 @@ public class Main {
 
             player = game.getPlayerTurn(whiteTurn);
 
-            int whiteKing = Game.checkTheKing(game.board, !player.isWhite());
-            int blackKing = Game.checkTheKing(game.board, !player.isWhite());
+            int whiteKing = Game.checkTheKing(game.board, player.isWhite());
+            int blackKing = Game.checkTheKing(game.board, player.isWhite());
 
             if(whiteKing == 404 || blackKing == 404)
             {
