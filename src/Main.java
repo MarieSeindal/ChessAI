@@ -91,7 +91,13 @@ public class Main {
 
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
-                System.out.println("********** GAME OVER: Draw **********");
+                System.out.println("********** GAME OVER: (50 moves) Draw **********");
+                break;
+            }
+
+            if(game.threefoldRepetition())
+            {
+                System.out.println("********** GAME OVER: (3 threefold boards) Draw **********");
                 break;
             }
 

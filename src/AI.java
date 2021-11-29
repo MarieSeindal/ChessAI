@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 3;
+    private static int maxDepth = 7;
     static int timeLimitSeconds = 10;
     private static long timeLimit;
     protected Board currentBoard;
@@ -39,9 +39,9 @@ public class AI {
 
         // If leaf node, return static value of the board
         if (depth == maxDepth || stop) {
-            System.out.println("Leaf return in maxDepth " + depth);
-            System.out.println("alpha " + alpha);
-            System.out.println("beta " + beta);
+//            System.out.println("Leaf return in maxDepth " + depth);
+//            System.out.println("alpha " + alpha);
+//            System.out.println("beta " + beta);
             return evaluateLeaf(bestMoveBoard, isWhite); //todo. expand evaluateLeaf()
         }
 
@@ -189,9 +189,6 @@ public class AI {
 
                         //TODO: remove this line !!!!!
                         ArrayList<int[]> count = tempBoard.getAllPiece();
-                        if(count.size() > 32)
-                            System.out.println("the count of all piece are: " + count.size() + "**********************!!!!!!!!!!!!!!!");
-
 
 //                        //When a move is found, clone it
 //                        Board copyOfBoard = tempBoard;
@@ -221,9 +218,6 @@ public class AI {
 
                         //TODO: remove this line !!!!!
                         ArrayList<int[]> count = tempBoard.getAllPiece();
-                        if(count.size() > 32)
-                            System.out.println("the count of all piece are: " + count.size() + "**********************!!!!!!!!!!!!!!!");
-
 
 //                        //When a move is found, clone it
 //                        Board copyOfBoard = parent.getBoard().cloning();
@@ -327,20 +321,20 @@ public class AI {
         int ourKing = Game.checkTheKing(newBoard, isWhite);
         int enemyKing = Game.checkTheKing(newBoard, !isWhite);
 
-        if(ourKing == 404)
-        {
-            System.out.println("********** AI - GAME OVER: our king is dead, WHAT DID YOU DO !!!! **********");
-            return -5000000;
-        }
-        if(enemyKing == 404)
-        {
-            System.out.println("********** AI - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
-            return 5000000;
-        }
+//        if(ourKing == 404)
+//        {
+//            System.out.println("********** AI - GAME OVER: our king is dead, WHAT DID YOU DO !!!! **********");
+//            return 5000000;
+//        }
+//        if(enemyKing == 404)
+//        {
+//            System.out.println("********** AI - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
+//            return -5000000;
+//        }
 
         // get all locations
         // ArrayList<int[]> oldLocations = this.currentBoard.getAllPiece();
-        ArrayList<int[]> newLocations = newBoard.getAllPiece();
+        ArrayList<int[]> allPieces = newBoard.getAllPiece();
 
         // TODO: check if this works and change the values, so that it works
         // our king
@@ -348,28 +342,18 @@ public class AI {
         // region their king
         if(ourKing == 1) // check
         {
-            System.out.println("***___*** our King is in check");
-            if(isWhite)
-                newBoardValue -= 500;
-            else
-                newBoardValue += 500;
-
+            // System.out.println("***___*** our King is in check");
+            newBoardValue -= 500;
         }
         else if(ourKing == 2) // check mate
         {
-            System.out.println("***___*** our King is in check mate");
-            if(isWhite)
-                newBoardValue -= 2000;
-            else
-                newBoardValue += 2000;
+            // System.out.println("***___*** our King is in check mate");
+            newBoardValue -= 5000000;
         }
         else if(ourKing == 3) // remis
         {
-            System.out.println("***___*** our King is in remis");
-            if(isWhite)
-                newBoardValue -= 1000;
-            else
-                newBoardValue += 1000;
+            // System.out.println("***___*** our King is in remis");
+            newBoardValue -= 1000;
         }
         // endregion
 
@@ -380,27 +364,18 @@ public class AI {
         if(enemyKing == 1) // check
         {
             // System.out.println("***___*** the enemy King is in check");
-            if(isWhite)
-                newBoardValue -= 500;
-            else
-                newBoardValue += 500;
+            newBoardValue += 500;
 
         }
         else if(enemyKing == 2) // check mate
         {
-            System.out.println("***___*** the enemy King is in check mate");
-            if(isWhite)
-                newBoardValue -= 2000;
-            else
-                newBoardValue += 2000;
+            // System.out.println("***___*** the enemy King is in check mate");
+            newBoardValue += 5000000;
         }
         else if(enemyKing == 3) // remis
         {
-            System.out.println("***___*** the enemy King is in remis");
-            if(isWhite)
-                newBoardValue -= 1000;
-            else
-                newBoardValue += 1000;
+            // System.out.println("***___*** the enemy King is in remis");
+            newBoardValue -= 1000;
         }
         // endregion
 
@@ -431,7 +406,7 @@ public class AI {
 
 
         // new board
-        for (int[] location : newLocations) {
+        for (int[] location : allPieces) {
             char tempPiece = newBoard.boardArray[location[0]][location[1]];
 
             // black
