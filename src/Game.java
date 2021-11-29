@@ -129,7 +129,8 @@ public class Game {
     public static int checkTheKing(Board currentBoard, boolean colorOfKingToCheck){
         Board tempBoard = currentBoard.cloning();
 
-        ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
+        ArrayList<int[]> enemyPieces = new ArrayList<int[]>();
+        ArrayList<int[]> myPieces = new ArrayList<int[]>();
         int[] blackKingLocation = null;
         int[] whiteKingLocation = null;
 
@@ -156,9 +157,15 @@ public class Game {
                     whiteKingLocation = new int[]{y,x};
                 }
 
-                // get all locations of the Pieces
-                if( checkLocation(colorOfKingToCheck, tempBoard.getPiece(y,x)) == -1)
-                    listOfPieces.add(new int[]{y, x});
+                int spot = checkLocation(colorOfKingToCheck, tempBoard.getPiece(y,x));
+
+                // get all locations of my pieces
+                if( spot == 1)
+                    myPieces.add(new int[]{y, x});
+
+                // get all locations of the enemy pieces
+                if( spot == -1)
+                    enemyPieces.add(new int[]{y, x});
             }
         }
 
@@ -170,21 +177,32 @@ public class Game {
         }
         if(isOneKingDead)
         {
-            return 69;
+            return 404;
         }
-        else
+        else // none of the kings are dead !!!!
         {
             // 003 - check white or black
 
             ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
+            ArrayList<int[]> allSpotsMyPiecesCanMoveToo = new ArrayList<int[]>();
+
 
             // when it is white's turn, we will be looking for black pieces
             if (colorOfKingToCheck) {
 
                 // 004 - get all the spots the enemy can go to
-                for (int[] x : listOfPieces) {
+                for (int[] x : enemyPieces) {
                     // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
                     allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, false) ) ;
+                }
+
+                // +000 - find out if the player have any other moves, then the king
+                for(int[] x : myPieces){
+                    // all spots we can move to, but not our king
+                    if(x[0] != whiteKingLocation[0] && x[1] != whiteKingLocation[1])
+                    {
+                        allSpotsMyPiecesCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, true) ) ;
+                    }
                 }
 
                 // remove duplicate elements - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
@@ -195,12 +213,17 @@ public class Game {
                 kingMoveset.addAll(pieceMoveset('K', whiteKingLocation, tempBoard, true));
 
 
+                // is all the moves the king can do covered by the enemy?
                 boolean containsAllOfKingMoveset = Game.arrayListContainsAll(removedDuplicates, kingMoveset);
+                // is the location of our king in the enemy moveset ?
                 boolean containsKingLocation = Game.arrayListContains(removedDuplicates, whiteKingLocation);
+                // can we move anything other than the king ?
+                boolean otherMovesThenKing = (allSpotsMyPiecesCanMoveToo.size() > 0);
+
 
                 // here we need to check the other team, before the next turn
                 // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
-                if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
+                if(containsAllOfKingMoveset && !otherMovesThenKing && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
                 {
                     output = 3;
                 }
@@ -215,9 +238,18 @@ public class Game {
             else // when it is black's turn, we will be looking for white pieces
             {
                 // 004 - get all the spots the enemy can go to
-                for (int[] x : listOfPieces) {
+                for (int[] x : enemyPieces) {
                     // TODO: this .addAll could be a problem, if the piece have 0 moves in the list. This need to be tested
                     allSpotsTheEnemyCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, true) ) ;
+                }
+
+                // +000 - find out if the player have any other moves, then the king
+                for(int[] x : myPieces){
+                    // all spots we can move to, but not our king
+                    if(x[0] != blackKingLocation[0] && x[1] != blackKingLocation[1])
+                    {
+                        allSpotsMyPiecesCanMoveToo.addAll( pieceMoveset( tempBoard.getPiece(x[0], x[1]), x, tempBoard, false) ) ;
+                    }
                 }
 
                 // remove duplicate elements - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
@@ -229,16 +261,19 @@ public class Game {
 
                 // 006 - check if king is in "check", "check mate" or "remis"
 
-    //            LinkedHashSet hashSetKing = new LinkedHashSet(kingMoveset);
-    //            LinkedHashSet hashSetEnemyMoves = new LinkedHashSet(allSpotsTheEnemyCanMoveToo);
-
+                // is all the moves the king can do covered by the enemy?
                 boolean containsAllOfKingMoveset = Game.arrayListContainsAll(removedDuplicates, kingMoveset);
+                // is the location of our king in the enemy moveset ?
                 boolean containsKingLocation = Game.arrayListContains(removedDuplicates, blackKingLocation);
+                // can we move anything other than the king ?
+                boolean otherMovesThenKing = (allSpotsMyPiecesCanMoveToo.size() > 0);
+
+
 
                 // here we need to check the other team, before the next turn
                 // so based on black's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
                 //       does every move turn into check mate new turn?                       is it not in check mate or check right now ?
-                if(containsAllOfKingMoveset && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
+                if(containsAllOfKingMoveset && !otherMovesThenKing && (!containsKingLocation && kingMoveset.size() > 0) ) // "remis"
                 {
                     output = 3;
                 }

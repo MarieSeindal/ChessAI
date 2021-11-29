@@ -85,8 +85,6 @@ public class Main {
         /* Start the main game loop */
         while (true) {
 
-
-
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
                 System.out.println("********** GAME OVER: Draw **********");
@@ -268,6 +266,8 @@ public class Main {
                 whiteTurn = !whiteTurn;
             }
         }
+
+        tui.printBoard(game.board.getBoardArray(), !whiteTurn);
 
         // todo check if game is over?
         //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
