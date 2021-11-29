@@ -630,7 +630,7 @@ public class Main {
         // test 1 - white q
         testBoard.setBoardArray(tBoard1);
         testValues = Game.pieceMoveset('Q', location1, testBoard, true);
-        output = checkList1.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList1, testValues);
         System.out.println("white q test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white q check list : ");
@@ -640,7 +640,7 @@ public class Main {
         // test 2 - black q
         testBoard.setBoardArray(tBoard2);
         testValues = Game.pieceMoveset('q', location2, testBoard, false);
-        output = checkList2.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList2, testValues);
         System.out.println("black q test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black q check list : ");
@@ -650,7 +650,7 @@ public class Main {
         // test 3 - white r
         testBoard.setBoardArray(tBoard3);
         testValues = Game.pieceMoveset('R', location3, testBoard, true);
-        output = checkList3.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList3, testValues);
         System.out.println("white r test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white r check list : ");
@@ -660,7 +660,7 @@ public class Main {
         // test 4 - black r
         testBoard.setBoardArray(tBoard4);
         testValues = Game.pieceMoveset('r', location4, testBoard, false);
-        output = checkList4.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList4, testValues);
         System.out.println("black r test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black r check list : ");
@@ -670,7 +670,7 @@ public class Main {
         // test 5 - white b
         testBoard.setBoardArray(tBoard5);
         testValues = Game.pieceMoveset('B', location5, testBoard, true);
-        output = checkList5.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList5, testValues);
         System.out.println("white b test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white b check list : ");
@@ -680,7 +680,7 @@ public class Main {
         // test 6 - black b
         testBoard.setBoardArray(tBoard6);
         testValues = Game.pieceMoveset('b', location6, testBoard, false);
-        output = checkList6.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList6, testValues);
         System.out.println("black b test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black b check list : ");
@@ -690,7 +690,7 @@ public class Main {
         // test 7 - white n
         testBoard.setBoardArray(tBoard7);
         testValues = Game.pieceMoveset('N', location7, testBoard, true);
-        output = checkList7.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList7, testValues);
         System.out.println("white n test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white n check list : ");
@@ -700,7 +700,7 @@ public class Main {
         // test 8 - black n
         testBoard.setBoardArray(tBoard8);
         testValues = Game.pieceMoveset('n', location8, testBoard, false);
-        output = checkList8.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList8, testValues);
         System.out.println("black n test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black n check list : ");
@@ -708,7 +708,7 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 9 - black p
-        testBoard.setBoardArray(tBoard9);
+        output = Game.arrayListContainsAll(checkList9, testValues);
         testValues = Game.pieceMoveset('p', location9, testBoard, false);
         output = checkList9.containsAll(testValues);
         System.out.println("black p test values : ");
@@ -720,7 +720,7 @@ public class Main {
         // test 10 - white p
         testBoard.setBoardArray(tBoard10);
         testValues = Game.pieceMoveset('P', location10, testBoard, true);
-        output = checkList10.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList10, testValues);
         System.out.println("white p test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white p check list : ");
@@ -730,7 +730,7 @@ public class Main {
         // test 11 - white k
         testBoard.setBoardArray(tBoard11);
         testValues = Game.pieceMoveset('K', location11, testBoard, true);
-        output = checkList11.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList11, testValues);
         System.out.println("white k test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("white k check list : ");
@@ -740,7 +740,7 @@ public class Main {
         // test 12 - black k
         testBoard.setBoardArray(tBoard12);
         testValues = Game.pieceMoveset('k', location12, testBoard, false);
-        output = checkList12.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList12, testValues);
         System.out.println("black k test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black k check list : ");
