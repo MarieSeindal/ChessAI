@@ -92,28 +92,33 @@ public class Board implements Serializable {
     }
 
     public Move moveFromDifferenceIn2Boards(Board newBoard) {
-        Move move = new Move();
-        move.setSpecialMove(false); //todo assumed AI makes no special moves
+        // Move move = new Move();
+        // move.setSpecialMove(false); //todo assumed AI makes no special moves
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        int[] oldSpot = new int[2];
+        int[] newSpot = new int[2];
 
-                if (boardArray[i][j] != newBoard.getBoardArray()[i][j]) { //detect difference
-                    if (newBoard.getBoardArray()[i][j] == ' ') { //detect "space", aka oldField
-                        int[] oldFiled = {i, j};
-                        move.setOldField(oldFiled);
-                    } else { // newField
-                        int[] newFiled = {i, j};
-                        move.setNewField(newFiled);
-                        move.setPiece(newBoard.getBoardArray()[i][j]);
-                        move.setContent(boardArray[i][j]);
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                //detect difference
+                if (boardArray[y][x] != newBoard.getBoardArray()[y][x]) {
+                    //detect "space", aka oldField
+                    if (newBoard.getBoardArray()[y][x] == ' ')
+                    {
+                        oldSpot[0] = y;
+                        oldSpot[1] = x;
+                    }
+                    else // newField
+                    {
+                        newSpot[0] = y;
+                        newSpot[1] = x;
                     }
                 }
 
             }
         }
 
-        return move;
+        return new Move(newSpot, oldSpot, false, newBoard.getPiece(newSpot[0], newSpot[1]), 'o');
 
     }
 

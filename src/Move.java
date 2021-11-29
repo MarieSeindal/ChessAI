@@ -9,13 +9,13 @@ public class Move {
     char piece; //The piece you move
     char content; //What lies on the destination field
 
-    public Move() {
-        this.newField = new int[]{404,404};
-        this.oldField = new int[]{404,404};
-        this.specialMove = true;
-        this.piece = 'o';
-        this.content = 'o';
-    }
+//    public Move() {
+//        this.newField = new int[]{404,404};
+//        this.oldField = new int[]{404,404};
+//        this.specialMove = true;
+//        this.piece = 'o';
+//        this.content = 'o';
+//    }
 
     public Move(int[] newField, int[] oldField, boolean specialMove, char piece, char content){ //What lies on the destination field)
         this.newField = newField;
