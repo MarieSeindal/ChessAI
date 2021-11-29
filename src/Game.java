@@ -130,8 +130,10 @@ public class Game {
         Board tempBoard = currentBoard.cloning();
 
         ArrayList<int[]> listOfPieces = new ArrayList<int[]>();
-        int[] blackKingLocation = new int []{404, 404};
-        int[] whiteKingLocation = new int []{404, 404};
+        int[] blackKingLocation = null;
+        int[] whiteKingLocation = null;
+
+        boolean isOneKingDead = false;
 
         int output = 808;
 
@@ -144,16 +146,14 @@ public class Game {
                 // set the black king location, if we see it
                 if( tempBoard.getPiece(y,x) == 'k' )
                 {
-                    blackKingLocation[0] = y;
-                    blackKingLocation[1] = x;
+                    blackKingLocation = new int[]{y,x};
                 }
 
 
                 // set the white king location, if we see it
                 if( tempBoard.getPiece(y,x) == 'K' )
                 {
-                    whiteKingLocation[0] = y;
-                    whiteKingLocation[1] = x;
+                    whiteKingLocation = new int[]{y,x};
                 }
 
                 // get all locations of the Pieces
@@ -162,14 +162,18 @@ public class Game {
             }
         }
 
-        if(whiteKingLocation[0] == 404 || blackKingLocation[0] == 404)
+
+
+        if(whiteKingLocation == null || blackKingLocation == null)
         {
-            return 404;
+            isOneKingDead = true;
+        }
+        if(isOneKingDead)
+        {
+            return 69;
         }
         else
         {
-
-
             // 003 - check white or black
 
             ArrayList<int[]> allSpotsTheEnemyCanMoveToo = new ArrayList<int[]>();
@@ -692,6 +696,7 @@ public class Game {
 
         switch (piece){
             case 'p':
+                // 00 - check if we go off the board
                 if(location[0] != 7)
                 {
 
@@ -699,16 +704,6 @@ public class Game {
 
                     // black is in the top, so 1 down
                     // (y,x)
-
-                    // 00 - check if we go off the board
-                    if(location[0] + 1 >= 8)
-                        checkSpot = 1;
-                    else {
-                        //System.out.println("black - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
-
-                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
-                    }
-
 
                     // 01 - add one spot forward
                     checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
@@ -745,20 +740,11 @@ public class Game {
             case 'P':
                 // region white p case
 
+                // 00 - check if we go off the board
                 if(location[0] != 0)
                 {
 
                     // white is in the bottom, so 1 up
-
-                    // 00 - check if we go off the board
-                    if(location[0] - 1 <= -1)
-                        checkSpot = 1;
-                    else {
-                        //System.out.println("white - pawn location y: " + location[0] + 1 + " | x : " + location[1]);
-
-                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
-                    }
-
 
                     // 01 - add one spot forward
                     if(checkSpot == 0 && location[0] - 1 >= 0)
