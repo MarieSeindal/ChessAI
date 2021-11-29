@@ -1,0 +1,4 @@
+************* Game Begin *************
+AI Moving: 6,6 (P) -> 4,6 (o)
+AI Moving: 1,2 (p) -> 3,2 (o)
+AI Moving: 6,1 (P) -> 4,1 (o)
