@@ -56,6 +56,10 @@ public class Main {
                 p1 = new Player(isP1White, true);
                 p2 = new Player(!isP1White, true);
             }
+            case 4 -> { // AI vs Human
+                p1 = new Player(isP1White, true);
+                p2 = new Player(!isP1White, false);
+            }
             default -> System.out.println("Error in game mode selection: " + gameModeSelection[0]);
         }
 

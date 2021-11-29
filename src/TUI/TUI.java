@@ -226,7 +226,9 @@ public class TUI implements I_TUI {
                                     
                 1) Player vs AI.
                 2) Player vs Player.
-                3) AI vs AI. (Danger! Not done. Will run an infinite loop)
+                3) AI vs AI. 
+                4) AI vs Player.
+
                                     
                 Optional: input "b" after gamemode to specify if p1 is black instead of white eg. (1 b)
                 """);
