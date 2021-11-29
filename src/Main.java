@@ -209,7 +209,7 @@ public class Main {
                                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
 
                                             // Write move to file
-                                            writer.write("AI Moving: " + move.getOldField()[0]+","+move.getOldField()[1] + " ("+(char) move.getPiece()+") -> " + move.getNewField()[0]+","+move.getNewField()[1]+" ("+((char) move.getContent() == ' ' ? "' '" : (char) move.getContent() )+")");
+                                            writer.write("Human Moving: " + move.getOldField()[0]+","+move.getOldField()[1] + " ("+(char) move.getPiece()+") -> " + move.getNewField()[0]+","+move.getNewField()[1]+" ("+((char) move.getContent() == ' ' ? "' '" : (char) move.getContent() )+")");
 
                                             game.board.performMove(move);
 
