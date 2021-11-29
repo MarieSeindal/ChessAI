@@ -245,10 +245,13 @@ public class Main {
 
                     // TODO: maybe we need to rethink this
                     game.addUsedBoard(game.board);
+
+                    char pastSpot = game.board.getPiece(tempMove.newField[0], tempMove.newField[1]);
+
                     game.board.performMove(tempMove);
 
                     // Check if kill TODO: not working yet (isKill is never true)
-                    int isKill = Game.checkLocation(player.isWhite(), game.board.getPiece(tempMove.newField[0], tempMove.newField[1]));
+                    int isKill = Game.checkLocation(player.isWhite(), pastSpot);
 
                     //boolean isKill = game.board.isEnemyPiece(player.isWhite(), game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
                     if (isKill == -1) {
