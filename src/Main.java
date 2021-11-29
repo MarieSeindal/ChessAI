@@ -241,9 +241,9 @@ public class Main {
                     System.out.println("AI Moving: " + tempMove.getOldField()[0] + "," + tempMove.getOldField()[1] + " -> " + tempMove.getNewField()[0] + "," + tempMove.getNewField()[1]);
 
                     // TODO: fix invalid pieces being printed/moved?
-                    System.out.println("AI Moving Piece (start): "+  + game.board.getPiece(tempMove.getOldField()[0], tempMove.getOldField()[1]));
+                    System.out.println("AI Moving Piece (start): "+ (char)game.board.getPiece(tempMove.getOldField()[0], tempMove.getOldField()[1]));
                     //System.out.println("AI Moving Piece (destination): "+game.board.getPiece(tempMove.getNewField()[0], tempMove.getNewField()[1]));
-                    System.out.println("AI Moving Piece (destination): "+tempMove.getContent());
+                    //System.out.println("AI Moving Piece (destination): "+tempMove.getContent());
 
                     // TODO: maybe we need to rethink this
                     game.addUsedBoard(game.board);

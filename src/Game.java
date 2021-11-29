@@ -727,28 +727,26 @@ public class Game {
 
         boolean areWeWhite = Character.isUpperCase(piece);
 
-        int checkSpot = 404;
+        int checkSpot = 202;
 
         switch (piece){
             case 'p':
+                // region black p case
                 // 00 - check if we go off the board
                 if(location[0] != 7)
                 {
-
-                    // region black p case
-
                     // black is in the top, so 1 down
                     // (y,x)
 
                     // 01 - add one spot forward
-                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 1, location[1]));
+                    checkSpot = Game.checkLocation(false, currentBoard.getPiece(location[0] + 1, location[1]));
                     if(checkSpot == 0 && location[0] + 1 <= 7)
                         listOfMoves.add(new int[]{location[0] +1, location[1]});
 
                     // 02 - add 2 spot forward, if this is the first move for that piece
                     if(location[0] == 1)
                     {
-                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] + 2, location[1]));
+                        checkSpot = Game.checkLocation(false, currentBoard.getPiece(location[0] + 2, location[1]));
                         if(checkSpot == 0)
                             listOfMoves.add(new int[]{location[0] +2, location[1]});
                     }
@@ -756,7 +754,7 @@ public class Game {
                     // 03 - check left kills (+1, -1)
                     if(location[0]+1 <= 7 && location[1]-1 >= 0)
                     {
-                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]-1));
+                        checkSpot = Game.checkLocation(false, currentBoard.getPiece(location[0]+1, location[1]-1));
                         if(checkSpot == -1)
                             listOfMoves.add(new int[]{location[0] +1, location[1]-1});
                     }
@@ -764,7 +762,7 @@ public class Game {
                     // 04 - check right kills (+1, +1)
                     if(location[0]+1 <= 7 && location[1]+1 <= 7)
                     {
-                        checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0]+1, location[1]+1));
+                        checkSpot = Game.checkLocation(false, currentBoard.getPiece(location[0]+1, location[1]+1));
                         if(checkSpot == -1)
                             listOfMoves.add(new int[]{location[0] +1, location[1]+1});
                     }
@@ -780,6 +778,7 @@ public class Game {
                 {
 
                     // white is in the bottom, so 1 up
+                    checkSpot = Game.checkLocation(white, currentBoard.getPiece(location[0] - 1, location[1]));
 
                     // 01 - add one spot forward
                     if(checkSpot == 0 && location[0] - 1 >= 0)
