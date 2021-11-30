@@ -35,9 +35,22 @@ public class Board implements Serializable {
 
     public void performMove(Move move) {
 
+        // convert p/P that are at the end to q/Q
+        //      (if p AND at the end, then true)             or       (if P AND at the end, then true)
+        if( (move.piece == 'p' && move.newField[0] == 7) || (move.piece == 'P' && move.newField[0] == 0) ) // only p/P
+        {
+            if(move.piece == 'p') // if black
+            {
+                move.setPiece('q');
+            }
+            else // if white
+            {
+                move.setPiece('Q');
+            }
+        }
+
         boardArray[move.oldField[0]][move.oldField[1]] = ' ';
         boardArray[move.newField[0]][move.newField[1]] = move.piece;
-
     }
 
     public boolean isEnemyPiece(boolean isWhite, char c) {
