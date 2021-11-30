@@ -222,7 +222,7 @@ public class TUI implements I_TUI {
         } else {
 
             // Print column numbers
-            System.out.println("  h   g   f   e   d   c   b   a  ");
+            System.out.println("    h    g    f    e    d    c    b    a ");
             for (int r = board.length - 1; r >= 0; r--) { //Rows
 
                 // Print row numbers
@@ -254,7 +254,7 @@ public class TUI implements I_TUI {
 
                 System.out.println(); //new line.
             }
-            System.out.println("  h   g   f   e   d   c   b   a ");
+            System.out.println("    h    g    f    e    d    c    b    a ");
 
         }
 
