@@ -19,8 +19,6 @@ public interface I_TUI {
 
     int[] getMovePosition(Scanner sc);
 
-    void clearConsole();
-
     void showResumeGameData(Fen f);
 
 }

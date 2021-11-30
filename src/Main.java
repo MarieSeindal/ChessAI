@@ -58,23 +58,23 @@ public class Main {
         }
 
         switch (gameModeSelection[0]) {
-            case 1 -> { // Human vs AI
+            case 1: // Human vs AI
                 p1 = new Player(isP1White, false);
                 p2 = new Player(!isP1White, true);
-            }
-            case 2 -> { // Human vs Human
+
+            case 2: // Human vs Human
                 p1 = new Player(isP1White, false);
                 p2 = new Player(!isP1White, false);
-            }
-            case 3 -> { // AI vs AI
+
+        case 3: // AI vs AI
                 p1 = new Player(isP1White, true);
                 p2 = new Player(!isP1White, true);
-            }
-            case 4 -> { // AI vs Human
+
+            case 4: // AI vs Human
                 p1 = new Player(isP1White, true);
                 p2 = new Player(!isP1White, false);
-            }
-            default -> System.out.println("Error in game mode selection: " + gameModeSelection[0]);
+
+            default: System.out.println("Error in game mode selection: " + gameModeSelection[0]);
         }
 
         //board = new Board();

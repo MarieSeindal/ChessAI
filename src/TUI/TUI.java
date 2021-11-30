@@ -14,55 +14,44 @@ public class TUI implements I_TUI {
         String whiteColor = "\u001b[31;1m"; // red
 
         switch (piece) {
-            case ' ' -> output = String.valueOf((char) 9817);
-            case 'p' -> {
+            case ' ':
+                output = String.valueOf((char) 9817);
+            case 'p':
                 output += blackColor;
                 output += String.valueOf((char) 9823);
-            }
-            case 'P' -> {
+            case 'P':
                 output += whiteColor;
                 output += String.valueOf((char) 9817);
-            }
-            case 'k' -> {
+            case 'k':
                 output += blackColor;
                 output += String.valueOf((char) 9818);
-            }
-            case 'K' -> {
+            case 'K':
                 output += whiteColor;
                 output += String.valueOf((char) 9812);
-            }
-            case 'Q' -> {
+            case 'Q':
                 output += whiteColor;
                 output += String.valueOf((char) 9813);
-            }
-            case 'q' -> {
+            case 'q':
                 output += blackColor;
                 output += String.valueOf((char) 9819);
-            }
-            case 'r' -> {
+            case 'r':
                 output += blackColor;
                 output += String.valueOf((char) 9820);
-            }
-            case 'R' -> {
+            case 'R':
                 output += whiteColor;
                 output += String.valueOf((char) 9814);
-            }
-            case 'B' -> {
+            case 'B':
                 output += whiteColor;
                 output += String.valueOf((char) 9815);
-            }
-            case 'b' -> {
+            case 'b':
                 output += blackColor;
                 output += String.valueOf((char) 9821);
-            }
-            case 'N' -> {
+            case 'N':
                 output += whiteColor;
                 output += String.valueOf((char) 9816);
-            }
-            case 'n' -> {
+            case 'n':
                 output += blackColor;
                 output += String.valueOf((char) 9822);
-            }
         }
 
         return output;
@@ -221,17 +210,15 @@ public class TUI implements I_TUI {
         System.out.println("+-----------------------------------+");
         System.out.println("|  Welcome to Group 7's Chess game  |");
         System.out.println("+-----------------------------------+");
-        System.out.println("""
-                Please select a game mode from below options:
-                                    
-                1) Player vs AI.
-                2) Player vs Player.
-                3) AI vs AI. 
-                4) AI vs Player.
+        System.out.println("Please select a game mode from below options:");
 
-                                    
-                Optional: input "b" after gamemode to specify if p1 is black instead of white eg. (1 b)
-                """);
+        System.out.println("1) Player vs AI.");
+        System.out.println("2) Player vs Player.");
+        System.out.println("3) AI vs AI. ");
+        System.out.println("4) AI vs Player.");
+
+
+        System.out.println("Optional: input \"b\" after gamemode to specify if p1 is black instead of white eg. (1 b) ");
 
         while (true) {
             System.out.print("Input: ");
@@ -258,11 +245,10 @@ public class TUI implements I_TUI {
         int resumeSelectionInt = -1;
 
         do {
-            System.out.println("""
-                    Do you want to resume a game by FEN?:\s
-                    1) No
-                    2) Yes
-                    """);
+            System.out.println("Do you want to resume a game by FEN?:");
+            System.out.println("1) No");
+            System.out.println("2) Yes");
+
             System.out.print("Input: ");
             while (!sc.hasNextInt()) {
                 System.out.println("Please enter a number!\nInput: ");
@@ -351,24 +337,37 @@ public class TUI implements I_TUI {
 
     int convertFieldToPos(char c) {
 
-        int out = switch (c) {
-            case 'a' -> 0;
-            case 'b' -> 1;
-            case 'c' -> 2;
-            case 'd' -> 3;
-            case 'e' -> 4;
-            case 'f' -> 5;
-            case 'g' -> 6;
-            case 'h' -> 7;
-            default -> throw new IllegalStateException("Unexpected value: " + c);
-        };
+        int out;
 
+        switch (c) {
+            case 'a':
+                out = 0;
+                break;
+            case 'b':
+                out = 1;
+                break;
+            case 'c':
+                out = 2;
+                break;
+            case 'd':
+                out = 3;
+                break;
+            case 'e':
+                out = 4;
+                break;
+            case 'f':
+                out = 5;
+                break;
+            case 'g':
+                out = 6;
+                break;
+            case 'h':
+                out = 7;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + c);
+        }
         return out;
-    }
-
-    @Override
-    public void clearConsole() {
-        System.out.println(System.lineSeparator().repeat(100));
     }
 
     @Override
@@ -513,21 +512,34 @@ public class TUI implements I_TUI {
 
     static int getPiece(String t) {
 
-        return switch (t) {
-            case "r" -> -2;
-            case "n" -> -3;
-            case "q" -> -5;
-            case "k" -> -6;
-            case "p" -> -1;
-            case "b" -> -4;
-            case "R" -> 2;
-            case "N" -> 3;
-            case "Q" -> 5;
-            case "K" -> 6;
-            case "P" -> 1;
-            case "B" -> 4;
-            default -> 0;
-        };
+        switch (t) {
+            case "r":
+                return -2;
+            case "n":
+                return -3;
+            case "q":
+                return -5;
+            case "k":
+                return -6;
+            case "p":
+                return -1;
+            case "b":
+                return -4;
+            case "R":
+                return 2;
+            case "N":
+                return 3;
+            case "Q":
+                return 5;
+            case "K":
+                return 6;
+            case "P":
+                return 1;
+            case "B":
+                return 4;
+            default:
+                return 0;
+        }
     }
 
     //https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println //

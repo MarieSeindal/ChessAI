@@ -5,18 +5,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Writer {
 
     private FileWriter fw;
     private BufferedWriter output;
     private String fileName = "./src/Data/Moves.txt";
-    private Path filePath = Path.of(fileName);
+    private Path filePath = Paths.get(fileName);
 
     public void initialize() {
         try {
             if (!Files.exists(filePath)) {
-                Files.createFile(Path.of(fileName));
+                Files.createFile(Paths.get(fileName));
             }
             fw = new FileWriter(fileName,false);
             output = new BufferedWriter(fw);
