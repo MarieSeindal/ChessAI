@@ -23,7 +23,20 @@ public class Main {
         // region everything we have
 
 
-        //testMovesetFunctions();
+        boolean runTests = false;
+
+        if(runTests) // this is only running, if you change the boolean above
+        {
+            System.out.println("test of both black and white move functions");
+            testMovesetFunctions();
+
+            System.out.println("- - - - - - - - - - - - - - - - - - - -- -  - - - -- - -  - --");
+
+            System.out.println("test of 3 the 'Threefold repetition rule' function");
+            testBoardCompare();
+        }
+        else // this is the whole game loop
+        {
         tui = new TUI();
         sc = new Scanner(System.in);
         Fen resumeFen;
@@ -283,6 +296,8 @@ public class Main {
         //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
         //sc.close();
         // endregion
+
+        }
 
     }
 
@@ -708,14 +723,14 @@ public class Main {
         System.out.println("did black n pass the test? : " + output);
 
         // test 9 - black p
-        output = Game.arrayListContainsAll(checkList9, testValues);
+        testBoard.setBoardArray(tBoard9);
         testValues = Game.pieceMoveset('p', location9, testBoard, false);
-        output = checkList9.containsAll(testValues);
+        output = Game.arrayListContainsAll(checkList9, testValues);
         System.out.println("black p test values : ");
         Main.arrayPrinter(testValues);
         System.out.println("black p check list : ");
         Main.arrayPrinter(checkList9);
-        System.out.println("did black n pass the test? : " + output);
+        System.out.println("did black p pass the test? : " + output);
 
         // test 10 - white p
         testBoard.setBoardArray(tBoard10);
