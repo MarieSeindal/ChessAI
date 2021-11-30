@@ -226,6 +226,8 @@ public class Game {
                 // can we move anything other than the king ?
                 boolean otherMovesThenKing = (allSpotsMyPiecesCanMoveToo.size() > 0);
 
+                // TODO: check if any other pieces can move
+
 
                 // here we need to check the other team, before the next turn
                 // so based on white's moveset, can the black king move to any place at all next turn, that will not set it in check/check mate?
@@ -235,7 +237,7 @@ public class Game {
                 }
                 // TODO: this needs to be checked, since I don't believe this will do it for all cases
                 else if(containsAllOfKingMoveset && (containsKingLocation && kingMoveset.size() > 0) ) // "check mate"
-                    output = 2;
+                     output = 2;
                 else if(containsKingLocation) // "check"
                     output = 1;
                 else

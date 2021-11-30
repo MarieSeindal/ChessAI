@@ -126,27 +126,28 @@ public class Main {
             int whiteKing = Game.checkTheKing(game.board, player.isWhite());
             int blackKing = Game.checkTheKing(game.board, player.isWhite());
 
-            if(whiteKing == 404 || blackKing == 404)
-            {
-                System.out.println("********** GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
-                break;
-            }
-
-            if(whiteKing == 3 ||blackKing == 3)
-            {
-                System.out.println("********** GAME OVER: Draw (remis) **********");
-                break;
-            }
-            if(whiteKing == 2)
-            {
-                System.out.println("********** GAME OVER: black wins - white is in 'check mate' **********");
-                break;
-            }
-            if(blackKing == 2)
-            {
-                System.out.println("********** GAME OVER: white wins - black is in 'check mate' **********");
-                break;
-            }
+            // TODO: this does not work, fixed the todo inside 'checkTheKing'
+//            if(whiteKing == 404 || blackKing == 404)
+//            {
+//                System.out.println("********** GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
+//                break;
+//            }
+//
+//            if(whiteKing == 3 ||blackKing == 3)
+//            {
+//                System.out.println("********** GAME OVER: Draw (remis) **********");
+//                break;
+//            }
+//            if(whiteKing == 2)
+//            {
+//                System.out.println("********** GAME OVER: black wins - white is in 'check mate' **********");
+//                break;
+//            }
+//            if(blackKing == 2)
+//            {
+//                System.out.println("********** GAME OVER: white wins - black is in 'check mate' **********");
+//                break;
+//            }
             if(whiteKing == 1)
             {
                 System.out.println("---------- black have put white in 'check' ----------");
