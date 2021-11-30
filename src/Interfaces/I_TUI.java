@@ -15,6 +15,8 @@ public interface I_TUI {
 
     Fen showResumeMenu(Scanner sc);
 
+    void jarPrintBoard(char[][] board, boolean reverse);
+
     void showEndFinished();
 
     int[] getMovePosition(Scanner sc);

@@ -171,7 +171,10 @@ public class Main {
                 game.setTotalTurns(game.getTotalTurns() + 1);
             }
 
-            tui.printBoard(game.board.getBoardArray(), whiteTurn);
+//            if(false)
+//                tui.printBoard(game.board.getBoardArray(), whiteTurn);
+//            else
+                tui.jarPrintBoard(game.board.getBoardArray(), whiteTurn);
 
             if (!player.isAi) { // Human player's turn
 
@@ -300,16 +303,21 @@ public class Main {
                     System.out.println("Turns since kill: "+game.getTurnsSinceKill());
                 }
 
-                tui.printBoard(game.board.getBoardArray(), false);
+//                if(false)
+//                    tui.printBoard(game.board.getBoardArray(), false); // old - none jar
+//                else
+                    tui.jarPrintBoard(game.board.getBoardArray(), false); // new - works with jar
                 whiteTurn = !whiteTurn;
             }
         }
-
-        tui.printBoard(game.board.getBoardArray(), !whiteTurn);
+//        if(false)
+//            tui.printBoard(game.board.getBoardArray(), !whiteTurn);
+//        else
+            tui.jarPrintBoard(game.board.getBoardArray(), !whiteTurn);
 
         // todo check if game is over?
         //System.out.println(" "+(turn ? "Black" : "White" + " player has won the game"));
-        //sc.close();
+        sc.close();
         // endregion
 
         }

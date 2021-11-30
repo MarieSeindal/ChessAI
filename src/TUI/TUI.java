@@ -80,44 +80,7 @@ public class TUI implements I_TUI {
         char[][] board = f.getBoardLayout();
         boolean whiteField = true;
 
-        // Print column numbers
-        System.out.println("  h   g   f   e   d   c   b   a  ");
-        for (int r = board.length - 1; r >= 0; r--) { //Rows
-
-            // Print row numbers
-            System.out.print(8 - r + " ");
-
-            for (int c = board[r].length - 1; c >= 0; c--) { //Cols
-
-                if (whiteField) {
-                    // System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
-                    // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
-                    System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
-                    whiteField = false;
-
-                    continue;
-                }
-                if (!whiteField) {
-
-                    // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
-                    System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
-                    whiteField = true;
-                }
-
-            }
-
-            if (whiteField) {
-                whiteField = false;
-            } else {
-                whiteField = true;
-            }
-
-            // Print row numbers
-            System.out.print(" " + (8 - r));
-
-            System.out.println(); //new line.
-        }
-        System.out.println("  h   g   f   e   d   c   b   a ");
+        jarPrintBoard(board, true);
 
     }
 
@@ -138,6 +101,7 @@ public class TUI implements I_TUI {
                 for (int c = 0; c < board[r].length; c++) { //Cols
 
                     if (whiteField) {
+                        // System.out.println(BLACK_BACKGROUND);
                         //System.out.print("\u001B[47m " + s.charAt(i) + " \033[0m");
                         // System.out.print(WHITE_BACKGROUND + BLACK + " " + board[r][c] + " " + RESET);
                         System.out.print(WHITE_BACKGROUND + " " + WHITE + charToSymbol(board[r][c]) + " " + RESET);
@@ -146,7 +110,7 @@ public class TUI implements I_TUI {
                         continue;
                     }
                     if (!whiteField) {
-
+                        // System.out.println(BLACK_BACKGROUND);
                         // System.out.print(BLACK_BACKGROUND + WHITE + " " + board[r][c] + " " + RESET);
                         System.out.print(BLACK_BACKGROUND + " " + BLACK + charToSymbol(board[r][c]) + " " + RESET);
                         whiteField = true;
@@ -207,11 +171,95 @@ public class TUI implements I_TUI {
 
                 System.out.println(); //new line.
             }
+            System.out.println("    h    g    f    e    d    c    b    a  ");
+
+        }
+
+    }
+
+    public void jarPrintBoard(char[][] board, boolean white) {
+
+        boolean whiteField = true;
+
+        if (white) {
+
+            // Print column numbers
+            System.out.println("    a    b    c    d    e    f    g    h ");
+            for (int r = 0; r < board.length; r++) { //Rows
+
+                // Print row numbers
+                System.out.print(8 - r + " ");
+
+                for (int c = 0; c < board[r].length; c++) { //Cols
+
+                    if (whiteField) {
+                        System.out.print("[" + " " + board[r][c] + " " + "]");
+                        whiteField = false;
+
+                        continue;
+                    }
+                    if (!whiteField) {
+                        System.out.print("[" + " " + board[r][c] + " " + "]");
+                        whiteField = true;
+                    }
+
+                }
+
+                if (whiteField) {
+                    whiteField = false;
+                } else {
+                    whiteField = true;
+                }
+
+                // Print row numbers
+                System.out.print(" " + (8 - r));
+
+                System.out.println(); //new line.
+            }
+            System.out.println("    a    b    c    d    e    f    g    h ");
+
+
+        } else {
+
+            // Print column numbers
+            System.out.println("  h   g   f   e   d   c   b   a  ");
+            for (int r = board.length - 1; r >= 0; r--) { //Rows
+
+                // Print row numbers
+                System.out.print(8 - r + " ");
+
+                for (int c = board[r].length - 1; c >= 0; c--) { //Cols
+
+                    if (whiteField) {
+                        System.out.print("[" + " " + board[r][c] + " " + "]");
+                        whiteField = false;
+
+                        continue;
+                    }
+                    if (!whiteField) {
+                        System.out.print("[" + " " + board[r][c] + " " + "]");
+                        whiteField = true;
+                    }
+
+                }
+
+                if (whiteField) {
+                    whiteField = false;
+                } else {
+                    whiteField = true;
+                }
+
+                // Print row numbers
+                System.out.print(" " + (8 - r));
+
+                System.out.println(); //new line.
+            }
             System.out.println("  h   g   f   e   d   c   b   a ");
 
         }
 
     }
+
 
     @Override
     public int[] showStartMenu(Scanner sc) {
@@ -228,27 +276,23 @@ public class TUI implements I_TUI {
                 2) Player vs Player.
                 3) AI vs AI. 
                 4) AI vs Player.
-
-                                    
-                Optional: input "b" after gamemode to specify if p1 is black instead of white eg. (1 b)
                 """);
 
         while (true) {
-            System.out.print("Input: ");
-            sc.useDelimiter("\n");// To make scanner accept white space
-            String g = sc.next();
-            String[] g_spaces = g.split(" ");
+            System.out.println("pick a number between 1 and 4:");
+            // sc.useDelimiter("\n");// To make scanner accept white space
+            String input = sc.nextLine();
 
-            if (g_spaces.length == 2) {
-                if (g_spaces[1].matches("b")) {
-                    // 1 for black, 0 for white
-                    gameSelectionInt[1] = 1;
+
+            if(checkInt(input))
+            {
+                if(Integer.parseInt(input) > 0 && Integer.parseInt(input) < 5)
+                {
+                    gameSelectionInt[0] = Integer.parseInt(input);
+                    return gameSelectionInt;
                 }
-            }
-
-            if (checkInt(g_spaces[0])) {
-                gameSelectionInt[0] = Integer.parseInt(g_spaces[0]);
-                return gameSelectionInt;
+                else
+                    System.out.println("this is not a number between 1 and 4, try one more time | wrong input: " + input);
             }
         }
     }
@@ -266,7 +310,7 @@ public class TUI implements I_TUI {
             System.out.print("Input: ");
             while (!sc.hasNextInt()) {
                 System.out.println("Please enter a number!\nInput: ");
-                sc.next();
+                sc.nextLine();
             }
             resumeSelectionInt = sc.nextInt();
         } while (resumeSelectionInt < 1 || resumeSelectionInt > 2);
@@ -276,7 +320,7 @@ public class TUI implements I_TUI {
                 System.out.println("\nPlease enter a FEN string\n ");
                 System.out.print("Input: ");
                 sc.useDelimiter("\n");// To make scanner accept white space
-                String f = sc.next();
+                String f = sc.nextLine();
                 Fen fen = parseFen(f);
                 if (fen != null) {
                     return fen;
@@ -305,7 +349,7 @@ public class TUI implements I_TUI {
 
             try {
                 sc.useDelimiter("\n");// To make scanner accept white space
-                input = sc.next();
+                input = sc.nextLine();
                 char[] c = input.toCharArray();
 
                 if (c.length == 5 && c[2] == ' ') {
@@ -387,23 +431,24 @@ public class TUI implements I_TUI {
         System.out.println("");
     }
 
-    public static Fen parseFen(String fen) {
+    public static Fen parseFen(String textInput) {
 
         Fen f = new Fen();
         try {
 
-            char[][] out = new char[8][8];
+            char[][] outputBoard = new char[8][8];
 
             /* Convert FEN string individual "bits" using " " as the delimiter */
-            String[] str_spaces = fen.split(" ");
+            String[] str_spaces = textInput.split(" ");
 
             /**
              * Board Positions
              */
 
-            if (str_spaces[0] == null) {
+            if (str_spaces.length == 0) {
                 return null;
             }
+
             /* Convert FEN string to rows with "/" as the delimiter */
             String[] str_board = str_spaces[0].split("/");
 
@@ -431,7 +476,7 @@ public class TUI implements I_TUI {
             int offset = 0;
             for (int k = 0; k < 8; k++) {
                 for (int l = 0; l < 8; l++) {
-                    out[k][l] = output.charAt(offset++);
+                    outputBoard[k][l] = output.charAt(offset++);
                 }
 
             }
@@ -447,7 +492,7 @@ public class TUI implements I_TUI {
 
             }*/
 
-            f.setBoardLayout(out);
+            f.setBoardLayout(outputBoard);
 
             /**
              * Player
@@ -463,6 +508,13 @@ public class TUI implements I_TUI {
             /**
              * Castling
              */
+
+            for (int y = 0; y < 8; y++) {
+                for (int x = 0; x < 8; x++) {
+                    System.out.print(outputBoard[y][x] + ",");
+                }
+                System.out.println();
+            }
 
             if (str_spaces[2] != null) {
                 String castling = str_spaces[2];
