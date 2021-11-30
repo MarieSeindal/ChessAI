@@ -1,4 +1,5 @@
 import Helper.Fen;
+import Helper.Writer;
 import Interfaces.I_TUI;
 import TUI.TUI;
 
@@ -17,6 +18,7 @@ public class Main {
     private static boolean isP1White;
     private static char startPiece;
     private static char destinationPiece;
+    private static Writer writer;
 
     public static void main(String[] args) {
 
@@ -78,6 +80,10 @@ public class Main {
 
         //board = new Board();
         game = new Game(new Board(), p1, p2, whiteTurn);
+
+        // Prepare txt file for writing
+        writer = new Writer();
+        writer.initialize();
 
         // Resume game
         if (resumeFen != null) {
@@ -214,6 +220,10 @@ public class Main {
                                         System.out.println("Comparing: " + destination[0] + "," + destination[1] + " with " + temp[0] + "," + temp[1]);
                                         if (Arrays.equals(destination, temp)) {
                                             Move move = new Move(new int[]{movePos[2], movePos[3]}, new int[]{movePos[0], movePos[1]}, false, startPiece, ' ');
+
+                                            // Write move to file
+                                            writer.write("Human Moving: " + move.getOldField()[0]+","+move.getOldField()[1] + " ("+(char) move.getPiece()+") -> " + move.getNewField()[0]+","+move.getNewField()[1]+" ("+((char) move.getContent() == ' ' ? "' '" : (char) move.getContent() )+")");
+
                                             game.board.performMove(move);
 
                                             if (isKill == -1) {
@@ -266,6 +276,9 @@ public class Main {
 
                     // TODO: maybe we need to rethink this
                     game.addUsedBoard(game.board);
+
+                    // Write move to file todo: AI always writes 'o' in getContent()
+                    writer.write("AI Moving: " + tempMove.getOldField()[0]+","+tempMove.getOldField()[1] + " ("+(char) tempMove.getPiece()+") -> " + tempMove.getNewField()[0]+","+tempMove.getNewField()[1]+" ("+((char) tempMove.getContent() == ' ' ? "' '" : (char) tempMove.getContent() )+")");
 
                     char pastSpot = game.board.getPiece(tempMove.newField[0], tempMove.newField[1]);
 
