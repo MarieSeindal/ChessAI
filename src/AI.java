@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 7;
+    private static int maxDepth = 2;
     static int timeLimitSeconds = 10;
     private static long timeLimit;
     protected Board currentBoard;
@@ -13,12 +13,15 @@ public class AI {
     private int alpha = Integer.MIN_VALUE;
     private int beta = Integer.MAX_VALUE;
     public Board bestMoveBoard;
+    public ArrayList<Board> usedBoards = new ArrayList<>();
 
-    public AI(Board currentBoard, boolean isWhite, int timeLimitSeconds) {
+    public AI(Board currentBoard, boolean isWhite, int timeLimitSeconds, ArrayList<Board> listOfBoards) {
         this.timeLimitSeconds = timeLimitSeconds;
         this.currentBoard = currentBoard;
         this.isWhite = isWhite;
-        bestMoveBoard = currentBoard;
+        this.bestMoveBoard = currentBoard;
+        // TODO: 
+        this.usedBoards = listOfBoards;
     }
 
     public AI() {
@@ -68,7 +71,7 @@ public class AI {
 
         if(whiteKing == 404)
         {
-            System.out.println("********** AI - maximizer - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
+            // System.out.println("********** AI - maximizer - GAME OVER: one king is dead, WHAT DID YOU DO !!!! **********");
             newValue = 20000000;
         }
 
@@ -124,7 +127,7 @@ public class AI {
 
         if(whiteKing == 404)
         {
-            System.out.println("********** AI - minimizer - GAME OVER: their king is dead, WHAT DID WE DO !!!! **********");
+            // System.out.println("********** AI - minimizer - GAME OVER: their king is dead, WHAT DID WE DO !!!! **********");
             bestValue = -20000000;
         }
 

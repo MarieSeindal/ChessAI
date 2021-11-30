@@ -1,10 +1,8 @@
 import TUI.TUI;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.Collections.*;
 
-import java.util.LinkedHashSet;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 
@@ -20,17 +18,9 @@ public class Game {
     ArrayList<String> castling = new ArrayList<>();
     String enPassantTarget;
 
-    public Game() {
-        this.board = new Board();
-        usedBoards.add(board);
-        this.p1 = new Player();
-        this.p2 = new Player();
-        this.turn = false;
-    }
-
     public Game(Board startingBoard, Player p1, Player p2, boolean turn) {
         this.board = startingBoard;
-        usedBoards.add(board);
+        // usedBoards.add(board);
         this.p1 = p1;
         this.p2 = p2;
         this.turn = turn;
@@ -40,20 +30,36 @@ public class Game {
 
     // TODO: this function need to be tested
     public boolean threefoldRepetition() {
-        List<String> checkBoards = new ArrayList<>();
-        //Board[] checkedBoards;
-        int counter = 0;
+        // used code from - https://stackoverflow.com/a/44367261/3065595
+        // used code from - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
 
-        for (Board usedBoard : usedBoards) {
-            String boardString = usedBoard.getString();
-            if (checkBoards.contains(boardString))
+        List<Integer> hashBoards = new ArrayList<>();
+
+        // hash all boards and safe them in a list
+        for (Board board : usedBoards) {
+            int hash = board.getHash();
+            hashBoards.add(hash);
+        }
+
+        // get all the unique boards in UsedBoards
+        List<Integer> uniqueBoards = Board.hashBoardsAndRemoveDuplicates(usedBoards);
+
+        int counter = 0;
+        for (int element: uniqueBoards) {
+            int amount = java.util.Collections.frequency(hashBoards, element);
+            if(amount == 2)
                 counter++;
-            else
-                checkBoards.add(boardString);
+            else if(amount > 2)
+            {
+                counter += amount;
+            }
         }
 
         // return true if the counter is 3 or bigger, else it returns false
-        return counter >= 3;
+        if(counter > 2)
+            return true;
+        else
+            return false;
     }
 
     public static boolean arrayListContains (ArrayList<int[]> theList, int[] checkContent) {
@@ -309,10 +315,10 @@ public class Game {
 //        TUI test = new TUI() ;
 //        test.printBoard(currentBoard.boardArray, whiteTurnNow);
 
-        System.out.println("*-* filterMoveset *-* - input size: " + input.size() + " - the piece is: " + piece);
+        //System.out.println("*-* filterMoveset *-* - input size: " + input.size() + " - the piece is: " + piece);
         output.addAll(input);
         output.removeAll(elementsToDelete);
-        System.out.println("*-* filterMoveset *-* - output size: " + output.size() + " - the piece is: " + piece);
+        //System.out.println("*-* filterMoveset *-* - output size: " + output.size() + " - the piece is: " + piece);
 
         return output;
     }

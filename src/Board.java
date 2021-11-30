@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Arrays.*;
+
 public class Board implements Serializable {
 
     char[][] boardArray;
@@ -36,7 +38,7 @@ public class Board implements Serializable {
     public void performMove(Move move) {
 
         // convert p/P that are at the end to q/Q
-        //      (if p AND at the end, then true)             or       (if P AND at the end, then true)
+        //      (if p AND at the end, then true)         or       (if P AND at the end, then true)
         if( (move.piece == 'p' && move.newField[0] == 7) || (move.piece == 'P' && move.newField[0] == 0) ) // only p/P
         {
             if(move.piece == 'p') // if black
@@ -135,16 +137,32 @@ public class Board implements Serializable {
 
     }
 
-    public String getString() {
-        StringBuilder output = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
+    static public ArrayList<Integer> hashBoardsAndRemoveDuplicates (ArrayList<Board> usedBoards) {
+        // used code from - https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
+        // used code from - https://stackoverflow.com/a/44367261/3065595
 
-            for (int j = 0; j < 8; j++) {
-                output.append(boardArray[i][j]);
+        ArrayList<Integer> _theHashList = new ArrayList<>();
+        ArrayList<Integer> _output = new ArrayList<>();
+
+        // converter
+        for (Board board : usedBoards) {
+            _theHashList.add(board.getHash());
+        }
+
+        for (int item: _theHashList) {
+
+            // if we DON'T have the item in the list, add it
+            if(!_output.contains(item))
+            {
+                _output.add(item);
             }
         }
 
-        return output.toString();
+        return _output;
+    }
+
+    public int getHash() {
+        return java.util.Arrays.deepHashCode( boardArray );
     }
 
     public Board cloning() { //todo tjek op på hvilke klasser der skal være serialisable

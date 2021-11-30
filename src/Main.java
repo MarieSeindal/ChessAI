@@ -24,15 +24,14 @@ public class Main {
 
         // region everything we have
 
-
         boolean runTests = false;
 
         if(runTests) // this is only running, if you change the boolean above
         {
-            System.out.println("test of both black and white move functions");
-            testMovesetFunctions();
-
-            System.out.println("- - - - - - - - - - - - - - - - - - - -- -  - - - -- - -  - --");
+//            System.out.println("test of both black and white move functions");
+//            testMovesetFunctions();
+//
+//            System.out.println("- - - - - - - - - - - - - - - - - - - -- -  - - - -- - -  - --");
 
             System.out.println("test of 3 the 'Threefold repetition rule' function");
             testBoardCompare();
@@ -107,6 +106,8 @@ public class Main {
 
         /* Start the main game loop */
         while (true) {
+
+            game.addUsedBoard(game.board.cloning());
 
             // todo check end game conditions (checkmate, 50 moves no kill etc.)
             if (game.turnsSinceKill >= 50) {
@@ -255,7 +256,7 @@ public class Main {
 
             } else { // AI player's turn
                 // todo finish AI player
-                AI ai = new AI(game.board, player.isWhite(), 10);
+                AI ai = new AI(game.board, player.isWhite(), 10, game.usedBoards);
                 ChessNode firstNode = new ChessNode(game.board);
                 // Record starting time
                 long timeLimit = System.currentTimeMillis() / 1000;
@@ -275,7 +276,7 @@ public class Main {
                     //System.out.println("AI Moving Piece (destination): "+tempMove.getContent());
 
                     // TODO: maybe we need to rethink this
-                    game.addUsedBoard(game.board);
+
 
                     // Write move to file todo: AI always writes 'o' in getContent()
                     writer.write("AI Moving: " + tempMove.getOldField()[0]+","+tempMove.getOldField()[1] + " ("+(char) tempMove.getPiece()+") -> " + tempMove.getNewField()[0]+","+tempMove.getNewField()[1]+" ("+((char) tempMove.getContent() == ' ' ? "' '" : (char) tempMove.getContent() )+")");
