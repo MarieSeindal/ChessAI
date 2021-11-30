@@ -324,12 +324,13 @@ public class Main {
         System.out.println(output);
     }
 
+    // testing the Game.pieceMoveset function, for the 6 pieces, 1 time for black and 1 for white
+    // first I made a test board and set the location of the piece that I want to test
+    // I make a check list of all the moves, that I know that piece should be able to move to
+    // last I compare the output from 'Game.pieceMoveset' against the checklist I made for that test
+    // all 12 test are printed and they say if you pass or not, by writing true or false.
     public static void testMovesetFunctions() {
-        //  region test
-
-        // endregion
-
-        // white queen test
+        // region white queen test
         int[] location1 = new int[]{3, 3};
         char[][] tBoard1 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
@@ -372,9 +373,9 @@ public class Main {
         checkList1.add(new int[]{2, 2});
         checkList1.add(new int[]{1, 1});
         checkList1.add(new int[]{0, 0});
+        // endregion
 
-
-        // black queen test
+        // region black queen test
         int[] location2 = new int[]{5, 6};
         char[][] tBoard2 =
                 {{'r', 'n', 'b', ' ', ' ', 'b', 'n', 'r'},
@@ -413,8 +414,9 @@ public class Main {
         checkList2.add(new int[]{6, 5});
         checkList2.add(new int[]{7, 4});
         checkList2.add(new int[]{4, 5});
+        // endregion
 
-        // white tower test
+        // region white tower test
         int[] location3 = new int[]{2, 2};
         char[][] tBoard3 =
                 {{'r', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
@@ -440,9 +442,9 @@ public class Main {
         checkList3.add(new int[]{2, 1});
         checkList3.add(new int[]{2, 3});
         checkList3.add(new int[]{2, 4});
+        // endregion
 
-
-        // black tower test
+        // region black tower test
         int[] location4 = new int[]{2, 2};
         char[][] tBoard4 =
                 {{' ', 'n', 'b', 'q', 'k', ' ', 'n', 'r'},
@@ -468,8 +470,9 @@ public class Main {
         checkList4.add(new int[]{2, 3});
         checkList4.add(new int[]{2, 4});
         checkList4.add(new int[]{2, 5});
+        // endregion
 
-        // white b test
+        // region white b test
         int[] location5 = new int[]{3, 2};
         char[][] tBoard5 =
                 {{'r', 'n', 'b', ' ', 'k', 'b', 'n', 'r'},
@@ -496,8 +499,9 @@ public class Main {
         checkList5.add(new int[]{4, 3});
         checkList5.add(new int[]{5, 4});
         checkList5.add(new int[]{6, 5});
+        // endregion
 
-        // black b test
+        // region black b test
         int[] location6 = new int[]{3, 2};
         char[][] tBoard6 =
                 {{'r', 'n', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -524,8 +528,9 @@ public class Main {
         checkList6.add(new int[]{5, 4});
         checkList6.add(new int[]{6, 5});
         checkList6.add(new int[]{7, 6});
+        // endregion
 
-        // white n test
+        // region white n test
         int[] location7 = new int[]{3, 2};
         char[][] tBoard7 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -545,9 +550,9 @@ public class Main {
         checkList7.add(new int[]{4, 4});
         checkList7.add(new int[]{4, 0});
         checkList7.add(new int[]{2, 0});
+        // endregion
 
-
-        // black n test
+        // region black n test
         int[] location8 = new int[]{3, 2};
         char[][] tBoard8 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -568,8 +573,9 @@ public class Main {
         checkList8.add(new int[]{4, 4});
         checkList8.add(new int[]{2, 0});
         checkList8.add(new int[]{2, 4});
+        // endregion
 
-        // black p test
+        // region black p test
         int[] location9 = new int[]{1, 2};
         char[][] tBoard9 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -586,8 +592,9 @@ public class Main {
         checkList9.add(new int[]{3, 2});
         checkList9.add(new int[]{2, 2});
         checkList9.add(new int[]{2, 3});
+        // endregion
 
-        // white p test
+        // region white p test
         int[] location10 = new int[]{6, 2};
         char[][] tBoard10 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -604,8 +611,9 @@ public class Main {
         checkList10.add(new int[]{5, 2});
         checkList10.add(new int[]{4, 2});
         checkList10.add(new int[]{5, 1});
+        // endregion
 
-        // white k test
+        // region white k test
         int[] location11 = new int[]{4, 3};
         char[][] tBoard11 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -627,8 +635,9 @@ public class Main {
         checkList11.add(new int[]{5, 3});
         checkList11.add(new int[]{5, 4});
         // TODO: king should not be able to go to - 3,2 ; 3,3 ; 4,4 ; 5,4 , since that put it in check mate
+        // endregion
 
-        // black k test
+        // region black k test
         int[] location12 = new int[]{4, 3};
         char[][] tBoard12 =
                 {{' ', ' ', ' ', ' ', 'k', 'b', 'n', 'r'},
@@ -650,12 +659,13 @@ public class Main {
         checkList12.add(new int[]{5, 2});
         checkList12.add(new int[]{5, 4});
         // TODO: king should not be able to go to - 4,2 ; 3,2 ; 5,3 ; 5,4 , since that put it in check mate
+        // endregion
 
         ArrayList<int[]> testValues = new ArrayList<>();
         Board testBoard = new Board();
         boolean output = false;
 
-        // test 1 - white q
+        // region test 1 - white q
         testBoard.setBoardArray(tBoard1);
         testValues = Game.pieceMoveset('Q', location1, testBoard, true);
         output = Game.arrayListContainsAll(checkList1, testValues);
@@ -664,8 +674,9 @@ public class Main {
         System.out.println("white q check list : ");
         Main.arrayPrinter(checkList1);
         System.out.println("did white q pass the test? : " + output);
+        // endregion
 
-        // test 2 - black q
+        // region test 2 - black q
         testBoard.setBoardArray(tBoard2);
         testValues = Game.pieceMoveset('q', location2, testBoard, false);
         output = Game.arrayListContainsAll(checkList2, testValues);
@@ -674,8 +685,9 @@ public class Main {
         System.out.println("black q check list : ");
         Main.arrayPrinter(checkList2);
         System.out.println("did black q pass the test? : " + output);
+        // endregion
 
-        // test 3 - white r
+        // region test 3 - white r
         testBoard.setBoardArray(tBoard3);
         testValues = Game.pieceMoveset('R', location3, testBoard, true);
         output = Game.arrayListContainsAll(checkList3, testValues);
@@ -684,8 +696,9 @@ public class Main {
         System.out.println("white r check list : ");
         Main.arrayPrinter(checkList3);
         System.out.println("did white r pass the test? : " + output);
+        // endregion
 
-        // test 4 - black r
+        // region test 4 - black r
         testBoard.setBoardArray(tBoard4);
         testValues = Game.pieceMoveset('r', location4, testBoard, false);
         output = Game.arrayListContainsAll(checkList4, testValues);
@@ -694,8 +707,9 @@ public class Main {
         System.out.println("black r check list : ");
         Main.arrayPrinter(checkList4);
         System.out.println("did black r pass the test? : " + output);
+        // endregion
 
-        // test 5 - white b
+        // region test 5 - white b
         testBoard.setBoardArray(tBoard5);
         testValues = Game.pieceMoveset('B', location5, testBoard, true);
         output = Game.arrayListContainsAll(checkList5, testValues);
@@ -704,8 +718,9 @@ public class Main {
         System.out.println("white b check list : ");
         Main.arrayPrinter(checkList5);
         System.out.println("did white b pass the test? : " + output);
+        // endregion
 
-        // test 6 - black b
+        // region test 6 - black b
         testBoard.setBoardArray(tBoard6);
         testValues = Game.pieceMoveset('b', location6, testBoard, false);
         output = Game.arrayListContainsAll(checkList6, testValues);
@@ -714,8 +729,9 @@ public class Main {
         System.out.println("black b check list : ");
         Main.arrayPrinter(checkList6);
         System.out.println("did black b pass the test? : " + output);
+        // endregion
 
-        // test 7 - white n
+        // region test 7 - white n
         testBoard.setBoardArray(tBoard7);
         testValues = Game.pieceMoveset('N', location7, testBoard, true);
         output = Game.arrayListContainsAll(checkList7, testValues);
@@ -724,8 +740,9 @@ public class Main {
         System.out.println("white n check list : ");
         Main.arrayPrinter(checkList7);
         System.out.println("did white n pass the test? : " + output);
+        // endregion
 
-        // test 8 - black n
+        // region test 8 - black n
         testBoard.setBoardArray(tBoard8);
         testValues = Game.pieceMoveset('n', location8, testBoard, false);
         output = Game.arrayListContainsAll(checkList8, testValues);
@@ -734,8 +751,9 @@ public class Main {
         System.out.println("black n check list : ");
         Main.arrayPrinter(checkList8);
         System.out.println("did black n pass the test? : " + output);
+        // endregion
 
-        // test 9 - black p
+        // region test 9 - black p
         testBoard.setBoardArray(tBoard9);
         testValues = Game.pieceMoveset('p', location9, testBoard, false);
         output = Game.arrayListContainsAll(checkList9, testValues);
@@ -744,8 +762,9 @@ public class Main {
         System.out.println("black p check list : ");
         Main.arrayPrinter(checkList9);
         System.out.println("did black p pass the test? : " + output);
+        // endregion
 
-        // test 10 - white p
+        // region test 10 - white p
         testBoard.setBoardArray(tBoard10);
         testValues = Game.pieceMoveset('P', location10, testBoard, true);
         output = Game.arrayListContainsAll(checkList10, testValues);
@@ -754,8 +773,9 @@ public class Main {
         System.out.println("white p check list : ");
         Main.arrayPrinter(checkList10);
         System.out.println("did white p pass the test? : " + output);
+        // endregion
 
-        // test 11 - white k
+        // region test 11 - white k
         testBoard.setBoardArray(tBoard11);
         testValues = Game.pieceMoveset('K', location11, testBoard, true);
         output = Game.arrayListContainsAll(checkList11, testValues);
@@ -764,8 +784,9 @@ public class Main {
         System.out.println("white k check list : ");
         Main.arrayPrinter(checkList11);
         System.out.println("did white k pass the test? : " + output);
+        // endregion
 
-        // test 12 - black k
+        // region test 12 - black k
         testBoard.setBoardArray(tBoard12);
         testValues = Game.pieceMoveset('k', location12, testBoard, false);
         output = Game.arrayListContainsAll(checkList12, testValues);
@@ -774,9 +795,12 @@ public class Main {
         System.out.println("black k check list : ");
         Main.arrayPrinter(checkList12);
         System.out.println("did black k pass the test? : " + output);
+        // endregion
 
     }
 
+    // testing if the game can detect if the game have 3 identical boards
+    // this is just to test the function, the boards does not need to make sense
     public static void testBoardCompare() {
         Player p1 = new Player(true, false);
         Player p2 = new Player(false, false);
