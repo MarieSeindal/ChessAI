@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class AI {
 
-    private static int maxDepth = 2;
+    private static int maxDepth = 7;
     static int timeLimitSeconds = 10;
     private static long timeLimit;
     protected Board currentBoard;
@@ -13,6 +13,7 @@ public class AI {
     private int alpha = Integer.MIN_VALUE;
     private int beta = Integer.MAX_VALUE;
     public Board bestMoveBoard;
+    // TODO: add later - make the AI not pick past used board
     public ArrayList<Board> usedBoards = new ArrayList<>();
 
     public AI(Board currentBoard, boolean isWhite, int timeLimitSeconds, ArrayList<Board> listOfBoards) {
@@ -20,7 +21,7 @@ public class AI {
         this.currentBoard = currentBoard;
         this.isWhite = isWhite;
         this.bestMoveBoard = currentBoard;
-        // TODO: 
+        // TODO: add later - make the AI not pick past used board
         this.usedBoards = listOfBoards;
     }
 
